@@ -1,0 +1,14 @@
+.input-group.uploader-group{
+    background-color: rgba(40, 175, 49, .17);
+    border: 0;
+    padding: .5rem;
+    border-radius: 6px;
+    .file-name-input{
+        background-color: transparent;
+        border: 0;
+        cursor: pointer;
+        &::placeholder{
+            color: rgba(40, 175, 49, .999);
+        }
+    }
+}

@@ -1,0 +1,10 @@
+<section class="breadcrumb_section">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">{{'home' | translate }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><ng-content select=".currentNode"></ng-content></li>
+            </ol>
+        </nav>
+    </div>
+</section>

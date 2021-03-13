@@ -1,0 +1,72 @@
+$mainColor: #1db1e3 !important;
+footer{
+    background-color: rgb(241, 241, 241);
+}
+.footer-logo img{
+    width:213px;
+}
+.address-data{ 
+    font-family: 'Montserrat-Regular';
+    li{  
+    border:none;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.875rem;
+    }
+}
+.address-data .material-icons{
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    color: rgb(133, 133, 133);
+}
+footer h4{
+    font-size: 1.25rem;
+    color: rgb(40, 175, 49);
+    font-family: 'Montserrat-SemiBold';
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+footer .list-group.footer-list .list-group-item, footer .list-group.footer-list .list-group-item a, footer .list-group.address-data .list-group-item{
+    background: transparent;
+    border:none;
+    padding: 0.25rem 0.125rem;
+    font-size: 0.875rem;
+    color: rgb(126, 126, 126);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+footer .list-group.footer-list .list-group-item:hover, footer .list-group.footer-list .list-group-item a:hover{
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    text-decoration: none !important;
+}
+.list-group-item.current-link{    
+    color: $mainColor;
+}
+footer .stores-img{
+    width:132px;
+    max-width: 50%;
+}
+footer .copyrights{
+    margin-top: 1rem;
+    padding: .5rem;
+    background-color: $mainColor;
+}
+footer .copyrights p{
+    font-size: 1rem;
+    color: rgb(255, 255, 255);
+}
+
+footer .footer-social a{
+    color: rgb(133, 133, 133);
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+}
+
+// ----------------------------------------------------------------------------------
+// -------------------------------- Media Query -------------------------------------
+@media (max-width:767px){
+    .loaction-map{
+        display: none;
+    }
+}

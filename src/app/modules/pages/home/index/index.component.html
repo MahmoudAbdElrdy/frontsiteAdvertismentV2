@@ -1,0 +1,136 @@
+<section class="home-carousel mb-3">
+    <div class="container">
+        <div id="homeCarousel" class="carousel slide homeCarousel" data-ride="carousel">
+            <!-- <ol class="carousel-indicators">
+                <li *ngFor="let sld of homeSlides; let i = index" [ngClass]="{'active': i == 0}" data-target="#homeCarousel"
+                    [attr.data-slide-to]="i"></li>
+            </ol> -->
+            <div class="carousel-inner main-raduis">
+                <div class="carousel-item" *ngFor="let slide of homeSlides; let first = first;" [ngClass]="{ active: first}">
+                    <img src="assets/img/home-slider/{{slide.image}}" class="d-block w-100" [alt]="slide.title">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>{{slide.caption}}</h3>
+                      </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev" title="{{ 'prev' | translate }}">
+                <span class="material-icons">
+                    arrow_back_ios
+                </span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#homeCarousel" role="button" data-slide="next" title="{{ 'Next' | translate }}">
+                <span class="material-icons">
+                    arrow_forward_ios
+                </span>
+    
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="latestAds" class="mt-6">
+    <div class="container gray-bg main-raduis pt-4">
+        <h2 class="page-title text-start">{{ 'latestAds' | translate }} 
+            <span class="float-end">
+                <a class="btn btn-danger view-more-btn" routerLink="/ads/list-ads">{{ 'viewMore' | translate }}</a>
+            </span>
+        </h2>
+        <div class="clearfix"></div>
+        <section id="allads" class="mt-3">
+            <div class="container main-raduis">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 mb-4" *ngFor="let oneAds of List; let i=index">
+                        <!-- routerLink="/ads/ads-details" -->
+                        <mat-card class="ads-card"  (click)="goToDetails(oneAds.id)">
+                            <span class="badge bg-danger">{{ oneAds?.adType }}</span>
+                            <button type="button" class="btn btn-light addtoWishListbtn"
+                                [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
+                                matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}"
+                                (click)="addToFavorite($event, i)"><i class="fa fa-heart"
+                                    aria-hidden="true"></i></button>
+                                     
+                            <img mat-card-image  [src]="baseUrlImage+oneAds.image+'?w=100&h=100'" [alt]="oneAds.title">
+                            <mat-card-content class="text-start">
+                                <h4>{{ oneAds.title | slice:0:80 }} </h4>
+                                <p class="ads-desc">{{ oneAds.description }}</p>
+                                <p class="price">{{ oneAds.price }} {{ 'SAR' | translate }}</p>
+                                <p class="ads-owner">{{ 'seller' | translate }} : {{ oneAds.vendorName }}</p>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 notTablePaginator">
+                        <mat-paginator [length]="10" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<section class="mt-6" id="beMemberSection">
+    <div class="container main-raduis">
+        <div class="row d-flex h-100 align-items-center">
+            <div class="col-md-12 mb-3">
+                <div class="d-flex align-items-center h-100 flex-column">
+                    <h4 class="text-nowrap text-white">{{'beAmember' | translate}}</h4>
+                    <p class="text-white">{{'beAmemberMsg' | translate}}</p>
+                    <button (click)="openRegisterDialog()" class="btn btn-light mt-4">{{'register' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="featuredAds" class="mt-6">
+    <div class="container gray-bg main-raduis pt-4">
+        <h2 class="page-title text-start">{{ 'featuredAds' | translate }} 
+            <span class="float-end">
+                <a class="btn btn-danger view-more-btn" routerLink="/ads/list-ads">{{ 'viewMore' | translate }}</a>
+            </span>
+        </h2>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-sm-6 col-md-3 penta mb-4" *ngFor="let oneAds of latestAds; let i=index">
+                <mat-card class="ads-card" routerLink="/ads/ads-details">
+                    <span class="badge bg-danger">{{ oneAds?.badge }}</span>
+                    <button type="button" class="btn btn-light addtoWishListbtn" [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
+                    matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}" (click)="addToFavorite($event, i)"><i
+                        class="fa fa-heart" aria-hidden="true"></i></button>
+                    <img mat-card-image src="{{adsImagesPath}}{{oneAds.image}}" [alt]="oneAds.title">
+                    <mat-card-content class="text-start">
+                        <h4>{{ oneAds.title | slice:0:80 }} </h4>
+                        <p class="ads-desc">{{ oneAds.description }}</p>
+                        <p class="price">{{ oneAds.price }} {{ 'SAR' | translate }}</p>
+                        <p class="ads-owner">{{ 'seller' | translate }} : {{ oneAds.owner }}</p>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mt-6">
+    <div class="container download-app main-raduis">
+        <div class="row d-flex h-100 align-items-center">
+            <div class="col-md-5">
+                <div class="d-flex align-items-center flex-column h-100">
+                    <h4 class="text-nowrap mb-3">{{'downloadApp' | translate}}</h4>
+                    <div>
+                        <a href="https://play.google.com/store/apps"
+                            target="_blank">
+                            <img src="assets/img/play.png" alt="Google play" class="stores-img pl-2">
+                        </a>
+                        <a href="https://apps.apple.com/" target="_blank">
+                            <img src="assets/img/ios.png" alt="Apple Store" class="stores-img">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

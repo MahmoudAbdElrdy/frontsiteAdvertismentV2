@@ -1,0 +1,28 @@
+<!-- <div class="modal-header">
+  
+    <div class="exit-button" (click)="closeDialog()">
+        <i class="material-icons-outlined">close</i>
+    </div>
+</div> -->
+<div mat-dialog-content>
+    <mat-form-field class="w-100 m-b-20 " appearance="outline">
+        <mat-label>Search</mat-label>
+        <input class="w-100 search-input" [(ngModel)]="search" (keydown)="keyDown ()" (input)="searchAutoComplete()"
+            matInput name="search" [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let item of searchList" (click)="setAddress(item.lat , item.lon,item.address)"
+                [value]="item.id">
+                {{ item.address}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <app-osm-single-view *ngIf="viewMap" (latlongChange)="latlongChanges($event)" [latitude]="latitude" [mapModal]="true"
+        [longitude]="longitude">
+    </app-osm-single-view>
+   
+</div>
+<mat-dialog-actions class="justify-content-center">
+    <button (click)="closeDialog()" class="btn btn-light" mat-dialog-close>{{ 'cancel' | translate }}</button>
+    <button (click)="closeDialog()" class="btn btn-primary" [mat-dialog-close]="true" cdkFocusInitial>{{ 'confirm' | translate }}</button>
+  </mat-dialog-actions> 

@@ -1,0 +1,15 @@
+.breadcrumb_section, .breadcrumb {
+    border-radius: 0;
+    background-color: rgb(240, 244, 248);
+}
+.breadcrumb-item a {
+    color: rgb(49, 102, 156);
+    font-family: "Bahij-Regular";
+    font-size: 1rem;
+    font-weight: 600;
+}
+.breadcrumb-item.active {   
+    font-family: "Bahij-Regular";
+    font-size: 1rem;
+    font-weight: 600;
+}

@@ -1,0 +1,172 @@
+<form [formGroup]="secondFormGroup" (ngSubmit)="nextstep()">
+    <div class="second-form-holder">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <input matInput placeholder="{{ 'adsTitle' | translate }}"
+                                formControlName="title" />
+                            <mat-error *ngIf="fc.title?.errors?.required"
+                                class="mat-error">
+                                {{ 'adsTitle' | translate }} {{ 'isrequired' | translate }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-select name="adCategory" placeholder="{{ 'adCategory' | translate }}" formControlName="adCategory">
+                               <mat-option *ngFor="let Category of AdCategoryList" [value]="Category.id">
+                                  {{Category.name}}
+                               </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="fc.adCategory?.errors?.required" class="mat-error">
+                                {{ 'adCategory' | translate }} {{ 'isrequired' | translate }}
+                            </mat-error>               
+                         </mat-form-field>
+                    </div>
+                
+                    <div class="form-group col-md-12">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <input type="number" matInput placeholder="{{ 'Price' | translate }}"
+                                formControlName="price" />
+                            <mat-error *ngIf="fc.price?.errors?.required"
+                                class="mat-error">
+                                {{ 'Price' | translate }} {{ 'isrequired' | translate }}
+                            </mat-error>
+                        </mat-form-field>
+                        <!-- <div class="negotiable-checkbox">
+                            <mat-checkbox formControlName="isAuction" (change)="onChange($event)">{{ 'negotiable' | translate }}</mat-checkbox>
+                        </div> -->
+                    </div>
+                    <div class="form-group col-md-12" *ngIf="isAuctionable">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-select   formControlName="auctionDays">
+                                <mat-option *ngFor="let duration of durations" [value]="duration.id">
+                                    {{duration.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="fc.auctionDays?.errors?.required" class="mat-error">
+                                {{ 'auctionEndTime' | translate }} {{ 'isrequired' | translate }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <textarea matInput formControlName="description"
+                                placeholder="{{'description' | translate }}"></textarea>
+                            <mat-error *ngIf="fc.description?.errors?.required" class="mat-error">
+                                {{ 'description' | translate }} {{ 'isrequired' | translate }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-select name="countryId" placeholder="{{ 'country' | translate }}" (selectionChange)="Change($event)"   formControlName="countryId">
+                               <mat-option *ngFor="let country of countries" [value]="country.id">
+                                  {{country.name?.ar}}
+                               </mat-option>
+                            </mat-select> 
+                            <mat-error *ngIf="fc.countryId?.errors?.required" class="mat-error">
+                                {{ 'country' | translate }} {{ 'isrequired' | translate }}
+                            </mat-error>              
+                         </mat-form-field>
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-select name="cityId" placeholder="{{ 'city' | translate }}" formControlName="cityId">
+                               <mat-option *ngFor="let city of cities" [value]="city.id">
+                                  {{city.name?.en}}
+                               </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="fc.cityId?.errors?.required" class="mat-error">
+                                {{ 'city' | translate }} {{ 'isrequired' | translate }}
+                            </mat-error>               
+                         </mat-form-field>
+                    </div>
+                    
+                    <div class="form-group col-md-12">
+                        <div class="input-group maper-group mb-3">
+                            <input type="text" class="form-control file-name-input"
+                                placeholder="{{ 'add' | translate }} {{ 'mapLocation' | translate }}"
+                                formControlName="address" readonly>
+                            <button type="button" class="btn btn-warning"  (click)="openAddLocationDialog()">
+                                <span class="material-icons valign-middle">
+                                    place
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                  
+                    <div class="form-group col-md-12">
+                        <div class="input-group uploader-group mb-3">
+                            <input type="text" class="form-control file-name-input" hidden
+                                placeholder="{{ 'addAdsImages' | translate }}"
+                                formControlName="images" readonly>
+                            <button type="button" class="btn btn-success" (click)="file2.click()">
+                                <span class="material-icons valign-middle">
+                                    publish
+                                </span>
+                                {{ 'upload' | translate }}</button>
+                        </div>
+                        <input type="file" name="File2" class="d-none" #file2  hidden name="images"
+                            (change)="processDataFile2(file2)" multiple>
+                        <div *ngFor="let item2 of imageInfo2;let j = index" class="mt-3">
+                            <div class="box-multi-uploads text-center float-right">
+                                <img [src]="item2?.imageUrl" class="w-100 img-fluid">
+                                <span class="material-icons remove-attchments"
+                                    (click)="removeAttachments2(j)">
+                                    close
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group col-md-12">
+                      
+                            <div class="col-12 list-dropdown-vehicles-data col-padding-8">
+                                <app-map-single-view [lat]="latitude" [lng]="longitude" (latlongChange)="latlongChanges($event)"></app-map-single-view>
+                            </div>
+                       
+                    </div> -->
+                 
+                </div>
+            </div>
+            <div class="form-group">
+                <div *ngFor="let data of services; let i=index">
+                    <label>
+                      <input type="checkbox" [value]="data.id" (change)="onCheckboxChange($event)" />
+                      {{data.name.ar}}
+                    </label>
+                  </div>
+                  
+            </div> 
+            <div style="margin-left: 90%;" class="form-group col-md-6">
+                <div class="form-row">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker1" placeholder="from Date" formControlName="fromDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+                      
+                </div>
+                <div class="form-row">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker2" placeholder="from Date" formControlName="toDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                      </mat-form-field>
+                      
+                </div>
+            </div>
+        </div>
+        <div style="margin-left: 600px;">
+            <button class="btn btn-primary"   style="min-width: 300px;">{{ 'add' | translate }}</button>
+        </div>
+    </div>
+</form>

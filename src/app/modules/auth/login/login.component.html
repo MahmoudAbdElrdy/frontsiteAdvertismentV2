@@ -1,0 +1,56 @@
+<mat-card class="auth-card">
+    <mat-card-content>
+        <mat-card-content>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="logo-holder d-flex align-items-center justify-content-center">
+                        <img class="img-fluid" src="assets/img/main-logo.png" alt="{{'appName' | translate}}">
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <button class="btn btn-light rounded-circle float-end" (click)="closeDialog()"><i class="fa fa-times"></i></button>
+                    <div class="login-form-holder">
+                        <form  [formGroup]="loginForm"  (ngSubmit)="onSubmit()">                            
+                            <!-- <div class="form-group">
+                                <mat-form-field  appearance="standard" class="w-100">
+                                    <mat-label> {{ 'Email' | translate }} </mat-label>
+                                    <input matInput placeholder="{{'EmailPlaceholder' | translate }}" formControlName="email">
+                                    <mat-error *ngIf="fc.email.errors.required" class="mat-error">
+                                        {{ 'Email' | translate }} {{ 'isrequired' | translate }}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div> -->
+                            <div class="form-group">
+                                <mat-form-field  appearance="standard" class="w-100">
+                                    <mat-label> {{ 'mobile' | translate }} </mat-label>
+                                    <input matInput placeholder="{{'enter' | translate }} {{'mobile' | translate }}" formControlName="phoneNumber" required>
+                                    <mat-error *ngIf="fc.phoneNumber?.errors?.required" class="mat-error">
+                                        {{ 'mobile' | translate }} {{ 'isrequired' | translate }}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>            
+                           <div class="form-group">
+                                <mat-form-field  appearance="standard" class="w-100">
+                                    <mat-label> {{ 'password' | translate }}</mat-label>
+                                    <input matInput type="password" placeholder="{{'enter' | translate }} {{'password' | translate }}" formControlName="password" required>
+                                    <mat-error *ngIf="fc.password?.errors?.required" class="mat-error">
+                                        {{ 'password' | translate }} {{ 'isrequired' | translate }}
+                                    </mat-error>
+                                </mat-form-field>
+                           </div>
+                           <div class="form-group">
+                                <mat-checkbox id="rememberMe" formControlName="rememberMe" class="float-start">{{'rememberMe' | translate }}</mat-checkbox>
+                           </div>
+                            <div class="clearfix"></div>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg mt-2">{{'login2' | translate }}</button>
+                        </form>
+                        <div class="mt-4">
+                            <button type="button" class="btn btn-link btn-block text-dark mb-2" (click)="switchToForgetPassword()">{{'forgetPassword' | translate }}</button>
+                            <button type="button" class="btn btn-outline-success btn-block" (click)="switchToRegister()"> {{'havntAccountRegsiterNow' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card-content>
+</mat-card>

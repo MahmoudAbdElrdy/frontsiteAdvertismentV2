@@ -1,0 +1,84 @@
+<div class="top-bar">
+    <div class="container">
+        <div class="d-flex flex-row align-items-center justify-content-between" style="margin-top: 12px;">
+            <a class="app-logo my-0 " routerLink="/pages/home" #tooltip="matTooltip" matTooltip="{{'appName' | translate}}">
+                <img class="img-fluid" src="assets/img/main-logo.png" alt="{{'appName' | translate}}">
+            </a>
+            <div class="top-search-holder">
+                <form class="w-100">
+                    <div class="form-row position-relative">
+                        <div class="form-group col-md-3">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-select name="countryId"  [(value)]="selectedCountry">
+                                   <mat-option *ngFor="let country of countries" [value]="country.id">
+                                      {{country.name}}
+                                   </mat-option>
+                                </mat-select>               
+                             </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-select name="cityId" [(value)]="selectedCity">
+                                   <mat-option *ngFor="let city of cities" [value]="city.id">
+                                      {{city.name}}
+                                   </mat-option>
+                                </mat-select>               
+                             </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput  name="searchProduct"  placeholder="{{'searchByProductName' | translate }}">                                
+                            </mat-form-field>
+                        </div>
+                        <button type="button" class="btn btn-link" #tooltip="matTooltip" matTooltip="{{'search' | translate}}" routerLink="/ads/list-ads"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="top-left-part">
+                <nav class="nav-btns my-2 my-md-0">
+                    <a href="javascript:;" routerLink="/ads/add-ads" class="btn btn-primary shadow-sm" #tooltip="matTooltip" matTooltip="{{'addAds' | translate}}"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{'addAds' | translate}}</a>
+                    <a href="javascript:;" class="btn btn-light shadow-sm" #tooltip="matTooltip" matTooltip="{{'notifications' | translate}}" routerLink="/account/notifications"><i class="fa fa-bell" aria-hidden="true"></i></a>
+                    <a href="javascript:;" class="btn btn-light shadow-sm" #tooltip="matTooltip" matTooltip="{{'favorite' | translate}}" routerLink="/account/favorites"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                    <button *ngIf="!isAuthenticated" (click)="openLoginDialog()" class="btn btn-success shadow-sm" #tooltip="matTooltip" matTooltip="{{'login' | translate}}"><i class="fa fa-user" aria-hidden="true"></i> {{'login' | translate}}</button>
+                    <a href="javascript:;" *ngIf="isAuthenticated" routerLink="/account/my-ads" class="btn btn-success shadow-sm" #tooltip="matTooltip" matTooltip="{{'myAccount' | translate}}"><i class="fa fa-user" aria-hidden="true"></i> {{'myAccount' | translate}}</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary" id="mainMenu">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="material-icons">menu</span>
+        </button>
+        <a class="logo-mob" routerLink="/" #tooltip="matTooltip" matTooltip="{{'appName' | translate}}">
+            <img src="assets/img/main-logo.png" alt="{{'appName' | translate}}">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mstrt-auto p-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:;" routerLink="/pages/home" routerLinkActive="current-link">{{'home' | translate}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:;" routerLink="/pages/contact" routerLinkActive="current-link">{{'contactUs' | translate}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:;" routerLink="/pages/using-instructions" routerLinkActive="current-link">{{'usingInstructions' | translate}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:;" routerLink="/pages/privacy-policy" routerLinkActive="current-link">{{'privacyPolicy' | translate}}</a>
+                </li>
+
+            </ul>
+            <div class="left-nav my-2 my-lg-0">
+                <button type="button" class="btn btn-link text-dark ml-2 mr-2 p-1"
+                    [matMenuTriggerFor]="langMenu">{{'currentLanguage' | translate}}</button>
+                <mat-menu #langMenu="matMenu">
+                    <button *ngFor="let lang of languageList" (click)="setSelectedLang(lang)" mat-menu-item>
+                        {{ lang.languageName }}</button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</nav>

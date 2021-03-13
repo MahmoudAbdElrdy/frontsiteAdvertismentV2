@@ -1,0 +1,18 @@
+
+<div >
+    <mat-form-field class="w-100 m-b-20 " appearance="outline">
+        <mat-label> بحث</mat-label>
+        <input class="w-100 search-input" [(ngModel)]="search" (keydown)="keyDown ()" (input)="searchAutoComplete()"
+            matInput name="search" [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let item of searchList" (click)="setAddress(item.lat , item.lon,item.address)"
+                [value]="item.id">
+                {{ item.address}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <app-osm-single-view *ngIf="viewMap" (latlongChange)="latlongChanges($event)" [latitude]="latitude" [mapId]="mapId" [mapModal]="true"
+        [longitude]="longitude" >
+    </app-osm-single-view>
+</div>

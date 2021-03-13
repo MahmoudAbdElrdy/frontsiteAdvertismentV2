@@ -1,0 +1,76 @@
+$mainColor:#1db1e3 !important;
+.mat-card.contact-info-card{
+    background-image: url('./../../../../assets/img/contact_us_large.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+.mat-card.contact-info-card .mat-card-content{
+    min-height: 377px;
+    background-color:rgba(23, 23, 23, .92);
+    border-radius: 8px !important;
+}
+.mat-card.contact-info-card .address-data{
+    padding: 3rem;
+    text-align: center;
+}
+.mat-card.contact-info-card .address-data li{
+    border: none;
+    padding: 0.75rem 0.5rem;
+    background: transparent;
+    font-family: 'Montserrat-Regular';
+    color:rgb(255, 255, 255);
+    font-size: 1.4rem;
+}
+.mat-card.contact-info-card .address-data li .material-icons{
+    color: $mainColor;
+    margin-inline-end: .75rem;
+    direction: rtl;
+}
+.stores-img{
+    width: 220px;
+}
+.mat-card.social-card{
+    background-color:rgb(241, 241, 241);
+    min-height: 87px;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+.social-card nav a{
+    margin-left: 1.75rem;
+    margin-right: 1.75rem;
+    font-size: 2.5rem;
+}
+.social-card .fa-facebook{
+    color: #0F71D5;
+}
+.social-card .fa-twitter{
+    color: #52A6FC;
+}
+.social-card .fa-youtube{
+    color: #E91F1F;
+}
+.social-card .fa-instagram{
+    color: #EE7724;
+}
+.social-card .fa-snapchat, .social-card .fa-snapchat-square{
+    color: #EDD20C;
+}
+.social-card .fa-whatsapp{
+    color: #43D661;
+}
+
+
+.contact-form {
+    background: rgb(241, 241, 241) !important;
+    padding: 1rem;
+}
+.contact-form form {
+    width: 80%;
+    margin: 1rem auto;
+    display: block;
+}

@@ -1,0 +1,109 @@
+$mainColor: #1db1e3 !important;
+.top-bar{
+    width: 100%;
+    min-height: 140px;
+    background-color: #f8f8f8;
+    display: inline-block;
+}
+.app-logo img{
+    height: 106px;
+}
+.top-search-holder{
+    min-width: 50%;
+    .btn-link{
+        position: absolute;
+        top: 10px;
+        left: 5px;
+        color: rgb(0, 0, 0);
+    }
+}
+#mainMenu{
+    margin-bottom: 20px;
+}
+#mainMenu.bg-primary {
+    background-color: rgb(241, 241, 241) !important;
+}
+#mainMenu.bg-primary .btn-info {
+    background-color:$mainColor;
+    border-color:$mainColor;
+}
+#mainMenu.navbar-dark .navbar-nav .nav-link {
+    color: rgb(0, 0, 0);
+    font-family: 'Montserrat-Regular';
+}
+#mainMenu.navbar-dark .navbar-nav .nav-item .nav-link::after {
+    content: '|';
+    color: rgba(0, 0, 0, .26);
+    padding-inline-start: .5rem;
+    padding-inline-end: .25rem;
+}
+#mainMenu.navbar-dark .navbar-nav .nav-item:last-child .nav-link::after {
+    content: '';
+}
+#mainMenu.navbar-dark .navbar-nav .nav-item.active .nav-link {
+    font-weight: 600;
+}
+#mainMenu.navbar-dark .navbar-nav .nav-item .nav-link.current-link {
+    color: $mainColor;
+}
+.img-logo{
+    margin-top: 4px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.img-logo img{
+    display: block;
+    margin: auto;
+}
+.arrow_drop_down{
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.88);
+    float: right;
+    line-height: 1.5;
+}
+.avatar{
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    border-radius: 24px;
+}
+.btn-avatar{
+    margin-top: 5px;
+    background: transparent;
+    border: none;
+}
+.top-left-part{
+    margin-top: -17px;
+    .nav-btns .btn{
+        margin-inline-end: 1rem;
+        height: 45px;
+    }
+    .nav-btns .btn-light {
+        color: #171717;
+        background-color: #fefefe;
+        border-color: #fefefe;
+    }
+}
+// ------------------------------------------- Media Query ----------------------------------------
+@media (max-width:767px){  
+    #mainMenu .navbar-nav{
+        text-align: start;
+    }
+    
+    #mainMenu.navbar-dark .navbar-nav .nav-link, #mainMenu.navbar-dark .navbar-nav .nav-link .material-icons {
+        color:$mainColor
+    }
+    .mat-menu-item {
+        color:$mainColor
+    }
+}
+@media (max-width:574px){    
+    .mat-menu-item {
+        font-size: 12px;
+        font-weight: 400;
+        color:$mainColor;
+        line-height: 38px;
+        height: 38px;
+        padding: 0 10px;
+    }
+}

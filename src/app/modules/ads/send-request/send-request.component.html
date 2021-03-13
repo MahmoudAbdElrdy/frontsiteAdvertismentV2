@@ -1,0 +1,129 @@
+<div class="container">
+    <h2 class="page-title text-center">{{'sendRequest' | translate}}</h2>
+    <div class="row mt-6">
+        <div class="col-md-12">
+            <div class="send-request-form" *ngIf="showSendRequestForm">
+                <form (ngSubmit)="submitRequest()" [formGroup]="sendRequestForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <h4 class="text-start text-success"> {{'enter' | translate }} {{'creditCardData' | translate }}</h4>
+                                    <hr/>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <input matInput placeholder="{{ 'Name' | translate }}" formControlName="name" />
+                                        <mat-error *ngIf="sendRequestForm.controls.name.errors?.required" class="mat-error">
+                                            {{ 'Name' | translate }} {{ 'isrequired' | translate }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <input matInput placeholder="{{ 'cardNo' | translate }}" formControlName="cardNo" />
+                                        <mat-error *ngIf="sendRequestForm.controls.cardNo.errors?.required" class="mat-error">
+                                            {{ 'cardNo' | translate }} {{ 'isrequired' | translate }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <input matInput placeholder="MM/YY" formControlName="cardExpiry"  [matDatepicker]="picker"/>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-error *ngIf="sendRequestForm.controls.cardExpiry.errors?.required" class="mat-error">
+                                            {{ 'cardExpiry' | translate }} {{ 'isrequired' | translate }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <input matInput placeholder="CVV" formControlName="CVV" />
+                                        <mat-error *ngIf="sendRequestForm.controls.CVV.errors?.required" class="mat-error">
+                                            {{ 'CVV' | translate }} {{ 'isrequired' | translate }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">{{'Submit' | translate }}</button>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-card class="ads-owner-card mb-4">
+                                <mat-card-content>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h6 class="text-start text-dark mb-2">{{ 'infoAboutAdsOwner' | translate}}</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul class="list-group text-start">
+                                                <li class="list-group-item">
+                                                    {{ 'seller' | translate}} : مصطفى خالد
+                                                    <span class="material-icons float-start">
+                                                        person
+                                                    </span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    +966 0123456789
+                                                    <span class="material-icons float-start">
+                                                        phone_iphone
+                                                    </span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    youremail@gmail.com
+                                                    <span class="material-icons float-start">
+                                                        email
+                                                    </span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    شارع عمرو بن العاص، الوشام، الرياض
+                                                    <span class="material-icons float-start">
+                                                        place
+                                                    </span>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="loaction-map mt-3">
+                                                <iframe
+                                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3626.4247104035107!2d46.69647091487561!3d24.64350535998795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f04de056b3cc5%3A0xdabd08ad468d51ca!2sAmr%20Ibn%20Alaas%20St%2C%20Al%20Wisham%2C%20Riyadh%2011564%2C%20Saudi%20Arabia!5e0!3m2!1sen!2seg!4v1609622531643!5m2!1sen!2seg"
+                                                    width="100%" height="177" frameborder="0" style="border:1px solid #ffffff;" allowfullscreen=""
+                                                    aria-hidden="false" tabindex="0"></iframe>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                            <div class="form-group col-md-12">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <textarea matInput formControlName="moreInfo"
+                                        placeholder="{{'requestMoreInfo' | translate }}"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-12">            
+            <div *ngIf="showRequestSuccessMsg" class="text-center mb-4" id="divshow">
+                <div class="success-operation">
+                    <span class="material-icons valign-middle">check_circle</span>
+                    <div class="msg">{{'requestSuccessMsg' | translate }}</div>
+                </div>
+                <div class="text-dark">{{'requestNo' | translate }} : 56455241</div>
+                <div class="alert alert-danger text-center mt-3">
+                    <div class="text-dark">{{'invoice' | translate }}</div>
+                    <div class="primary-font-color">3000 {{'SAR' | translate }}</div>
+                </div>
+                <hr/>
+            </div>
+        </div>
+
+        <div class="col-md-12" >
+            <app-service-provider-request *ngIf="showServiceProviderRequestForm"></app-service-provider-request>
+        </div>
+    </div>
+</div>

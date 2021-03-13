@@ -1,0 +1,155 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row" id="adsDeatils">
+                <div class="col-md-6">
+                    <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+                </div>
+                <div class="col-md-6 text-start">
+                    <h3 class="text-start">{{AdvertisementDetailDto?.title}}</h3>
+                    <button class="btn btn-link rate" (click)="openRateAdsDialog()" #tooltip="matTooltip"
+                        matTooltip="{{ 'clickFor' | translate }} {{'rateAds' | translate}}"
+                        matTooltipPosition="above"><span><i class="fa fa-star-half-o" aria-hidden="true"></i></span>
+                        4.5</button>
+                    <p class="price primary-font-color">{{AdvertisementDetailDto?.price}} {{ 'SAR' | translate }} 
+                        <!-- <small *ngIf="AdvertisementDetailDto?.isAuction" class="border border-info rounded p-1">{{ 'negotiable' | translate }} </small></p> -->
+                    <form (ngSubmit)="submitAuctionForm()" [formGroup]="auctionFormGroup">
+                        <!-- <div class="row">
+                            <div class="form-group col-md-8">
+                                <div class="input-group mt-3">
+                                    <mat-form-field *ngIf="AdvertisementDetailDto?.isAuction"  appearance="fill" class="w-100">
+                                        <input matInput  type="password" placeholder="{{'enter' | translate }} {{'auctionPrice' | translate }}" formControlName="auctionPrice">
+                                        <mat-error *ngIf="auctionFormGroup.controls.auctionPrice.errors?.required" class="mat-error">
+                                            {{ 'auctionPrice' | translate }} {{ 'isrequired' | translate }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <button *ngIf="AdvertisementDetailDto?.isAuction" type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
+                                </div>
+                            </div>
+                        </div> -->
+                    </form>
+                    <hr />
+                    <!-- <p class="timer mb-2"> {{ 'auctionEndTime' | translate }} <span class="badge bg-success p-2">01 : 03
+                            : 45 : 22</span></p> -->
+                    <!-- <p class="quantity"> {{ 'quantity' | translate }} 10</p> -->
+                    <h3>عرض الاعلان</h3>
+                    <p class="text-start">من تاريخ :{{AdvertisementDetailDto?.adIntervalFromDate|date}}</p>
+                    <p class="text-start">الي تاريخ:{{AdvertisementDetailDto?.adIntervalToDate|date}}</p>
+                    <br>
+                    <h3>حجز الاعلان</h3>
+                    <div  class="form-group col-md-6">
+                        <div class="form-row">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker1" placeholder="from Date"  [(ngModel)]="ApplyForAdvertisementCommand.fromDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                              </mat-form-field>
+                              
+                        </div>
+                        <div class="form-row">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker2" placeholder="from Date" [(ngModel)]="ApplyForAdvertisementCommand.toDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                              </mat-form-field>
+                              
+                        </div>
+                        <!-- <div *ngIf="AdvertisementDetailDto?.adCategory==2" class="form-row">
+                            <mat-form-field>
+                                <input matInput  placeholder="عدد مرات"  [(ngModel)]="ApplyForAdvertisementCommand.numberOfShowTimes">
+                                    </mat-form-field>
+                              
+                        </div> -->
+                    </div>
+                    <hr />
+
+                    <div class="actions">
+                        <!-- routerLink="/ads/send-request" -->
+                        <a href="javascript:;" class="btn btn-primary m-2" routerLink="/ads/ServiceProviderRequest"><i
+                                class="fa fa-paper-plane" aria-hidden="true"></i>
+                            {{'sendRequest' | translate}}</a>
+                        <button type="button" class="btn btn-dark m-2" (click)="openAdsLocationDialog()"><i
+                                class="fa fa-map-marker" aria-hidden="true"></i>
+                            {{'goToLocation' | translate}}</button>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <h5 class="text-start mb-3">{{ 'description' | translate }}</h5>
+                    <p class="ads-description">{{AdvertisementDetailDto?.description}}</p>
+                </div>
+            </div>
+            <hr />
+            <div id="realatedAds" class="row">
+                <div class="col-md-12 text-start">
+                    <h4 class="text-start primary-font-color mb-3">{{ 'relatedAds' | translate }}</h4>
+                </div>
+                <div class="col-sm-6 col-md-3 mb-4" *ngFor="let oneAds of relatedAdsList; let i=index">
+                    <mat-card class="ads-card" routerLink="/ads/ads-details">
+                        <span class="badge bg-danger">{{ oneAds?.badge }}</span>
+                        <button type="button" class="btn btn-light addtoWishListbtn"
+                            [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
+                            matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}"
+                            (click)="addToFavorite($event, i)"><i class="fa fa-heart" aria-hidden="true"></i></button>
+                        <img mat-card-image src="{{adsImagesPath}}{{oneAds.image}}" [alt]="oneAds.title">
+                        <mat-card-content class="text-start">
+                            <h4>{{ oneAds.title | slice:0:80 }} </h4>
+                            <p class="ads-desc">{{ oneAds.description }}</p>
+                            <p class="price">{{ oneAds.price }} {{ 'SAR' | translate }}</p>
+                            <p class="ads-owner">{{ 'seller' | translate }} : {{ oneAds.owner }}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <mat-card class="ads-owner-card mb-4">
+                <mat-card-content>
+                    <h6 class="text-start primary-font-color mb-2">{{ 'infoAboutAdsOwner' | translate}}</h6>
+                    <ul class="list-group address-data text-start">
+                        <li class="list-group-item">
+                            {{ 'seller' | translate}} : {{AdvertisementDetailDto?.vendorName}}
+                            <span class="material-icons float-start">
+                                person
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            {{AdvertisementDetailDto?.vendorPhone}}
+                            <span class="material-icons float-start">
+                                phone_iphone
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            {{AdvertisementDetailDto?.vendorEmail}}
+                            <span class="material-icons float-start">
+                                email
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            {{AdvertisementDetailDto?.address}}
+                            <span class="material-icons float-start">
+                                place
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                    <div class="loaction-map mt-3">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3626.4247104035107!2d46.69647091487561!3d24.64350535998795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f04de056b3cc5%3A0xdabd08ad468d51ca!2sAmr%20Ibn%20Alaas%20St%2C%20Al%20Wisham%2C%20Riyadh%2011564%2C%20Saudi%20Arabia!5e0!3m2!1sen!2seg!4v1609622531643!5m2!1sen!2seg"
+                            width="100%" height="197" frameborder="0" style="border:1px solid #ffffff;"
+                            allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                    </div>
+                </mat-card-content>
+                <button type="button" class="btn btn-primary btn-block" (click)="openReportAdsDialog()"><i
+                        class="fa fa-info-circle" aria-hidden="true"></i> {{'reportAds' | translate}}</button>
+            </mat-card>
+            <div class="ads-area">
+                <a href="https://www.google.com/" target="_blank"><img src="assets/img/ads-area1.png"
+                        alt="مساحة اعلانية" class="img-fluid"></a>
+            </div>
+            <div class="ads-area mt-4">
+                <a href="https://www.google.com/" target="_blank"><img src="assets/img/ads-area2.png"
+                        alt="مساحة اعلانية" class="img-fluid"></a>
+            </div>
+        </div>
+    </div>
+</div>

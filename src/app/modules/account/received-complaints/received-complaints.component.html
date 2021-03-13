@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-md-6" *ngFor="let complaint of myComplaints; let i=index">
+        <mat-card class="myads-card mb-4">
+            <mat-card-content class="text-start">
+                <p class="date">{{ 'complaintNo' | translate }} : {{complaint.complaintNO }} </p>
+                <h6 class="text-success">{{ complaint.sender }} </h6>
+                <p class="ads-desc">{{ complaint.details }}</p>
+                <div class="text-center w-50 m-lr-auto mt-3">
+                    <button type="button" class="btn btn-primary btn-block"  (click)="openReplyComplaintDialog()">{{'reply' | translate}}</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

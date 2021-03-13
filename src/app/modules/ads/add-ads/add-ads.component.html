@@ -1,0 +1,27 @@
+<div class="container">
+    <h2 class="page-title text-center">{{'addAds' | translate}}</h2>
+    <div class="row mt-6">
+        <div class="col-md-12 add-ads-stepper" *ngIf="showAdsStepper">
+            <div class="step1">
+                <app-add-ads-stp1 *ngIf="steper==1" (next)="addCommercialRegister($event)"></app-add-ads-stp1>
+            </div>
+            <div class="step2">
+                <app-add-ads-stp2 *ngIf="steper==2" (next)="adsDetails($event)"></app-add-ads-stp2>
+            </div>
+        </div>
+
+        <div class="col-md-12">            
+            <div *ngIf="showAddingAdsSuccessMsg" class="text-center mb-4" id="divshow">
+                <div class="success-operation">
+                    <span class="material-icons valign-middle">check_circle</span>
+                    <div class="msg">{{'adsAddd' | translate }}</div>
+                </div>
+                <hr/>
+            </div>
+        </div>
+
+        <div class="col-md-12" >
+            <app-user-services *ngIf="showUserServices"></app-user-services>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+.modal-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header-text {
+    text-align: initial;
+    font-size: 20px;
+    color: #007600;
+}
+
+.exit-button {
+    border: 1px solid #fff !important;
+    background: none !important;
+}
+
+.search-input {
+    height: 50px;
+    border-radius: 6px;
+    padding-right: 10px;
+}
+
+.choose-button {
+    width: 20%;
+}

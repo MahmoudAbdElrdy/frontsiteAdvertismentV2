@@ -1,0 +1,106 @@
+<div class="container tmp-vert-space">
+    <h2 class="page-title text-start">{{'contactUs' | translate}}</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="loaction-map">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3626.4247104035107!2d46.69647091487561!3d24.64350535998795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f04de056b3cc5%3A0xdabd08ad468d51ca!2sAmr%20Ibn%20Alaas%20St%2C%20Al%20Wisham%2C%20Riyadh%2011564%2C%20Saudi%20Arabia!5e0!3m2!1sen!2seg!4v1609622531643!5m2!1sen!2seg"
+                    width="100%" height="324" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+                    tabindex="0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-6">
+        <div class="col-md-5">
+            <mat-card class="contact-info-card">
+                <mat-card-content>
+                    <ul class="list-group address-data text-start">
+                        <li class="list-group-item">
+                            +966 0123456789
+                            <span class="material-icons float-start">
+                                phone_iphone
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            youremail@gmail.com
+                            <span class="material-icons float-start">
+                                email
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            شارع عمرو بن العاص، الوشام، الرياض
+                            <span class="material-icons float-start">
+                                place
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="mt-2 mb-2 text-center">
+                        <a href="https://play.google.com/store/apps" target="_blank">
+                            <img src="assets/img/play-invrs.png" alt="Google play" class="stores-img pl-2">
+                        </a>
+                        <a href="https://apps.apple.com" target="_blank">
+                            <img src="assets/img/ios-invrs.png" alt="Apple Store" class="stores-img">
+                        </a>
+                        <div class="clearfix"></div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="social-card mt-3">
+                <mat-card-content>
+                    <nav class="text-center">
+                        <a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                        <a href="https://www.whatsapp.com/" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://www.snapchat.com/" target="_blank"><i class="fa fa-snapchat-square" aria-hidden="true"></i></a>
+                        <a href="https://www.twitter.com/" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    </nav>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-md-7">            
+            <div class="contact-form main-raduis">
+                <div *ngIf="isShown" class="mb-4"  id="divshow" >
+                    <div class="alert alert-success text-center">
+                        {{'sentSuccessfully' | translate }}
+                    </div>
+                
+                </div>
+
+                <form (ngSubmit)="saveContact()" [formGroup]="ContactForm">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input matInput placeholder="{{ 'Name' | translate }}" formControlName="name" />
+                        <mat-error *ngIf="ContactForm.controls.name.errors?.required" class="mat-error">
+                            {{ 'Name' | translate }} {{ 'isrequired' | translate }}
+                        </mat-error>  
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <input matInput placeholder="{{ 'Email' | translate }}" formControlName="email" />
+                        <mat-error *ngIf=" ContactForm.controls.email.errors?.required" class="mat-error">
+                            {{ 'Email' | translate }} {{ 'isrequired' | translate }}
+                        </mat-error>   
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <input matInput placeholder="{{ 'Subject' | translate }}" formControlName="address" />
+                        <mat-error *ngIf=" ContactForm.controls.address.errors?.required" class="mat-error">
+                            {{ 'Subject' | translate }} {{ 'isrequired' | translate }}
+                        </mat-error> 
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <textarea matInput formControlName="content"  placeholder="{{'MessageContent' | translate }}"></textarea>
+                        <mat-error *ngIf="ContactForm.controls.content.errors?.required" class="mat-error">
+                            {{ 'MessageContent' | translate }} {{ 'isrequired' | translate }}
+                        </mat-error>  
+                    </mat-form-field>
+                    <div class="clearfix"></div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">{{'Submit' | translate }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

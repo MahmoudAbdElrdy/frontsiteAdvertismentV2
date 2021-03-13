@@ -1,0 +1,21 @@
+<div class="service-provider-request-form">
+    <h5 class="text-center text-success">{{ 'youCanAddYourServices' | translate }}</h5>
+    <form (ngSubmit)="submituserServices()" >
+        <div class="row">
+           
+            <div class="form-group col-md-4 text-start" *ngFor="let service of services; let i = index">
+                <div class="user-services-box d-flex justify-content-between align-items-center">
+                    <label>
+                        <input type="checkbox" [value]="service.ServiceTypeId" name="Checked" [(ngModel)]="service.Checked" />
+                        {{service.name}}
+                      </label>
+                    <mat-form-field appearance="fill" class="w-50">
+                        <input matInput [value]="service.Price" placeholder="{{ 'Price' | translate }}" [(ngModel)]="service.Price" id="id_{{i}}" name="{{ i }}"/>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-12 text-center"><button type="submit" class="btn btn-primary w-50">{{'confirm' | translate }}</button></div>
+            <div class="col-md-12 text-center"><a href="javascript:;" class="btn btn-link text-dark w-50" routerLink="/account/myads">{{'skip' | translate }}</a></div>
+        </div>
+    </form>
+</div>

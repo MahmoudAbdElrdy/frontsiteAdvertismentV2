@@ -1,0 +1,114 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <mat-accordion class="ads-filter-panel" multi>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{ 'Category' | translate }}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <section class="checkbox-group text-start">
+                        <mat-checkbox value="allOptions">{{ 'all' | translate }}</mat-checkbox>
+                        <mat-checkbox value="cat1">اللوحات الإعلانية الثابتة</mat-checkbox>
+                        <mat-checkbox value="cat2">اللوحات الإعلانية المحمولة</mat-checkbox>
+                        <mat-checkbox value="cat3">اللوحات الإعلانية الرقمية</mat-checkbox>
+                        <mat-checkbox value="cat4">إعلان عمود الشارع</mat-checkbox>
+                        <mat-checkbox value="cat5">إعلانات أثاث الشوارع</mat-checkbox>
+                        <mat-checkbox value="indeterminate">Indeterminate</mat-checkbox>
+                    </section>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{ 'country' | translate }}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <section class="checkbox-group text-start">
+                        <mat-checkbox value="allCountries">{{ 'all' | translate }}</mat-checkbox>
+                        <mat-checkbox value="country1">السعودية</mat-checkbox>
+                        <mat-checkbox value="country2">الامارات</mat-checkbox>
+                        <mat-checkbox value="country3">الكويت</mat-checkbox>
+                        <mat-checkbox value="country4">قطر</mat-checkbox>
+                        <mat-checkbox value="country5">المغرب</mat-checkbox>
+                    </section>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{ 'city' | translate }}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <section class="checkbox-group text-start">
+                        <mat-checkbox value="allCities">{{ 'all' | translate }}</mat-checkbox>
+                        <mat-checkbox value="city1">جدة</mat-checkbox>
+                        <mat-checkbox value="city2">الرياض</mat-checkbox>
+                        <mat-checkbox value="city3">البطحاء</mat-checkbox>
+                        <mat-checkbox value="city4">مكة المكرمة</mat-checkbox>
+                        <mat-checkbox value="city5">الطائف</mat-checkbox>
+                    </section>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{ 'Price' | translate }}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="price-slider-holder mt-3">
+                        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+                    </div>
+                </mat-expansion-panel>
+                <button type="button" class="btn btn-primary btn-block" (click)="advancedSearch()"> {{'search' |
+                    translate}}</button>
+            </mat-accordion>
+            <div class="clearfix"></div>
+            <div class="ads-area mt-4">
+                <a href="https://www.google.com/" target="_blank"><img src="assets/img/ads-area2.png"
+                        alt="مساحة اعلانية" class="img-fluid"></a>
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <section id="pageTopBanner">
+                <div class="container main-raduis">
+                    <img src="assets/img/adspage-top-banner.png" class="img-fluid" alt="page banner">
+                </div>
+            </section>
+
+            <section id="allads" class="mt-3">
+                <div class="container main-raduis">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 mb-4" *ngFor="let oneAds of List; let i=index">
+                            <!-- routerLink="/ads/ads-details" -->
+                            <mat-card class="ads-card"  (click)="goToDetails(oneAds.id)">
+                                <span class="badge bg-danger">{{ oneAds?.adType }}</span>
+                                <button type="button" class="btn btn-light addtoWishListbtn"
+                                    [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
+                                    matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}"
+                                    (click)="addToFavorite($event, i)"><i class="fa fa-heart"
+                                        aria-hidden="true"></i></button>
+                                         
+                                <img mat-card-image  [src]="baseUrlImage+oneAds.image+'?w=100&h=100'" [alt]="oneAds.title">
+                                <mat-card-content class="text-start">
+                                    <h4>{{ oneAds.title | slice:0:80 }} </h4>
+                                    <p class="ads-desc">{{ oneAds.description }}</p>
+                                    <p class="price">{{ oneAds.price }} {{ 'SAR' | translate }}</p>
+                                    <p class="ads-owner">{{ 'seller' | translate }} : {{ oneAds.vendorName }}</p>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 notTablePaginator">
+                            <mat-paginator [length]="resultsLength" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

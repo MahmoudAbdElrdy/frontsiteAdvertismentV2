@@ -1,0 +1,27 @@
+.success-msg-card.mat-card{
+    background: rgb(240, 244, 248);
+    border-radius: 6px !important;
+    padding:2rem;
+    margin: 2rem auto;
+    text-align: center;
+}
+.success-msg-card .msg-icon{
+    width: 6.25rem;
+    height: 6.25rem;
+    border-radius: 50%;
+    background: rgba(255,255,255);
+    line-height: 6.25rem;
+    text-align: center;
+    color:rgb(102, 187, 106);
+    margin: 0.75rem auto;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
+}
+.success-msg-card .msg-icon .material-icons{
+    font-size: 5rem;
+    vertical-align: middle;
+}
+.success-msg-card .msg-text{
+    font-size: 1.5rem;
+    color: rgb(0, 0, 0);
+    line-height: 2.5rem;
+}

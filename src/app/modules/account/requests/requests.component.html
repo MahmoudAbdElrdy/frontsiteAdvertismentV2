@@ -1,0 +1,30 @@
+<mat-card class="myads-card mb-4" *ngFor="let oneAds of myRequests; let i=index">
+    <mat-card-content class="text-start">
+        <div class="row d-flex align-items-center">
+            <div class="col-md-6 d-flex pointer-cursor" (click)="goToDetails(oneAds.id)">
+                        
+                <div class="m-1"><img  [src]="baseUrlImage+oneAds.image+'?w=100&h=100'" class="img-fluid" [alt]="oneAds.title"></div>
+                <div class="m-1">
+                    <!-- <p class="date">{{ 'requestNo' | translate }} : {{oneAds.id }} </p> -->
+                    <h4>{{ oneAds.title | slice:0:80 }} </h4>
+                    <p class="ads-desc">{{ oneAds.description }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <p class="price primary-font-color text-center">
+                    <span>{{'invoice' | translate}}</span>
+                    {{ oneAds.price }} {{ 'SAR' | translate }}
+                </p>
+            </div>
+            <div class="col-md-2">
+                <p class="owner text-success text-center border-end">
+                    <span>{{'seller' | translate}}</span>
+                    {{ oneAds.vendorName }}
+                </p>
+            </div>
+            <div class="col-md-2 text-center">
+                <button type="button" class="btn btn-secondary text-danger"  (click)="openSubmitComplaintDialog()">{{'submitComplaint' | translate}}</button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

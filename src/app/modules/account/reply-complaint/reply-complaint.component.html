@@ -1,0 +1,29 @@
+<div mat-dialog-title class="text-start">
+    <button class="btn btn-light rounded-circle float-end" title="{{'Close' | translate}}" mat-dialog-close><i
+            class="fa fa-times"></i></button>
+    <h4 class="text-center mb-2 mt-2">{{'replyComplaint' | translate}}</h4>
+</div>
+<mat-dialog-content class="text-start">
+    <div class="reportAds-form-holder">
+        <form  (ngSubmit)="doReplyComplaintForm()" [formGroup]="replyComplaintForm">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h5 class="text-dark mb-3">{{ 'complaintNo' | translate }} : 584871</h5>
+                    <h5 class="text-success">{{ 'from' | translate }} : مصطفى خالد</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <textarea matInput placeholder="{{'enter' | translate }} {{'details' | translate }}"
+                            name="details" formControlName="details" rows="10"></textarea>
+                        <mat-error *ngIf="fc.details.errors?.required" class="mat-error">
+                            {{ 'details' | translate }} {{ 'isrequired' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg mt-2">{{'Submit' | translate }}</button>
+        </form>
+    </div>
+</mat-dialog-content>

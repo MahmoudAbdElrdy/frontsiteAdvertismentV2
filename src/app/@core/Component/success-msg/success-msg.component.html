@@ -1,0 +1,12 @@
+<mat-card class="success-msg-card">
+    <mat-card-content class="text-center">
+        <div class="msg-icon"><span class="material-icons"> done </span></div>
+        <div class="msg-text">
+            <span class="d-block"><ng-content select=".msg-main-text"></ng-content></span>
+            <span><ng-content select=".msg-extra-text"></ng-content></span>
+        </div>
+        <div class="col-md-6 offset-md-3">
+            <button type="button" class="btn btn-primary btn-lg btn-block mt-3" routerLink="/pages/home">{{ 'backToHomePage' | translate }}</button>
+        </div>
+    </mat-card-content>
+</mat-card>
