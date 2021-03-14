@@ -667,6 +667,62 @@ export class AdvertisementServiceProxy {
     }
 
     /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAdvertisementById(id: string | undefined): Observable<AdsDto> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-advertisement-ById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAdvertisementById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAdvertisementById(<any>response_);
+                } catch (e) {
+                    return <Observable<AdsDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdsDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAdvertisementById(response: HttpResponseBase): Observable<AdsDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdsDto>(<any>null);
+    }
+
+    /**
      * @param lat (optional) 
      * @param lng (optional) 
      * @return Success
@@ -3539,6 +3595,8 @@ export class SpaceInfoDto {
     address?: string | undefined;
     isAuction?: boolean;
     rejected?: boolean;
+    cityId?: string | undefined;
+    price?: number;
     cityName?: { [key: string]: string; } | undefined;
     lat?: number;
     lng?: number;
@@ -3564,6 +3622,8 @@ export class SpaceInfoDto {
             this.address = _data["address"];
             this.isAuction = _data["isAuction"];
             this.rejected = _data["rejected"];
+            this.cityId = _data["cityId"];
+            this.price = _data["price"];
             if (_data["cityName"]) {
                 this.cityName = {} as any;
                 for (let key in _data["cityName"]) {
@@ -3604,6 +3664,8 @@ export class SpaceInfoDto {
         data["address"] = this.address;
         data["isAuction"] = this.isAuction;
         data["rejected"] = this.rejected;
+        data["cityId"] = this.cityId;
+        data["price"] = this.price;
         if (this.cityName) {
             data["cityName"] = {};
             for (let key in this.cityName) {
@@ -3620,16 +3682,45 @@ export class SpaceInfoDto {
     }
 }
 
+export class FreeServiceDto {
+    adId?: string | undefined;
+    serviceTypeId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.adId = _data["adId"];
+            this.serviceTypeId = _data["serviceTypeId"];
+        }
+    }
+
+    static fromJS(data: any): FreeServiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FreeServiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["adId"] = this.adId;
+        data["serviceTypeId"] = this.serviceTypeId;
+        return data; 
+    }
+}
+
 export class AdsDto {
     id?: string | undefined;
     adType?: AdType;
     description?: string | undefined;
     title?: string | undefined;
+    cityId?: string | undefined;
+    countryId?: string | undefined;
     vendorName?: string | undefined;
     price?: number;
     fromDate?: Date;
     toDate?: Date;
-    image?: string | undefined;
+    image?: string[] | undefined;
+    freeServices?: FreeServiceDto[] | undefined;
 
     init(_data?: any) {
         if (_data) {
@@ -3637,11 +3728,22 @@ export class AdsDto {
             this.adType = _data["adType"];
             this.description = _data["description"];
             this.title = _data["title"];
+            this.cityId = _data["cityId"];
+            this.countryId = _data["countryId"];
             this.vendorName = _data["vendorName"];
             this.price = _data["price"];
             this.fromDate = _data["fromDate"] ? new Date(_data["fromDate"].toString()) : <any>undefined;
             this.toDate = _data["toDate"] ? new Date(_data["toDate"].toString()) : <any>undefined;
-            this.image = _data["image"];
+            if (Array.isArray(_data["image"])) {
+                this.image = [] as any;
+                for (let item of _data["image"])
+                    this.image!.push(item);
+            }
+            if (Array.isArray(_data["freeServices"])) {
+                this.freeServices = [] as any;
+                for (let item of _data["freeServices"])
+                    this.freeServices!.push(FreeServiceDto.fromJS(item));
+            }
         }
     }
 
@@ -3658,11 +3760,22 @@ export class AdsDto {
         data["adType"] = this.adType;
         data["description"] = this.description;
         data["title"] = this.title;
+        data["cityId"] = this.cityId;
+        data["countryId"] = this.countryId;
         data["vendorName"] = this.vendorName;
         data["price"] = this.price;
         data["fromDate"] = this.fromDate ? this.fromDate.toISOString() : <any>undefined;
         data["toDate"] = this.toDate ? this.toDate.toISOString() : <any>undefined;
-        data["image"] = this.image;
+        if (Array.isArray(this.image)) {
+            data["image"] = [];
+            for (let item of this.image)
+                data["image"].push(item);
+        }
+        if (Array.isArray(this.freeServices)) {
+            data["freeServices"] = [];
+            for (let item of this.freeServices)
+                data["freeServices"].push(item.toJSON());
+        }
         return data; 
     }
 }
