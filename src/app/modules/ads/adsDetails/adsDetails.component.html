@@ -32,15 +32,15 @@
                     <!-- <p class="timer mb-2"> {{ 'auctionEndTime' | translate }} <span class="badge bg-success p-2">01 : 03
                             : 45 : 22</span></p> -->
                     <!-- <p class="quantity"> {{ 'quantity' | translate }} 10</p> -->
-                    <h3>عرض الاعلان</h3>
+                    <!-- <h3>عرض الاعلان</h3>
                     <p class="text-start">من تاريخ :{{AdvertisementDetailDto?.adIntervalFromDate|date}}</p>
                     <p class="text-start">الي تاريخ:{{AdvertisementDetailDto?.adIntervalToDate|date}}</p>
-                    <br>
+                    <br> -->
                     <h3>حجز الاعلان</h3>
                     <div  class="form-group col-md-6">
                         <div class="form-row">
                             <mat-form-field>
-                                <input matInput [matDatepicker]="picker1" placeholder="from Date"  [(ngModel)]="ApplyForAdvertisementCommand.fromDate">
+                                <input matInput [matDatepicker]="picker1" placeholder="من تاريخ" [matDatepickerFilter]="dateFilterFn" [(ngModel)]="ApplyForAdvertisementCommand.fromDate">
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
                               </mat-form-field>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="form-row">
                             <mat-form-field>
-                                <input matInput [matDatepicker]="picker2" placeholder="from Date" [(ngModel)]="ApplyForAdvertisementCommand.toDate">
+                                <input matInput [matDatepicker]="picker2" placeholder="الي تاريخ" [matDatepickerFilter]="dateFilterFn" [(ngModel)]="ApplyForAdvertisementCommand.toDate">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
                               </mat-form-field>

@@ -90,8 +90,11 @@ export class IndexComponent implements OnInit {
  
   Load(){
 
-    return this.Service.getTopAds(this.latitude,this.longitude).subscribe(res=>{
+    return this.Service.getTopAds(this.latitude,this.longitude)
+    .subscribe(res=>{
+    debugger
       this.List=res;
+      console.log(res);
     })}
   addToFavorite(e, indx){
     e.stopPropagation();

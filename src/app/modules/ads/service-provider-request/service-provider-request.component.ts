@@ -48,11 +48,11 @@ console.log(this.ApplyForAdvertisementCommand);
 
     return this.ServiceProxy.getServiceTypesList(this.GetServiceTypeListCommand).subscribe(res=>{
       this.services=res;
-    //  console.log(this.services)
+     console.log(this.services)
     }) 
   }
   Change(id) {
-  
+  debugger
    this.LoadservicerProvider(id.value);
    debugger
   this.triggerValue=id.source.triggerValue;
@@ -70,7 +70,7 @@ addFieldValue() {
   this.newAttribute.ProviderName= this.provider;
   this.newAttribute.ServiceName= this.triggerValue;
   this.newAttribute.ProviderName= this.provider;
-  this.newAttribute.servicesId= this.servicesId;
+  this.newAttribute.servicesId= this.providerId;
   this.fieldArray.push(this.newAttribute)
   this.newAttribute = {};
 
@@ -82,6 +82,7 @@ deleteFieldValue(index) {
 LoadservicerProvider(id){
 
   return this.ServiceProxy.getServicesListByTypeId(id).subscribe(res=>{
+    debugger
     this.servicerProvider=res;
     console.log( this.servicerProvider)
   })
@@ -97,6 +98,7 @@ LoadservicerProvider(id){
   }
 
   submitServiceProviderRequest() {
+    debugger
     this.ApplyForAdvertisementCommand=this.ModelServiceService.ApplyForAdvertisementCommand;
     this.ApplyForAdvertisementCommand.servicesIds=this.fieldArray.map(x=>x.servicesId);
     this.AdvertisementService.applyForAdvertisement(this.ApplyForAdvertisementCommand).subscribe( 

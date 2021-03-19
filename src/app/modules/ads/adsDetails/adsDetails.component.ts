@@ -40,6 +40,7 @@ AdDto:AdsDto[];
 images: string[];
 baseUrlImage = AppConsts.baseUrlImage;
 ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisementCommand;
+  dateFilterFn: (date: Date) => boolean;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
     private _formBuilder: FormBuilder,
@@ -62,6 +63,13 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
             console.log(result);
             ;
             this.AdvertisementDetailDto = result;
+            //this.dateFilterFn = (date: Date)=> [result.adIntervalFromDate.getDay(),result.adIntervalToDate.getDay()].includes(date.getDay());    
+            this.dateFilterFn = (d: Date): boolean => {
+              // Prevent dates in ranges from being selected.
+              return !(d >= result.adIntervalFromDate && d <= result.adIntervalToDate) 
+              
+            }
+            console.log( this.dateFilterFn)
             if(result!=null||result!=undefined){
             //  this.AdDto=result.a;
             var galleryImage=result.images;
@@ -82,6 +90,7 @@ debugger
           }
         );
       }
+      
     });
     
     this.galleryOptions = [
@@ -106,6 +115,9 @@ debugger
   }
   submitAuctionForm(){
     console.log('in progress');
+  }
+  DateFilter(){
+
   }
 
   addToFavorite(e, indx){

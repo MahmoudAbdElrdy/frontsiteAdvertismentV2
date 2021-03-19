@@ -7,10 +7,11 @@ import { Observable } from 'rxjs';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
 import { GeoLocationService } from 'src/app/shared/services/geo-location.service';
 import { AppConsts } from 'src/AppConsts';
-import { AdvertisementServiceProxy,ServiceProxy, CitiesServiceProxy, CountriesServiceProxy, CreateAdvertisementCommand, RegionManagementServiceProxy, GetServiceTypeListCommand, ApplyForAdvertisementCommand, AdsDto, SpaceInfoDto } from 'src/shared/service-proxies/service-proxies';
+import { AdvertisementServiceProxy,ServiceProxy, CitiesServiceProxy, CountriesServiceProxy, CreateAdvertisementCommand, RegionManagementServiceProxy, GetServiceTypeListCommand, ApplyForAdvertisementCommand, AdsDto, SpaceInfoDto, ServiceTypeDto, EditAdvertisementCommand } from 'src/shared/service-proxies/service-proxies';
 import { AddLocationComponent } from '../add-ads/add-location/add-location.component';
 
 export interface ImageInfo {
+  
   imageUrl: string;
   imageName: string;
   imageExtention: string;
@@ -23,11 +24,11 @@ export interface ImageInfo {
   styleUrls: ['./edit-ads.component.scss']
 })
 export class EditAdsComponent implements OnInit {
-
+  service:any[];
   @ViewChild("CommitModel", { static: false }) CommitModel;
   @Output() next = new EventEmitter<any>();
   secondFormGroup: FormGroup; 
-
+  
   file2: File[];
   imageInfo2: ImageInfo[] = [];
   AdCategoryList : any[] = [
@@ -68,6 +69,8 @@ export class EditAdsComponent implements OnInit {
 images: string[];
 baseUrl = AppConsts.baseUrlImage;
 ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisementCommand; 
+EditAdvertisementCommand :EditAdvertisementCommand=new EditAdvertisementCommand;
+
   countries = [];
   cities = [];
   selectedCountry = 1;
@@ -76,6 +79,7 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
   GetServiceTypeListCommand=new GetServiceTypeListCommand();
   services = [  
   ];
+  Images:any;
 Model=new CreateAdvertisementCommand;
   ctrls: FormControl[];
   AdvertisementDetailDto: SpaceInfoDto;
@@ -88,16 +92,17 @@ Model=new CreateAdvertisementCommand;
     private AdvertisementService:AdvertisementServiceProxy,private _snackBar: MatSnackBar,private Location:GeoLocationService
 
     ){
+      this.service=new Array;
    // super();
   }
- 
   ngOnInit() {
-  debugger
+    this.LoadServiceTypeList();
+    this.LoadCountries();
   this.secondFormGroup = this._formBuilder.group({
     title: ['', Validators.required],
     price: ['', Validators.required],
-    isAuction:[null],
-    auctionDays: [0],
+    isAuction:[true],
+    auctionDays: [1],
     description: ['', Validators.required],
     countryId: ['', Validators.required],
     cityId: ['', Validators.required],
@@ -110,37 +115,40 @@ Model=new CreateAdvertisementCommand;
     FreeServiceIds:this._formBuilder.array([]),
     adCategory: ['', Validators.required],
   });
-  this.LoadServiceTypeList();
-    this.LoadCountries();
+
     this.activatedRoute.queryParams.subscribe(parm => {
       let querySting = parm['id'];
       if (querySting) {
         this.id = querySting;
         this.ApplyForAdvertisementCommand.adId=this.id;
-             this.AdvertisementService.getAdvertisementDetail(this.id).subscribe(
+             this.AdvertisementService.getAdvertisementById(this.id).subscribe(
           (result) => {
-            debugger
+           
             console.log(result);
+            
             ;
             this.secondFormGroup = this._formBuilder.group({
               title: [result.title, Validators.required],
-              price: [result.adId, Validators.required],
-              isAuction:[result.isAuction],
-              auctionDays: [0],
+              price: [result.price, Validators.required],
+              isAuction:[false],
+              auctionDays: [1],
               description: [result.description, Validators.required],
-              countryId: [result.cityName, Validators.required],
-              cityId: [result.cityName, Validators.required],
+              countryId: [result.countryId, Validators.required],
+              cityId: [result.cityId, Validators.required],
               lat: [result.lat],
               lng: [result.lng],    
               images:[result.images,[]],
               address:[result.address],
-              fromDate:new FormControl(result.adIntervalFromDate),
-              toDate:new FormControl(result.adIntervalToDate),
-              FreeServiceIds:this._formBuilder.array([]),
+              fromDate:new FormControl(result.fromDate),
+              toDate:new FormControl(result.toDate),
+              FreeServiceIds:new FormArray([]),
               adCategory: [result.adCategory, Validators.required],
+             
             });
-            let formArray = this.secondFormGroup.controls['images'] as FormArray;
-            //[src]="'http://localhost:5000/'+oneAds.image+'?w=100&h=100'"
+            if(result.cityId!=null){
+              this.Loadcities(result.countryId);
+            }
+this.images=result.images;
             if(result.images.length>0){
               for(var i=0;i<result.images.length;i++){
                 this.imageInfo2.push({
@@ -153,7 +161,24 @@ Model=new CreateAdvertisementCommand;
               }
              
             }
-    
+            debugger
+             var list:any=result.freeServices.map(x=>x.serviceTypeId);
+           
+
+            this.services.map((perm,i) => {
+              debugger
+              //  this.permissionsArr.at(i).patchValue(true)
+              if(list.find(x=>x == perm.id) != null){
+                let obj:any={name:perm.name.ar,value:true,serviceTypeId:perm.id};
+                this.service.push(obj)
+                //this.permissionsArr.at(i).patchValue(true)
+              }else{
+                let obj:any={name:perm.name.ar,value:false,serviceTypeId:perm.id};
+                this.service.push(obj)
+              }
+              
+              
+            })
           },
           (err) => {
             this.errorOccured(err);
@@ -166,12 +191,17 @@ Model=new CreateAdvertisementCommand;
    
    
   }
+ 
+  get permissionsArr() {
+    return this.secondFormGroup.get('FreeServiceIds') as FormArray;
+  }
+ 
   errorOccured(err: any) {
     throw new Error('Method not implemented.');
   }
   onCheckboxChange(e) {
     const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
-  
+  debugger
     if (e.target.checked) {
       checkArray.push(new FormControl(e.target.value));
     } else {
@@ -196,8 +226,8 @@ Model=new CreateAdvertisementCommand;
     
   }
   Change(countryid) {
-    debugger
-   this. Loadcities(countryid);
+   
+   this.Loadcities(countryid);
 }
   Loadcities(countryId){
 
@@ -228,7 +258,7 @@ Model=new CreateAdvertisementCommand;
         let url
         reader.readAsDataURL(element);
         reader.onload = () => {
-          debugger
+         
           url = reader.result.toString();
      
         };
@@ -237,7 +267,7 @@ Model=new CreateAdvertisementCommand;
 
         if (this.imageInfo2.length < 4) {
           setTimeout(() => {
-            debugger;
+           ;
             this.imageInfo2.push({
               imageName: element.name,
               imageSize: size.toString(),
@@ -270,7 +300,7 @@ Model=new CreateAdvertisementCommand;
       width: '70%'
     });
     dialogRef.afterClosed().subscribe(data => {
-      debugger
+     
       console.log('Child component\'s event was triggered', data);
       this.secondFormGroup.get('lat').setValue(data.latitude);
       this.secondFormGroup.get('lng').setValue(data.longitude);
@@ -295,19 +325,37 @@ Model=new CreateAdvertisementCommand;
   nextstep() {
     ;
     if (this.secondFormGroup.valid) {
-      debugger;
-    
+     ;
+    debugger
       this.secondFormGroup.removeControl('countryId');
       let formArray = this.secondFormGroup.controls['images'] as FormArray;
-      formArray.patchValue(this.imageInfo2.map(x=>x.imageUrl));
-     if( this.secondFormGroup.value.isAuction==true||this.secondFormGroup.value.isAuction==null){
-      this.secondFormGroup.value.isAuction=0;
-      this.secondFormGroup.value.auctionDays=0;
-     }
-     else{
-      this.secondFormGroup.value.isAuction=1
-     }
-      this.AdvertisementService.editAdvertisement(this.secondFormGroup.value).subscribe( 
+      var res=this.imageInfo2.map(x=>x.imageUrl);
+      this.images.map((perm,i) => {
+        debugger
+     
+        if(res.find(x=>x ==this.baseUrl+ perm+'?w=100&h=100')){
+        
+      res.splice(i,1);
+        
+        }
+      })
+      formArray.patchValue(res);
+      const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
+      var cc=this.service.filter(x=>x.value==true);
+      cc.forEach(element => {
+        checkArray.push(new FormControl(element.serviceTypeId));
+      });
+    
+     
+     console.log("بطيخ",this.service)
+     console.log("سسس",this.secondFormGroup.value)
+         this.EditAdvertisementCommand=this.secondFormGroup.value;
+         this.EditAdvertisementCommand.id=this.id;
+         if(this.secondFormGroup.value.lng===null||this.secondFormGroup.value.lng==="0")
+         this.EditAdvertisementCommand.lng=this.longitude;
+         if(this.secondFormGroup.value.lat===null||this.secondFormGroup.value.lat==="0")
+         this.EditAdvertisementCommand.lat=this.latitude;
+      this.AdvertisementService.editAdvertisement(this.EditAdvertisementCommand).subscribe( 
         res=>{
         if(res!==null)
         {
