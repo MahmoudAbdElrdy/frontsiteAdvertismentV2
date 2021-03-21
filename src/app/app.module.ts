@@ -42,6 +42,7 @@ import { AppConsts } from 'src/AppConsts';
 import { API_BASE_URL, AuthServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { InterceptService } from 'src/app/_helpers/intercept.service';
 import { ModelServiceService } from './shared/model-service.service';
+import { SearchService } from './shared/search-service';
 export function getApiBaseUrl(): string {
   return AppConfigService.appConfig.MobileBaseURL;
 }
@@ -90,7 +91,7 @@ export function getBaseUrl(): string {
       },
     }),
   ],
-  providers: [AuthServiceProxy,ModelServiceService,
+  providers: [AuthServiceProxy,ModelServiceService,SearchService,
     TranslateService,
     HttpClientModule,
     {

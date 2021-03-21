@@ -10,13 +10,14 @@
                     </mat-expansion-panel-header>
                     <section class="checkbox-group text-start">
                         <mat-checkbox value="allOptions">{{ 'all' | translate }}</mat-checkbox>
-                        <mat-checkbox value="cat1">اللوحات الإعلانية الثابتة</mat-checkbox>
-                        <mat-checkbox value="cat2">اللوحات الإعلانية المحمولة</mat-checkbox>
-                        <mat-checkbox value="cat3">اللوحات الإعلانية الرقمية</mat-checkbox>
-                        <mat-checkbox value="cat4">إعلان عمود الشارع</mat-checkbox>
-                        <mat-checkbox value="cat5">إعلانات أثاث الشوارع</mat-checkbox>
-                        <mat-checkbox value="indeterminate">Indeterminate</mat-checkbox>
-                    </section>
+                        <mat-list-item *ngFor="let item of checkboxesDataList">
+                            <mat-checkbox
+                            [(ngModel)]="item.checked"
+                           
+                           
+                            >{{item.name}}</mat-checkbox>
+                          </mat-list-item>
+                               </section>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel [expanded]="true">
@@ -26,12 +27,15 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <section class="checkbox-group text-start">
-                        <mat-checkbox value="allCountries">{{ 'all' | translate }}</mat-checkbox>
-                        <mat-checkbox value="country1">السعودية</mat-checkbox>
-                        <mat-checkbox value="country2">الامارات</mat-checkbox>
-                        <mat-checkbox value="country3">الكويت</mat-checkbox>
-                        <mat-checkbox value="country4">قطر</mat-checkbox>
-                        <mat-checkbox value="country5">المغرب</mat-checkbox>
+                        <mat-checkbox value="0">{{ 'all' | translate }}</mat-checkbox>
+                      
+                        <mat-list-item *ngFor="let item of countries">
+                            <mat-checkbox
+                            [(ngModel)]="item.checked"
+                           
+                            (change)="Change($event,item.id)"
+                            >{{item.name?.ar}}</mat-checkbox>
+                          </mat-list-item>
                     </section>
                 </mat-expansion-panel>
 
@@ -42,12 +46,15 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <section class="checkbox-group text-start">
-                        <mat-checkbox value="allCities">{{ 'all' | translate }}</mat-checkbox>
-                        <mat-checkbox value="city1">جدة</mat-checkbox>
-                        <mat-checkbox value="city2">الرياض</mat-checkbox>
-                        <mat-checkbox value="city3">البطحاء</mat-checkbox>
-                        <mat-checkbox value="city4">مكة المكرمة</mat-checkbox>
-                        <mat-checkbox value="city5">الطائف</mat-checkbox>
+                        <mat-checkbox value="0">{{ 'all' | translate }}</mat-checkbox>
+                      
+                        <mat-list-item *ngFor="let item of cities">
+                            <mat-checkbox
+                            [(ngModel)]="item.checked"
+                            (change)="ChangeCities($event,item.id)"
+                          
+                            >{{item.name?.ar}}</mat-checkbox>
+                          </mat-list-item>
                     </section>
                 </mat-expansion-panel>
 

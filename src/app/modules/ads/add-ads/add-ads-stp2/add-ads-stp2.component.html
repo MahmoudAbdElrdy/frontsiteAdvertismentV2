@@ -82,7 +82,7 @@
                         <mat-form-field appearance="fill" class="w-100">
                             <mat-select name="cityId" placeholder="{{ 'city' | translate }}" formControlName="cityId">
                                <mat-option *ngFor="let city of cities" [value]="city.id">
-                                  {{city.name?.en}}
+                                  {{city.name?.ar}}
                                </mat-option>
                             </mat-select>
                             <mat-error *ngIf="fc.cityId?.errors?.required" class="mat-error">

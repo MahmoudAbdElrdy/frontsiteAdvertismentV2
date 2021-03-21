@@ -611,6 +611,62 @@ export class AdvertisementServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    searchAdvertisement(body: SearchAdvertisementCommand | undefined): Observable<AdvertisementDtoPageList> {
+        let url_ = this.baseUrl + "/api/Advertisement/Search-Advertisement";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchAdvertisement(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchAdvertisement(<any>response_);
+                } catch (e) {
+                    return <Observable<AdvertisementDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdvertisementDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSearchAdvertisement(response: HttpResponseBase): Observable<AdvertisementDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdvertisementDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdvertisementDtoPageList>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -3728,6 +3784,83 @@ export class AdvertisementDtoPageList {
     }
 }
 
+export class SearchAdvertisementCommand {
+    countryId?: string[] | undefined;
+    cityId?: string[] | undefined;
+    title?: string | undefined;
+    maxPrice?: number;
+    minPrice?: number;
+    adCategoryies?: AdCategoryEnum[] | undefined;
+    page?: number;
+    pageSize?: number;
+    sortBy?: string | undefined;
+    sortOrder?: string | undefined;
+    filter?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["countryId"])) {
+                this.countryId = [] as any;
+                for (let item of _data["countryId"])
+                    this.countryId!.push(item);
+            }
+            if (Array.isArray(_data["cityId"])) {
+                this.cityId = [] as any;
+                for (let item of _data["cityId"])
+                    this.cityId!.push(item);
+            }
+            this.title = _data["title"];
+            this.maxPrice = _data["maxPrice"];
+            this.minPrice = _data["minPrice"];
+            if (Array.isArray(_data["adCategoryies"])) {
+                this.adCategoryies = [] as any;
+                for (let item of _data["adCategoryies"])
+                    this.adCategoryies!.push(item);
+            }
+            this.page = _data["page"];
+            this.pageSize = _data["pageSize"];
+            this.sortBy = _data["sortBy"];
+            this.sortOrder = _data["sortOrder"];
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): SearchAdvertisementCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchAdvertisementCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.countryId)) {
+            data["countryId"] = [];
+            for (let item of this.countryId)
+                data["countryId"].push(item);
+        }
+        if (Array.isArray(this.cityId)) {
+            data["cityId"] = [];
+            for (let item of this.cityId)
+                data["cityId"].push(item);
+        }
+        data["title"] = this.title;
+        data["maxPrice"] = this.maxPrice;
+        data["minPrice"] = this.minPrice;
+        if (Array.isArray(this.adCategoryies)) {
+            data["adCategoryies"] = [];
+            for (let item of this.adCategoryies)
+                data["adCategoryies"].push(item);
+        }
+        data["page"] = this.page;
+        data["pageSize"] = this.pageSize;
+        data["sortBy"] = this.sortBy;
+        data["sortOrder"] = this.sortOrder;
+        data["filter"] = this.filter;
+        return data; 
+    }
+}
+
 export class SpaceInfoDto {
     id?: string | undefined;
     vendorName?: string | undefined;
@@ -4651,14 +4784,12 @@ export class ServiceDto {
     userName?: string | undefined;
     price?: number;
     id?: string | undefined;
-    serviceTypeName?: string | undefined;
 
     init(_data?: any) {
         if (_data) {
             this.userName = _data["userName"];
             this.price = _data["price"];
             this.id = _data["id"];
-            this.serviceTypeName = _data["serviceTypeName"];
         }
     }
 
@@ -4674,7 +4805,6 @@ export class ServiceDto {
         data["userName"] = this.userName;
         data["price"] = this.price;
         data["id"] = this.id;
-        data["serviceTypeName"] = this.serviceTypeName;
         return data; 
     }
 }

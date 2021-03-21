@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AdvertisementDtoPageList, AdvertisementServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AdCategoryEnum, AdvertisementDtoPageList, AdvertisementServiceProxy, CitiesServiceProxy, RegionManagementServiceProxy,SearchAdvertisementCommand,ServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf,Subscription } from 'rxjs';
 import { AppConsts } from 'src/AppConsts';
+import { SearchService } from 'src/app/shared/search-service';
 @Component({
   selector: 'app-listads',
   templateUrl: './listads.component.html',
@@ -14,12 +15,14 @@ import { AppConsts } from 'src/AppConsts';
 })
 export class ListAdsComponent implements OnInit {
   // --------------------------------------------------------
-  value: number = 100;
+  value: number = 0;
   highValue: number = 800;
   options: Options = {
     floor: 0,
     ceil: 1000
   };
+  countries = [];
+  cities = [];
   //-------------------------------------------------------------------------
   public adsImagesPath = 'assets/img/ads/';
   public adsList = [
@@ -35,19 +38,37 @@ export class ListAdsComponent implements OnInit {
   length=0;
   subscriptions: Subscription[]=[];
   baseUrlImage = AppConsts.baseUrlImage;
+  SearchAdvertisementCommand: SearchAdvertisementCommand=new SearchAdvertisementCommand();
+  countryIdList: any;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
+  checkboxesDataList : any[] = [
+    {name : "اللوحات الإعلانية الثابتة", id :0,isChecked: false},
+    {name : "اللوحات الإعلانية المحمولة", id : 1,isChecked: false},
+    {name : "اللوحات الإعلانية الرقمية", id :  2,isChecked: false},
+    {name : "إعلان التواصل ", id :  3,isChecked: false},]
   constructor(
     private router : Router,private Service :AdvertisementServiceProxy,private _snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,private CitiesService :CitiesServiceProxy,
+    private ServiceRegion : RegionManagementServiceProxy, private ServiceProxy:  ServiceProxy,private SearchService:SearchService
   ) {
-
+this.SearchAdvertisementCommand.countryId=new Array<string>();
+this.SearchAdvertisementCommand.cityId=new Array<string>();
+this.SearchAdvertisementCommand.maxPrice=this.highValue;
+this.SearchAdvertisementCommand.minPrice=this.value;
+this.SearchAdvertisementCommand.adCategoryies=new Array<AdCategoryEnum>();
   }
 
   ngAfterViewInit() {
     ;
    this.LoadData();
+   debugger
+   if(this.SearchService.SearchAdvertisementCommand!==null){
+     this.advanced();
+   }
    }
 ngOnInit(): void {
+  this.LoadCountries();
+ 
 }
 LoadData() {
  
@@ -75,6 +96,49 @@ LoadData() {
        this.List = data;
      });
  }
+ LoadCountries(){
+
+  return this.ServiceRegion.countries(1,150,"","","").subscribe(res=>{
+    this.countries=res.items;
+    console.log(this.countries)
+  })
+ 
+  
+}
+Change(event,countryid) {
+  debugger
+ 
+ this. Loadcities(countryid);
+      if (event.checked === true) {
+            this.SearchAdvertisementCommand.countryId.push(countryid);
+        }
+
+        if (event.checked === false) {
+            var index: number = this.SearchAdvertisementCommand.countryId.indexOf(countryid);
+            this.SearchAdvertisementCommand.countryId.splice(index, 1);
+            
+        }
+}
+ChangeCities(event,cityId) {
+  debugger
+ //this. Loadcities(countryid);
+      if (event.checked === true) {
+            this.SearchAdvertisementCommand.cityId.push(cityId);
+        }
+
+        if (event.checked === false) {
+            var index: number = this.SearchAdvertisementCommand.cityId.indexOf(cityId);
+            this.SearchAdvertisementCommand.cityId.splice(index, 1);
+            
+        }
+}
+Loadcities(countryId){
+
+  return this.CitiesService.getCitiesByCountryId(countryId).subscribe(res=>{
+    this.cities=res;
+    console.log(this.cities)
+  })
+}
   addToFavorite(e, indx){
     e.stopPropagation();
     this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
@@ -87,7 +151,69 @@ LoadData() {
     );
   }
   advancedSearch(){
+    debugger
+//this.SearchAdvertisementCommand.cityId=
+this.SearchAdvertisementCommand.title=localStorage.getItem("searchProduct");
+this.SearchAdvertisementCommand.maxPrice=this.highValue;
+this.SearchAdvertisementCommand.minPrice=this.value;
+this.checkboxesDataList.forEach((value, index) => {
+  if (value.checked) {
+    this.SearchAdvertisementCommand.adCategoryies.push(value.id);
+  }
+});
+    merge(this.paginator.page)
+    .pipe(
+      startWith({}),
+      switchMap(() => {
+ ;
+        return this.Service.searchAdvertisement(this.SearchAdvertisementCommand)
+      }),
+      map((data) => {
+       debugger
+        this.List = data.items;
+        this.resultsLength = data.metadata.totalItemCount;
+      
+        return  this.List;
+      }),
+      catchError(() => {
+        return observableOf([]);
+      })
+    )
+    .subscribe((data) => {
+      ;
+      this.paginator.pageIndex= this.paginator.pageIndex;
+      this.List = data;
+    });
+    console.log('in progress');
+  }
+  advanced(){
+    debugger
+
+    merge(this.paginator.page)
+    .pipe(
+      startWith({}),
+      switchMap(() => {
+ ;
+        return this.Service.searchAdvertisement(this.SearchService.SearchAdvertisementCommand)
+      }),
+      map((data) => {
+       debugger
+        this.List = data.items;
+        this.resultsLength = data.metadata.totalItemCount;
+      
+        return  this.List;
+      }),
+      catchError(() => {
+        return observableOf([]);
+      })
+    )
+    .subscribe((data) => {
+      ;
+      this.paginator.pageIndex= this.paginator.pageIndex;
+      this.List = data;
+    });
     console.log('in progress');
   }
 }
+
 

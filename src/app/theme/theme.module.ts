@@ -20,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RegisterComponent } from '../modules/auth/register/register.component';
 import { ForgetPasswordComponent } from '../modules/auth/forget-password/forget-password.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { AdvertisementServiceProxy, AuthServiceProxy, CitiesServiceProxy, CountriesServiceProxy, RegionManagementServiceProxy, ServiceProxy, UserManagementServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 const COMPONENTS = [
   OneColumnComponent,
@@ -52,6 +53,12 @@ const COMPONENTS = [
     }),
     RouterModule
   ],
+  providers: [
+    RegionManagementServiceProxy,CountriesServiceProxy,ServiceProxy,
+    CitiesServiceProxy,AdvertisementServiceProxy,UsersServiceProxy,AuthServiceProxy,UserManagementServiceProxy,
+  
+  
+  ], 
   exports: [CommonModule, ...COMPONENTS],
   entryComponents: [LoginComponent, RegisterComponent, ForgetPasswordComponent]
 })
