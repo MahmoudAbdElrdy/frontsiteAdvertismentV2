@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyAds, GetMySpaces } from 'src/shared/service-proxies/service-proxies';
+import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyAds } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf,Subscription } from 'rxjs';
@@ -64,7 +64,7 @@ export class RequestsComponent  implements OnInit {
   // ];
 
   myAdsList:AdsDto[];
-  GetMySpaces:GetMySpaces=new GetMySpaces();
+  GetMyAds:GetMyAds=new GetMyAds();
   myRequests: AdsDto[];
   baseUrlImage = AppConsts.baseUrlImage;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
@@ -87,7 +87,7 @@ LoadData() {
        startWith({}),
        switchMap(() => {
   ;
-         return this.Service.getMySpaces(this.GetMySpaces)
+         return this.Service.getMyAds(this.GetMyAds)
        }),
        map((data) => {
         debugger

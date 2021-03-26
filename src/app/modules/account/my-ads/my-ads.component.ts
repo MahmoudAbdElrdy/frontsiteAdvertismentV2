@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyAds } from 'src/shared/service-proxies/service-proxies';
+import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetAdIntervals, GetMyAds, GetMySpaces } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf,Subscription } from 'rxjs';
@@ -27,15 +27,17 @@ export class MyAdsComponent  implements OnInit {
   dataSource: MatTableDataSource<any>;
   popUpDeleteUserResponse : any;
   resultsLength = 0;
-  displayedColumns : string [] = ['id','vendorName','title','adType','cityName','price','fromDate','toDate','image', 'actions'];
+  displayedColumns : string [] = ['id','adTitle','clientName','fromDate','toDate'];
 	@ViewChild(MatPaginator,{static: false}) paginator : MatPaginator;
 	@ViewChild(MatSort,{static: false}) sort           : MatSort;
   close: any;
   length=0;
   subscriptions: Subscription[]=[];
   myAdsList:any;
-  GetMyAds:GetMyAds=new GetMyAds();
+  getMySpaces:GetMySpaces=new GetMySpaces();
+  GetAdIntervals:GetAdIntervals=new GetAdIntervals();
   baseUrlImage = AppConsts.baseUrlImage;
+  Intervals: any;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
     private router : Router,private Service :AdvertisementServiceProxy,private _snackBar: MatSnackBar,
@@ -57,7 +59,7 @@ LoadData() {
        startWith({}),
        switchMap(() => {
   ;
-         return this.Service.getMyAds(this.GetMyAds)
+         return this.Service.getMySpaces(this.getMySpaces)
        }),
        map((data) => {
         debugger
@@ -79,6 +81,16 @@ LoadData() {
   addToFavorite(e, indx){
     e.stopPropagation();
     this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
+  }
+  LoadIntervals(oneAds){
+    debugger
+this.GetAdIntervals.adId=oneAds.id;
+    return this.Service.getAdIntervals(this.GetAdIntervals).subscribe(res=>{
+      this.Intervals=res;
+      console.log(this.Intervals)
+    })
+   
+    
   }
   goToDetails(id: number) {
     ;

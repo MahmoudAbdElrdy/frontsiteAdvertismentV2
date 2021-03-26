@@ -262,12 +262,7 @@ Model=new CreateAdvertisementCommand;
       this.AdvertisementService.addAdvertisement(this.secondFormGroup.value)
       .subscribe( 
         
-        error => {
-          console.log(error)
-          this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
-          duration: 2220,
-          
-        })},
+      
         res=>{
          
          
@@ -299,5 +294,7 @@ Model=new CreateAdvertisementCommand;
     
     
     }
+    
   }
+  
 }
