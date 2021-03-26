@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AdCategoryEnum, AdvertisementDtoPageList, AdvertisementServiceProxy, CitiesServiceProxy, RegionManagementServiceProxy,SearchAdvertisementCommand,ServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AdCategoryEnum, AddFavouriteCommand, AdvertisementDtoPageList, AdvertisementServiceProxy, CitiesServiceProxy, RegionManagementServiceProxy,SearchAdvertisementCommand,ServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf,Subscription } from 'rxjs';
@@ -39,6 +39,7 @@ export class ListAdsComponent implements OnInit {
   subscriptions: Subscription[]=[];
   baseUrlImage = AppConsts.baseUrlImage;
   SearchAdvertisementCommand: SearchAdvertisementCommand=new SearchAdvertisementCommand();
+  AddFavouriteCommand: AddFavouriteCommand=new AddFavouriteCommand();
   countryIdList: any;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   checkboxesDataList : any[] = [
@@ -82,6 +83,7 @@ LoadData() {
        map((data) => {
         debugger
          this.List = data.items;
+         console.log(this.List)
          this.resultsLength = data.metadata.totalItemCount;
        
          return  this.List;
@@ -139,9 +141,39 @@ Loadcities(countryId){
     console.log(this.cities)
   })
 }
-  addToFavorite(e, indx){
-    e.stopPropagation();
-    this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
+  addToFavorite(e, oneAds){
+    debugger
+this.AddFavouriteCommand.adId=oneAds.adId;
+    this.Service.addFavourite(this.AddFavouriteCommand)
+      .subscribe( 
+        
+        error => {
+          console.log(error)
+          this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
+          duration: 2220,
+          
+        })},
+        res=>{
+         
+         
+        if(res!==null)
+        {
+          this._snackBar.open("تم الاضافة بنجاح","اضافة" ,{
+            duration: 2220,
+            
+          });
+        
+        }
+        else
+        {
+          this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
+            duration: 2220,
+            
+          });
+        }
+     
+      })
+    
   }
   goToDetails(id: number) {
     ;

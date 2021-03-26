@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
+import { LoginComponent } from '../../auth/login/login.component';
 import { AddLocationComponent } from './add-location/add-location.component';
 
 @Component({
@@ -17,11 +18,23 @@ export class AddAdsComponent extends BaseComponent implements OnInit {
   showAdsStepper : boolean = true;
   showUserServices: boolean = false;
   showAddingAdsSuccessMsg: boolean = false;
-  constructor(){
+  constructor( private dialog: MatDialog){
     super();
   }
 
   ngOnInit() {
+    var login=localStorage.getItem('isAuthenticated');
+    if(login===undefined||login===null){
+      {
+        const dialogRef = this.dialog.open(LoginComponent, {
+          width: '60%'
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog result: ${result}`);
+        });
+      }
+    }
   }
 
   addCommercialRegister(event) {

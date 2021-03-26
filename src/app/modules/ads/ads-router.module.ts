@@ -39,7 +39,8 @@ const routes: Routes = [
             },
             {
                 path: 'ServiceProviderRequest',
-                component:ServiceProviderRequestComponent
+                component:ServiceProviderRequestComponent,
+                canActivate:[]
             }
             ,
             {

@@ -4,9 +4,11 @@ import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthenticationService } from 'src/app/@core/auth/authentication.service';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
+import { LoginComponent } from 'src/app/modules/auth/login/login.component';
 import { GeoLocationService } from 'src/app/shared/services/geo-location.service';
-import { AdvertisementServiceProxy,ServiceProxy, CitiesServiceProxy, CountriesServiceProxy, CreateAdvertisementCommand, RegionManagementServiceProxy, GetServiceTypeListCommand, AddCommercialRecordCommand } from 'src/shared/service-proxies/service-proxies';
+import { AdvertisementServiceProxy,ServiceProxy, CitiesServiceProxy, CountriesServiceProxy, CreateAdvertisementCommand, RegionManagementServiceProxy, GetServiceTypeListCommand, AddCommercialRecordCommand, AuthServiceProxy, IsUserHasCommercialRecordCommand } from 'src/shared/service-proxies/service-proxies';
 import { AddLocationComponent } from '../add-location/add-location.component';
 
 
@@ -29,11 +31,12 @@ export class AddAdsStp1Component  implements OnInit {
 
   @Output() next = new EventEmitter<any>();
   AddCommercialRecordCommand:AddCommercialRecordCommand={} as AddCommercialRecordCommand;
+  IsUserHasCommercialRecordCommand:IsUserHasCommercialRecordCommand=new IsUserHasCommercialRecordCommand()
   constructor(  private _formBuilder: FormBuilder, 
     public dialog: MatDialog,
     private router : Router,
     private CitiesService :CitiesServiceProxy,
-    private Service : RegionManagementServiceProxy, private ServiceProxy:  ServiceProxy,
+    private Service : RegionManagementServiceProxy, private ServiceProxy:  ServiceProxy,private Autuser:AuthServiceProxy,
     private AdvertisementService:AdvertisementServiceProxy,private _snackBar: MatSnackBar,private Location:GeoLocationService
 ){
    // super();
@@ -44,9 +47,40 @@ export class AddAdsStp1Component  implements OnInit {
       commercialRegisterAttachments: [''],
       File: [null],
     });
+    var login=localStorage.getItem('isAuthenticated');
+    if(login===undefined||login===null){
+      {
+        const dialogRef = this.dialog.open(LoginComponent, {
+          width: '60%'
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog result: ${result}`);
+        });
+      }
+    }
+    this.Check();
+    // let adsStep1Data = {
+    //   firstFormGroup: this.firstFormGroup.value
+    // }
+
+    // console.log(adsStep1Data);
+    // this.next.emit(adsStep1Data);
   }
 
+Check(){
+  this.Autuser.isUserHasCommercialRecord(this.IsUserHasCommercialRecordCommand)
+  .subscribe(res=>{
+    if(res){
+       let adsStep1Data = {
+      firstFormGroup: this.firstFormGroup.value
+    }
 
+    console.log(adsStep1Data);
+    this.next.emit(adsStep1Data);
+    }
+  })
+}
   
   
   processDataFile(fileInput: any) {
