@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
 import { ModelServiceService } from 'src/app/shared/model-service.service';
 import { AdvertisementServiceProxy, ApplyForAdvertisementCommand, GetServiceTypeListCommand, ServiceDto, ServiceProxy, ServiceTypeDto } from 'src/shared/service-proxies/service-proxies';
+import { LoginComponent } from '../../auth/login/login.component';
 
 @Component({
   selector: 'app-service-provider-request',
@@ -39,9 +40,21 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
 
   ngOnInit() {
     this.buildServiceProviderRequestForm();
-    this.LoadServiceTypeList();
-    this.ApplyForAdvertisementCommand = this.ModelServiceService.ApplyForAdvertisementCommand;
-    console.log(this.ApplyForAdvertisementCommand);
+    var login=localStorage.getItem('isAuthenticated');
+    if(login===undefined||login===null){
+      {
+        const dialogRef = this.dialog.open(LoginComponent, {
+          width: '60%'
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog result: ${result}`);
+        });
+      }
+    }
+this.LoadServiceTypeList();
+this.ApplyForAdvertisementCommand=this.ModelServiceService.ApplyForAdvertisementCommand;
+console.log(this.ApplyForAdvertisementCommand);
   }
 
   LoadServiceTypeList() {
@@ -52,27 +65,30 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
     })
   }
   Change(id) {
-    debugger
-    this.LoadservicerProvider(id.value);
-    debugger
-    this.triggerValue = id.source.triggerValue;
-    this.servicesId = id.value;
-    console.log(id.source.triggerValue)
-  }
-  changeRadioValue(Provider) {
-    debugger
-    this.provider = Provider.userName;
-    this.providerId = Provider.id;
-    console.log(this.serviceProviderRequestForm.get('provider').value);
-  }
-  addFieldValue() {
-    debugger
-    this.newAttribute.ProviderName = this.provider;
-    this.newAttribute.ServiceName = this.triggerValue;
-    this.newAttribute.ProviderName = this.provider;
-    this.newAttribute.servicesId = this.providerId;
-    this.fieldArray.push(this.newAttribute)
-    this.newAttribute = {};
+  debugger
+   this.LoadservicerProvider(id.value);
+   debugger
+  this.triggerValue=id.source.triggerValue;
+  this.servicesId=id.value;
+   console.log(id.source.triggerValue)
+}
+changeRadioValue(Provider) {
+  debugger
+  this.provider=Provider.userName;
+  this.providerId=Provider.id;
+  console.log(this.serviceProviderRequestForm.get('provider').value);
+}
+addFieldValue() {
+  debugger
+  this.newAttribute.ProviderName= this.provider;
+  this.newAttribute.ServiceName= this.triggerValue;
+  this.newAttribute.ProviderName= this.provider;
+  this.newAttribute.servicesId= this.providerId;
+  if(this.newAttribute.ProviderName!==null&&this.newAttribute.ProviderName!==undefined&&this.newAttribute.ServiceName!==null&&this.newAttribute.ServiceName!==undefined)
+ {
+  this.fieldArray.push(this.newAttribute)
+  this.newAttribute = {};
+ } 
 
     console.log(this.fieldArray);
   }

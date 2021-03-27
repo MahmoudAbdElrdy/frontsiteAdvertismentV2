@@ -89,17 +89,18 @@
                 <div class="container main-raduis">
                     <div class="row">
                         <div class="col-sm-6 col-md-3 mb-4" *ngFor="let oneAds of List; let i=index">
-                            <!-- routerLink="/ads/ads-details" -->
-                            <mat-card class="ads-card"  (click)="goToDetails(oneAds.id)">
+                            <!-- routerLink="/ads/ads-details"  (click)="goToDetails(oneAds.id)"-->
+                            <mat-card class="ads-card"  >
                                 <span class="badge bg-danger">{{ oneAds?.adType }}</span>
                                 <button type="button" class="btn btn-light addtoWishListbtn"
                                     [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
                                     matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}"
-                                    (click)="addToFavorite($event, i)"><i class="fa fa-heart"
+                                    (click)="addToFavorite($event, oneAds)">
+                                    <i class="fa fa-heart"
                                         aria-hidden="true"></i></button>
                                          
                                 <img mat-card-image  [src]="baseUrlImage+oneAds.image+'?w=100&h=100'" [alt]="oneAds.title">
-                                <mat-card-content class="text-start">
+                                <mat-card-content (click)="goToDetails(oneAds.id)" class="text-start">
                                     <h4>{{ oneAds.title | slice:0:80 }} </h4>
                                     <p class="ads-desc">{{ oneAds.description }}</p>
                                     <p class="price">{{ oneAds.price }} {{ 'SAR' | translate }}</p>

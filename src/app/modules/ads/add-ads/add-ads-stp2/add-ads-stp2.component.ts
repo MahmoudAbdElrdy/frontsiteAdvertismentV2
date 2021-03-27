@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
+import { LoginComponent } from 'src/app/modules/auth/login/login.component';
 import { GeoLocationService } from 'src/app/shared/services/geo-location.service';
 import { AdvertisementServiceProxy,ServiceProxy, CitiesServiceProxy, CountriesServiceProxy, CreateAdvertisementCommand, RegionManagementServiceProxy, GetServiceTypeListCommand } from 'src/shared/service-proxies/service-proxies';
 import { AddLocationComponent } from '../add-location/add-location.component';
@@ -106,7 +107,18 @@ Model=new CreateAdvertisementCommand;
       adCategory: ['', Validators.required],
     });
   
-   
+    var login=localStorage.getItem('isAuthenticated');
+    if(login===undefined||login===null){
+      {
+        const dialogRef = this.dialog.open(LoginComponent, {
+          width: '60%'
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog result: ${result}`);
+        });
+      }
+    }
    
   }
   onCheckboxChange(e) {
@@ -233,7 +245,7 @@ Model=new CreateAdvertisementCommand;
     return this.secondFormGroup.controls;
   }
   nextstep() {
-    ;
+   debugger
     if (this.secondFormGroup.valid) {
       debugger;
     
@@ -247,8 +259,13 @@ Model=new CreateAdvertisementCommand;
      else{
       this.secondFormGroup.value.isAuction=1
      }
-      this.AdvertisementService.addAdvertisement(this.secondFormGroup.value).subscribe( 
+      this.AdvertisementService.addAdvertisement(this.secondFormGroup.value)
+      .subscribe( 
+        
+      
         res=>{
+         
+         
         if(res!==null)
         {
           this._snackBar.open("تم الاضافة بنجاح","اضافة" ,{
@@ -277,5 +294,7 @@ Model=new CreateAdvertisementCommand;
     
     
     }
+    
   }
+  
 }

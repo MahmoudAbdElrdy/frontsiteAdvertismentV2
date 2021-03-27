@@ -1163,6 +1163,122 @@ export class AdvertisementServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    addFavourite(body: AddFavouriteCommand | undefined): Observable<AddFavouriteDto> {
+        let url_ = this.baseUrl + "/api/Advertisement/add-Favourite";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddFavourite(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddFavourite(<any>response_);
+                } catch (e) {
+                    return <Observable<AddFavouriteDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AddFavouriteDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddFavourite(response: HttpResponseBase): Observable<AddFavouriteDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AddFavouriteDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AddFavouriteDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getMyFavourites(body: GetMyFavourite | undefined): Observable<AdsDto[]> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-my-favourites";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyFavourites(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyFavourites(<any>response_);
+                } catch (e) {
+                    return <Observable<AdsDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdsDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMyFavourites(response: HttpResponseBase): Observable<AdsDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AdsDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdsDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     getMySpaces(body: GetMySpaces | undefined): Observable<AdsDto[]> {
         let url_ = this.baseUrl + "/api/Advertisement/get-my-Spaces";
         url_ = url_.replace(/[?&]$/, "");
@@ -1217,6 +1333,66 @@ export class AdvertisementServiceProxy {
             }));
         }
         return _observableOf<AdsDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getAdIntervals(body: GetAdIntervals | undefined): Observable<AdIntervalsDto[]> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-ad-intervals";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAdIntervals(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAdIntervals(<any>response_);
+                } catch (e) {
+                    return <Observable<AdIntervalsDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdIntervalsDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAdIntervals(response: HttpResponseBase): Observable<AdIntervalsDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AdIntervalsDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdIntervalsDto[]>(<any>null);
     }
 }
 
@@ -1677,6 +1853,62 @@ export class AuthServiceProxy {
             }));
         }
         return _observableOf<ClientDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    isUserHasCommercialRecord(body: IsUserHasCommercialRecordCommand | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/Auth/is-user-has-commercial-record";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIsUserHasCommercialRecord(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIsUserHasCommercialRecord(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIsUserHasCommercialRecord(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -4112,6 +4344,7 @@ export enum AdCategoryEnum {
 
 export class AdvertisementDto {
     id?: string | undefined;
+    adId?: string | undefined;
     vendorName?: string | undefined;
     image?: string | undefined;
     title?: string | undefined;
@@ -4136,6 +4369,7 @@ export class AdvertisementDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.adId = _data["adId"];
             this.vendorName = _data["vendorName"];
             this.image = _data["image"];
             this.title = _data["title"];
@@ -4175,6 +4409,7 @@ export class AdvertisementDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["adId"] = this.adId;
         data["vendorName"] = this.vendorName;
         data["image"] = this.image;
         data["title"] = this.title;
@@ -4863,6 +5098,79 @@ export class GetMyAds {
     }
 }
 
+export class AddFavouriteCommand {
+    adId?: string | undefined;
+    clientId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.adId = _data["adId"];
+            this.clientId = _data["clientId"];
+        }
+    }
+
+    static fromJS(data: any): AddFavouriteCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddFavouriteCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["adId"] = this.adId;
+        data["clientId"] = this.clientId;
+        return data; 
+    }
+}
+
+export class AddFavouriteDto {
+    id?: string | undefined;
+    adId?: string | undefined;
+    clientId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adId = _data["adId"];
+            this.clientId = _data["clientId"];
+        }
+    }
+
+    static fromJS(data: any): AddFavouriteDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddFavouriteDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adId"] = this.adId;
+        data["clientId"] = this.clientId;
+        return data; 
+    }
+}
+
+export class GetMyFavourite {
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): GetMyFavourite {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMyFavourite();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
 export class GetMySpaces {
 
     init(_data?: any) {
@@ -4877,6 +5185,64 @@ export class GetMySpaces {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export class GetAdIntervals {
+    adId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.adId = _data["adId"];
+        }
+    }
+
+    static fromJS(data: any): GetAdIntervals {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAdIntervals();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["adId"] = this.adId;
+        return data; 
+    }
+}
+
+export class AdIntervalsDto {
+    id?: string | undefined;
+    adTitle?: string | undefined;
+    clientName?: string | undefined;
+    fromDate?: Date;
+    toDate?: Date;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adTitle = _data["adTitle"];
+            this.clientName = _data["clientName"];
+            this.fromDate = _data["fromDate"] ? new Date(_data["fromDate"].toString()) : <any>undefined;
+            this.toDate = _data["toDate"] ? new Date(_data["toDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): AdIntervalsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AdIntervalsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adTitle"] = this.adTitle;
+        data["clientName"] = this.clientName;
+        data["fromDate"] = this.fromDate ? this.fromDate.toISOString() : <any>undefined;
+        data["toDate"] = this.toDate ? this.toDate.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -5355,6 +5721,24 @@ export class GetOrderComplaintByUserIdCommand {
     static fromJS(data: any): GetOrderComplaintByUserIdCommand {
         data = typeof data === 'object' ? data : {};
         let result = new GetOrderComplaintByUserIdCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export class IsUserHasCommercialRecordCommand {
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): IsUserHasCommercialRecordCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new IsUserHasCommercialRecordCommand();
         result.init(data);
         return result;
     }

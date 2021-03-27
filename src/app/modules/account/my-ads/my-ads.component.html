@@ -1,4 +1,4 @@
-<mat-card class="myads-card mb-4" *ngFor="let oneAds of myAdsList; let i=index">
+﻿<mat-card class="myads-card mb-4" *ngFor="let oneAds of myAdsList; let i=index">
     <mat-card-content class="text-start">
         <div class="row d-flex align-items-center">
             <div class="col-md-6 d-flex pointer-cursor" (click)="goToDetails(oneAds.id)">
@@ -22,3 +22,35 @@
         </div>
     </mat-card-content>
 </mat-card>
+<div id="opening">
+    <table  mat-table *ngIf="Intervals!==null" [dataSource]="Intervals" matSort class="w-100">
+      
+        <ng-container hidden matColumnDef="id">
+          <th hidden mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+          <td hidden mat-cell *matCellDef="let row"> {{row?.id}} </td>
+        </ng-container>
+    
+       
+        <ng-container matColumnDef="adTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>عنوان الاعلان </th>
+            <td mat-cell *matCellDef="let row"> {{row?.adTitle}} </td>
+          </ng-container>
+         
+          <ng-container matColumnDef="clientName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  اسم المشترك </th>
+            <td mat-cell *matCellDef="let row"> {{row?.clientName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="fromDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  تاريخ البداية </th>
+            <td mat-cell *matCellDef="let row"> {{row?.fromDate|date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="toDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  تاريخ النهاية </th>
+            <td mat-cell *matCellDef="let row"> {{row?.toDate|date}} </td>
+          </ng-container>
+        
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table> 
+</div>

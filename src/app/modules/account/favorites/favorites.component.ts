@@ -1,5 +1,12 @@
+import { RegisterComponent } from 'src/app/modules/auth/register/register.component';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { Options } from "@angular-slider/ngx-slider";
+import { AddFavouriteCommand, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyFavourite } from 'src/shared/service-proxies/service-proxies';
+import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, of as observableOf,Subscription } from 'rxjs';
+import { AppConsts } from 'src/AppConsts';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
 
 @Component({
@@ -8,94 +15,139 @@ import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseCompone
   styleUrls: ['./favorites.component.scss'],
   // encapsulation: ViewEncapsulation.None,
 })
-export class FavoritesComponent extends BaseComponent implements OnInit {
+export class FavoritesComponent implements OnInit {
   public adsImagesPath = 'assets/img/ads/';
-  public adsList = [
+  public homeSlides = [
     {
       id: 1,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      image: 'ads1.png',
-      description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-      price: 3200,
-      owner: 'مصطفي خالد',
-      badge: 'قابل للمزايدة',
-      isFavorite: true
+      title: 'slide 1',
+      caption: 'لإيجــار جميـع أنــواع المساحات الإعلانية',
+      image: 'slide1.png'
     },
     {
       id: 2,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      image: 'ads2.png',
-      description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-      price: 4300,
-      owner: 'السيد حسان',
-      badge: '',
-      isFavorite: true
+      title: 'slide 2',
+      caption: 'إمتلك مساحتك الإعلانية',
+      image: 'slide2.png'
     },
     {
       id: 3,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      image: 'ads3.png',
-      description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-      price: 6000,
-      owner: 'طاهر الطاهر',
-      badge: '',
-      isFavorite: true
-    },
-    {
-      id: 4,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      image: 'ads4.png',
-      description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-      price: 2200,
-      owner: 'سالم السالم',
-      badge: 'قابل للمزايدة',
-      isFavorite: true
-    },
-    {
-      id: 5,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      image: 'ads5.png',
-      description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-      price: 7200,
-      owner: 'عمر صلاح',
-      badge: '',
-      isFavorite: true
-    },
-    {
-      id: 6,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      image: 'ads6.png',
-      description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-      price: 3000,
-      owner: 'أحمد حاتم',
-      badge: '',
-      isFavorite: true
-    },
-    {
-      id: 7,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      image: 'ads7.png',
-      description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-      price: 7770,
-      owner: 'عاصم عاصم',
-      badge: '',
-      isFavorite: true
+      title: 'slide 3',
+      caption: 'إعلانك هنا',
+      image: 'slide3.png'
     }
   ];
+  public latestAds = []
 
+  List 		      : AdvertisementDtoPageList[];
+  dataSource: MatTableDataSource<any>;
+  popUpDeleteUserResponse : any;
+  resultsLength = 0;
+  baseUrlImage = AppConsts.baseUrlImage;
+  AddFavouriteCommand: AddFavouriteCommand=new AddFavouriteCommand();
+  GetMyFavourite:GetMyFavourite=new GetMyFavourite();
+  	@ViewChild(MatPaginator,{static: false}) paginator : MatPaginator;
+	@ViewChild(MatSort,{static: false}) sort           : MatSort;
+  close: any;
+  length=0;
+  subscriptions: Subscription[]=[];
+  longitude: number;
+  latitude: number;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
-    private route: Router
+    private router : Router,private Service :AdvertisementServiceProxy,private _snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
-    super();
+
   }
+  // GoToDetails(Id: number) {
+  //   this.route.navigateByUrl(
+  //     '/pages/newsdetails?id=' + Id
+  //   );
+  // }
 
   ngOnInit() {
+    //debugger;
+    // this.homeSliderService
+    //   .GetLoadById(0)
+    //   .subscribe((data) => {
+    //     this.homeSlides2 = data.innerData;
+    //   });
+    this.getLocation();
+    this.Load();
   }
+  getLocation(): void{
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position)=>{
+          debugger;
+          this.longitude = position.coords.longitude;
+          this.latitude = position.coords.latitude;
+          console.log(this.longitude)
+          console.log(this.latitude)
+        
+        });
+    } else {
+       console.log("No support for geolocation")
+    }
+  }
+ 
+  Load(){
 
-  addToFavorite(e, indx){
-    e.stopPropagation();
-    this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
+    return this.Service.getMyFavourites(this.GetMyFavourite)
+    .subscribe(res=>{
+    debugger
+      this.List=res;
+      console.log(res);
+    })}
+    addToFavorite(e, oneAds){
+      debugger
+  this.AddFavouriteCommand.adId=oneAds.adId;
+      this.Service.addFavourite(this.AddFavouriteCommand)
+        .subscribe( 
+          
+          error => {
+            console.log(error)
+            this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
+            duration: 2220,
+            
+          })},
+          res=>{
+           
+           
+          if(res!==null)
+          {
+            this._snackBar.open("تم الاضافة بنجاح","اضافة" ,{
+              duration: 2220,
+              
+            });
+          
+          }
+          else
+          {
+            this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
+              duration: 2220,
+              
+            });
+          }
+       
+        })
+      
+    }
+  goToDetails(id: number) {
+    ;
+   // this.router.navigate(["/lookups/Advertisements-Details", id]);
+    this.router.navigateByUrl(
+      '/ads/ads-details?id=' + id
+    );
+  }
+  openRegisterDialog() {
+    const dialogRef = this.dialog.open(RegisterComponent, {
+      width: '60%'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
 

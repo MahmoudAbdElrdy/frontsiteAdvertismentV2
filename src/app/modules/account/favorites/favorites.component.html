@@ -1,18 +1,18 @@
 <div class="container">
     <h2 class="page-title text-center mb-4">{{'favorite' | translate}}</h2>
     <div class="row">
-        <div class="col-sm-6 col-md-3 penta mb-4" *ngFor="let oneAds of adsList; let i=index">
-            <mat-card class="ads-card" routerLink="/ads/ads-details">
-                <span class="badge bg-danger">{{ oneAds?.badge }}</span>
-                <button type="button" class="btn btn-light addtoWishListbtn" [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
+        <div class="col-sm-6 col-md-3 penta mb-4" *ngFor="let oneAds of List; let i=index">
+            <mat-card class="ads-card" (click)="goToDetails(oneAds.id)">
+                <!-- <span class="badge bg-danger">{{ oneAds?.badge }}</span> -->
+                <!-- <button type="button" class="btn btn-light addtoWishListbtn" [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
                     matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}" (click)="addToFavorite($event, i)"><i
-                        class="fa fa-heart" aria-hidden="true"></i></button>
-                <img mat-card-image src="{{adsImagesPath}}{{oneAds.image}}" [alt]="oneAds.title">
-                <mat-card-content class="text-start">
+                        class="fa fa-heart" aria-hidden="true"></i></button> -->
+                        <img mat-card-image  [src]="baseUrlImage+oneAds.images[0]+'?w=100&h=100'" [alt]="oneAds.title">
+                        <mat-card-content class="text-start">
                     <h4>{{ oneAds.title | slice:0:80 }} </h4>
                     <p class="ads-desc">{{ oneAds.description }}</p>
                     <p class="price">{{ oneAds.price }} {{ 'SAR' | translate }}</p>
-                    <p class="ads-owner">{{ 'seller' | translate }} : {{ oneAds.owner }}</p>
+                    <p class="ads-owner">{{ 'seller' | translate }} : {{ oneAds.vendorName }}</p>
                 </mat-card-content>
             </mat-card>
         </div>

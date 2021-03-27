@@ -23,7 +23,7 @@
             <div class="form-group col-md-4">
                 <label class="text-center primary-font-color w-100">{{ 'selectServiceProviderType' | translate }}</label>
                 <mat-form-field appearance="fill" class="w-100">
-                    <mat-select name="serviceId" (selectionChange)="Change($event)" [(ngModel)]="selectedService" formControlName="services">
+                    <mat-select name="serviceId" placeholder="اختار خدمة" (selectionChange)="Change($event)" [(ngModel)]="selectedService" formControlName="services">
                         <mat-option  *ngFor="let service of services" [value]="service.id">
                             {{service.name.ar}}
                         </mat-option>
