@@ -48,6 +48,11 @@ export class LoginComponent implements OnInit {
          localStorage.setItem('isLoggedin', 'true');
          localStorage.setItem('isAuthenticated', 'true');
              localStorage.setItem('userToken',obj.token );
+             localStorage.setItem('user_Id',obj.user.id );
+             localStorage.setItem('user_Name',obj.user.fullName );
+             localStorage.setItem('user_Image',obj.user.imageurl );
+
+
              this._snackBar.open("تم تسجيل الدخول بنجاح"," تسجيل الدخول" ,{
                duration: 2220,
                

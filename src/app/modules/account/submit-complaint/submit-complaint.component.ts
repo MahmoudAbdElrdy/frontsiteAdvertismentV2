@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
+import {OrderComplaintServiceProxy,CreateOrderComplaintCommand } from 'src/shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -10,14 +13,23 @@ import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseCompone
 })
 export class SubmitComplaintComponent extends BaseComponent implements OnInit {
   submitComplaintForm: FormGroup;
+  orderId: any;
+  orderDtails: any;
+  ad: any;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private Service: OrderComplaintServiceProxy,
+    private _snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<SubmitComplaintComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
     super();
+    this.ad=data.ad;
   }
 
   ngOnInit() {
-    this.buildForm();
-
+    this.buildForm();  
   }
   get fc() {
     return this.submitComplaintForm.controls;
@@ -32,6 +44,24 @@ export class SubmitComplaintComponent extends BaseComponent implements OnInit {
 
   //submit
   doSubmitComplaintForm() {
-    console.log('in progress');
-  }
+    var add: CreateOrderComplaintCommand = new CreateOrderComplaintCommand();
+    add.complaintReason = this.submitComplaintForm.controls['complaintDetails'].value;
+    add.orderId = this.ad.intervalId;
+    
+    this.Service.addOrderComplaint(add).subscribe(res => {
+      if (res !== null) {
+        this.showMessageWithType(0, "تم الابلاغ بنجاح");
+        debugger;
+        this._snackBar.open("تم الابلاغ بنجاح", " تبليغ عن اعلان", {
+          duration: 2220,
+        });
+        this.dialogRef.close();
+      }
+      else {
+        this._snackBar.open("حدث خطأ عند التعديل", "تعديل", {
+          duration: 2220,
+        });
+      }
+      this.dialogRef.close();
+    });  }
 }

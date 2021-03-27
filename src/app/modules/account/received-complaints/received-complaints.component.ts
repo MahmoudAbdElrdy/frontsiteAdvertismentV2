@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import {  OrderComplaintServiceProxy,OrderComplaintDtoPageList } from 'src/shared/service-proxies/service-proxies';
+import { MatDialog } from '@angular/material';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, of as observableOf } from 'rxjs';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
 import { ReplyComplaintComponent } from '../reply-complaint/reply-complaint.component';
 
@@ -9,48 +12,46 @@ import { ReplyComplaintComponent } from '../reply-complaint/reply-complaint.comp
   templateUrl: './received-complaints.component.html',
   styleUrls: ['./received-complaints.component.scss']
 })
-export class ReceivedComplaintsComponent extends BaseComponent implements OnInit {
-  public myComplaints = [
-    {
-      id: 1,
-      complaintNO: 584871,
-      sender: 'إبراهيم يوسف',
-      details: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
-      date: new Date()
-    },
-    {
-      id: 2,
-      complaintNO: 584872,
-      sender: 'مصطفي يحي',
-      details: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
-      date: new Date()
-    },
-    {
-      id: 3,
-      complaintNO: 584873,
-      sender: 'محمود احمد',
-      details: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
-      date: new Date()
-    },
-    {
-      id: 4,
-      complaintNO: 584874,
-      sender: 'مصطفي خالد',
-      details: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
-      date: new Date()
-    }
-  ];
 
-  constructor(public dialog: MatDialog, private route: Router) {
+export class ReceivedComplaintsComponent extends BaseComponent implements OnInit {
+  public myComplaints = [] ;
+   
+
+  constructor(public dialog: MatDialog,private Service:OrderComplaintServiceProxy, private route: Router) {
     super();
   }
 
   ngOnInit() {
+    
   }
+  ngAfterViewInit() {
+    this.LoadData();
+  }
+  LoadData() {
 
-  openReplyComplaintDialog() {
+    merge()
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this.Service.getAllOrderComplaintByUserId(undefined)
+        }),
+        map((data) => {
+          debugger
+          this.myComplaints = data;
+          return this.myComplaints;
+        }),
+        catchError(() => {
+          return observableOf([]);
+        })
+      )
+      .subscribe((data) => {
+        this.myComplaints = data;
+      });
+  }
+  openReplyComplaintDialog(data) {
     const dialogRef = this.dialog.open(ReplyComplaintComponent, {
-      width: '50%'
+      width: '50%',
+      data:data
     });
 
     dialogRef.afterClosed().subscribe(result => {

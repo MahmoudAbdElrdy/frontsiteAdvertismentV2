@@ -42,7 +42,7 @@ import { AddLocationComponent } from './add-ads/add-location/add-location.compon
 import { UserServicesComponent } from './user-services/user-services.component';
 import { AddAdsStp1Component } from './add-ads/add-ads-stp1/add-ads-stp1.component';
 import { AddAdsStp2Component } from './add-ads/add-ads-stp2/add-ads-stp2.component';
-import { AdvertisementServiceProxy, AuthServiceProxy, CitiesServiceProxy, CountriesServiceProxy, RegionManagementServiceProxy, ServiceProxy, UserManagementServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AdComplaintServiceProxy, AdvertisementServiceProxy, AuthServiceProxy, CitiesServiceProxy, CountriesServiceProxy, RegionManagementServiceProxy, ServiceProxy, UserManagementServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { OsmSingleViewComponent } from 'src/app/shared/osm-single-view/osm-single-view.component';
 import { MapSingleViewComponent } from 'src/app/shared/map-single-view/map-single-view.component';
 import{MapModalComponent} from 'src/app/shared/map-modal/map-modal.component'
@@ -114,7 +114,7 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     NgxGalleryModule
   ],
   providers: [
-    RegionManagementServiceProxy,CountriesServiceProxy,ServiceProxy,
+    RegionManagementServiceProxy,CountriesServiceProxy,ServiceProxy,AdComplaintServiceProxy,
     CitiesServiceProxy,AdvertisementServiceProxy,UsersServiceProxy,AuthServiceProxy,UserManagementServiceProxy,
     MatDatepickerModule,GeoLocationService,
     { provide: LOCALE_ID, useValue: 'ar-EG' },

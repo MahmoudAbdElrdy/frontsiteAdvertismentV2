@@ -2,10 +2,10 @@
     <mat-card-content>
         <div class="current-user-info text-center mb-4 p-3">
             <div class="avatar">
-                <span class="material-icons valign-middle no-image"> person </span>
-                <!-- <img class="img-fluid h-100" src="assets/img/avatar.png" alt="يوسف محمود"> -->
+                <span class="material-icons valign-middle no-image" *ngIf="ProfileImage==undefined" > person </span>
+                <img class="img-fluid h-100" [src]="ProfileImage" style="width: 100%;" alt="{{userName}}" *ngIf="ProfileImage!=undefined">
             </div>
-            <h6>يوسف محمود</h6>
+            <h6>{{userName}}</h6>
         </div>
         <ul class="list-group address-data text-start">
             <li class="list-group-item" routerLink="/account/my-ads" routerLinkActive="current-link">

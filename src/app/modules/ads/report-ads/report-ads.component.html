@@ -8,8 +8,8 @@
         <form  (ngSubmit)="submitReportAdsForm()" [formGroup]="reportAdsForm">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h5 class="primary-font-color mb-3">{{ 'adsTitle' | translate }} <br/> رفوف استاندات تخزين بأحدث الأنواع تجهيز مخازن</h5>
-                    <h5 class="text-success">{{ 'seller' | translate }} : مصطفى خالد</h5>
+                    <h5 class="primary-font-color mb-3">{{ 'adsTitle' | translate }} <br/> {{AdvertisementDetailDto?.title}}</h5>
+                    <h5 class="text-success">{{ 'seller' | translate }} :{{AdvertisementDetailDto.vendorName}}</h5>
                 </div>
             </div>
             <div class="row">

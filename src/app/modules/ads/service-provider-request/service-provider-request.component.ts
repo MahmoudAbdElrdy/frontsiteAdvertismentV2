@@ -13,83 +13,83 @@ import { AdvertisementServiceProxy, ApplyForAdvertisementCommand, GetServiceType
   styleUrls: ['./service-provider-request.component.scss']
 })
 
-export class ServiceProviderRequestComponent  extends BaseComponent implements OnInit {
+export class ServiceProviderRequestComponent extends BaseComponent implements OnInit {
   serviceProviderRequestForm: FormGroup;
-  GetServiceTypeListCommand=new GetServiceTypeListCommand();
+  GetServiceTypeListCommand = new GetServiceTypeListCommand();
   services = [
-   
+
   ];
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
   selectedService = 1;
-  ServiceTypeList:ServiceTypeDto[];
-  servicerProvider:ServiceDto[];
+  ServiceTypeList: ServiceTypeDto[];
+  servicerProvider: ServiceDto[];
   triggerValue: any;
   provider: any;
-  servicesId:any;
+  servicesId: any;
   providerId: any;
-  ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisementCommand;
+  ApplyForAdvertisementCommand: ApplyForAdvertisementCommand = new ApplyForAdvertisementCommand;
   constructor(private formBuilder: FormBuilder,
-    private ServiceProxy:  ServiceProxy,  public dialog: MatDialog,private _snackBar: MatSnackBar,
-     private route: Router, private AdvertisementService:AdvertisementServiceProxy,
-    private activatedRoute: ActivatedRoute,private ModelServiceService:ModelServiceService) {
+    private ServiceProxy: ServiceProxy, public dialog: MatDialog, private _snackBar: MatSnackBar,
+    private route: Router, private AdvertisementService: AdvertisementServiceProxy,
+    private activatedRoute: ActivatedRoute, private ModelServiceService: ModelServiceService) {
     super();
   }
   submitted = false;
 
   ngOnInit() {
     this.buildServiceProviderRequestForm();
-this.LoadServiceTypeList();
-this.ApplyForAdvertisementCommand=this.ModelServiceService.ApplyForAdvertisementCommand;
-console.log(this.ApplyForAdvertisementCommand);
+    this.LoadServiceTypeList();
+    this.ApplyForAdvertisementCommand = this.ModelServiceService.ApplyForAdvertisementCommand;
+    console.log(this.ApplyForAdvertisementCommand);
   }
 
-  LoadServiceTypeList(){
+  LoadServiceTypeList() {
 
-    return this.ServiceProxy.getServiceTypesList(this.GetServiceTypeListCommand).subscribe(res=>{
-      this.services=res;
-     console.log(this.services)
-    }) 
+    return this.ServiceProxy.getServiceTypesList(this.GetServiceTypeListCommand).subscribe(res => {
+      this.services = res;
+      console.log(this.services)
+    })
   }
   Change(id) {
-  debugger
-   this.LoadservicerProvider(id.value);
-   debugger
-  this.triggerValue=id.source.triggerValue;
-  this.servicesId=id.value;
-   console.log(id.source.triggerValue)
-}
-changeRadioValue(Provider) {
-  debugger
-  this.provider=Provider.userName;
-  this.providerId=Provider.id;
-  console.log(this.serviceProviderRequestForm.get('provider').value);
-}
-addFieldValue() {
-  debugger
-  this.newAttribute.ProviderName= this.provider;
-  this.newAttribute.ServiceName= this.triggerValue;
-  this.newAttribute.ProviderName= this.provider;
-  this.newAttribute.servicesId= this.providerId;
-  this.fieldArray.push(this.newAttribute)
-  this.newAttribute = {};
-
-  console.log(this.fieldArray);
-}
-deleteFieldValue(index) {
-  this.fieldArray.splice(index, 1);
-}
-LoadservicerProvider(id){
-
-  return this.ServiceProxy.getServicesListByTypeId(id).subscribe(res=>{
     debugger
-    this.servicerProvider=res;
-    console.log( this.servicerProvider)
-  })
+    this.LoadservicerProvider(id.value);
+    debugger
+    this.triggerValue = id.source.triggerValue;
+    this.servicesId = id.value;
+    console.log(id.source.triggerValue)
+  }
+  changeRadioValue(Provider) {
+    debugger
+    this.provider = Provider.userName;
+    this.providerId = Provider.id;
+    console.log(this.serviceProviderRequestForm.get('provider').value);
+  }
+  addFieldValue() {
+    debugger
+    this.newAttribute.ProviderName = this.provider;
+    this.newAttribute.ServiceName = this.triggerValue;
+    this.newAttribute.ProviderName = this.provider;
+    this.newAttribute.servicesId = this.providerId;
+    this.fieldArray.push(this.newAttribute)
+    this.newAttribute = {};
 
-  
-}
- buildServiceProviderRequestForm() {
+    console.log(this.fieldArray);
+  }
+  deleteFieldValue(index) {
+    this.fieldArray.splice(index, 1);
+  }
+  LoadservicerProvider(id) {
+
+    return this.ServiceProxy.getServicesListByTypeId(id).subscribe(res => {
+      debugger
+      this.servicerProvider = res;
+      console.log(this.servicerProvider)
+    })
+
+
+  }
+  buildServiceProviderRequestForm() {
     this.serviceProviderRequestForm = this.formBuilder.group({
       services: ['', Validators.required],
       provider: [''],
@@ -99,28 +99,26 @@ LoadservicerProvider(id){
 
   submitServiceProviderRequest() {
     debugger
-    this.ApplyForAdvertisementCommand=this.ModelServiceService.ApplyForAdvertisementCommand;
-    this.ApplyForAdvertisementCommand.servicesIds=this.fieldArray.map(x=>x.servicesId);
-    this.AdvertisementService.applyForAdvertisement(this.ApplyForAdvertisementCommand).subscribe( 
-      res=>{
-      if(res!==null)
-      {
-        this._snackBar.open("تم الاضافة بنجاح","اضافة" ,{
-          duration: 2220,
-          
-        });
-      
-      
-      }
-      else
-      {
-        this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
-          duration: 2220,
-          
-        });
-      }
-   
-    })
+    this.ApplyForAdvertisementCommand = this.ModelServiceService.ApplyForAdvertisementCommand;
+    this.ApplyForAdvertisementCommand.servicesIds = this.fieldArray.map(x => x.servicesId);
+    this.AdvertisementService.applyForAdvertisement(this.ApplyForAdvertisementCommand).subscribe(
+      res => {
+        if (res !== null) {
+          this._snackBar.open("تم الاضافة بنجاح", "اضافة", {
+            duration: 2220,
+
+          });
+
+
+        }
+        else {
+          this._snackBar.open("حدث خطأ عند الاضافة", "الاضافة", {
+            duration: 2220,
+
+          });
+        }
+
+      })
     //this.submitted = true;
   }
 

@@ -80,19 +80,16 @@ export class RequestsComponent  implements OnInit {
    this.LoadData();
    }
 
-LoadData() {
- 
+LoadData() { 
    merge()
      .pipe(
        startWith({}),
        switchMap(() => {
-  ;
-         return this.Service.getMySpaces(this.GetMySpaces)
+         return this.Service.getMyAds(this.GetMySpaces)
        }),
        map((data) => {
         debugger
-         this.myRequests = data;
-       
+         this.myRequests = data;       
          return  this.myRequests;
        }),
        catchError(() => {
@@ -100,8 +97,6 @@ LoadData() {
        })
      )
      .subscribe((data) => {
-       ;
-     
        this.myAdsList = data;
        console.log(this.myAdsList);
      });
@@ -109,15 +104,14 @@ LoadData() {
   ngOnInit() {
   }
   goToDetails(id: number) {
-    ;
-   // this.router.navigate(["/lookups/Advertisements-Details", id]);
     this.router.navigateByUrl(
       '/ads/ads-details?id=' + id
     );
   }
-  openSubmitComplaintDialog() {
+  openSubmitComplaintDialog(ad) {
     const dialogRef = this.dialog.open(SubmitComplaintComponent, {
-      width: '50%'
+      width: '50%',
+      data: { ad: ad }
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -12,14 +12,11 @@
             <div class="col-md-2">
                 <p class="price primary-font-color text-center">{{ oneAds.price }} {{ 'SAR' | translate }}</p>
             </div>
-            <div class="col-md-4 text-center">
-                <!-- <button type="button" class="btn btn-secondary text-danger mr-2 ml-2">{{'stopAds' | translate}}</button> -->
-                <button mat-raised-button *ngIf="(oneAds.rejected==true)" color="accent" (click) ="Reject(oneAds)" >
-                    ايقاف الاعلان
-                </button>
-                <button mat-raised-button *ngIf="(oneAds.rejected==false)" color="accent" (click) ="Reject(oneAds)" >
-                    تفعيل الاعلان
-                </button>
+            <div class="col-md-4 text-center">               
+                <button mat-raised-button class="btn btn-secondary text-info mr-2 ml-2"  color="accent"
+                (click)="Reject(oneAds)">
+                {{isReject?'StopAds':'switchAds' | translate}}
+             </button>
                 <button type="button" (click)="goToEdit(oneAds.id)" class="btn btn-secondary text-success mr-2 ml-2">{{'editAds' | translate}}</button>
             </div>
         </div>

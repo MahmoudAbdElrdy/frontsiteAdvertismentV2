@@ -15,6 +15,262 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
+export class AdComplaintServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editAdComplaint(body: EditAdComplaintCommand | undefined): Observable<AdComplaintDto> {
+        let url_ = this.baseUrl + "/api/AdComplaint/edit-AdComplaint";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditAdComplaint(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditAdComplaint(<any>response_);
+                } catch (e) {
+                    return <Observable<AdComplaintDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdComplaintDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditAdComplaint(response: HttpResponseBase): Observable<AdComplaintDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdComplaintDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdComplaintDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addAdComplaint(body: CreateAdComplaintCommand | undefined): Observable<AdComplaintDto> {
+        let url_ = this.baseUrl + "/api/AdComplaint/add-AdComplaint";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddAdComplaint(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddAdComplaint(<any>response_);
+                } catch (e) {
+                    return <Observable<AdComplaintDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdComplaintDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddAdComplaint(response: HttpResponseBase): Observable<AdComplaintDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdComplaintDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdComplaintDto>(<any>null);
+    }
+
+    /**
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @param sortBy (optional) 
+     * @param sortOrder (optional) 
+     * @param filter (optional) 
+     * @return Success
+     */
+    getAllAdComplaint(page: number | undefined, pageSize: number | undefined, sortBy: string | undefined, sortOrder: string | undefined, filter: string | undefined): Observable<AdComplaintDtoPageList> {
+        let url_ = this.baseUrl + "/api/AdComplaint/get-all-AdComplaint?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&"; 
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&"; 
+        if (sortBy === null)
+            throw new Error("The parameter 'sortBy' cannot be null.");
+        else if (sortBy !== undefined)
+            url_ += "SortBy=" + encodeURIComponent("" + sortBy) + "&"; 
+        if (sortOrder === null)
+            throw new Error("The parameter 'sortOrder' cannot be null.");
+        else if (sortOrder !== undefined)
+            url_ += "SortOrder=" + encodeURIComponent("" + sortOrder) + "&"; 
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllAdComplaint(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllAdComplaint(<any>response_);
+                } catch (e) {
+                    return <Observable<AdComplaintDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdComplaintDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllAdComplaint(response: HttpResponseBase): Observable<AdComplaintDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdComplaintDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdComplaintDtoPageList>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAdComplaintDetail(id: string | undefined): Observable<AdComplaintDto> {
+        let url_ = this.baseUrl + "/api/AdComplaint/get-AdComplaint-detail?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAdComplaintDetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAdComplaintDetail(<any>response_);
+                } catch (e) {
+                    return <Observable<AdComplaintDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdComplaintDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAdComplaintDetail(response: HttpResponseBase): Observable<AdComplaintDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdComplaintDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdComplaintDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class AdvertisementServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1421,6 +1677,322 @@ export class AuthServiceProxy {
             }));
         }
         return _observableOf<ClientDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class OrderComplaintServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editOrderComplaint(body: EditOrderComplaintCommand | undefined): Observable<OrderComplaintDto> {
+        let url_ = this.baseUrl + "/api/OrderComplaint/edit-OrderComplaint";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditOrderComplaint(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditOrderComplaint(<any>response_);
+                } catch (e) {
+                    return <Observable<OrderComplaintDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OrderComplaintDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditOrderComplaint(response: HttpResponseBase): Observable<OrderComplaintDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OrderComplaintDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OrderComplaintDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addOrderComplaint(body: CreateOrderComplaintCommand | undefined): Observable<OrderComplaintDto> {
+        let url_ = this.baseUrl + "/api/OrderComplaint/add-OrderComplaint";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrderComplaint(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrderComplaint(<any>response_);
+                } catch (e) {
+                    return <Observable<OrderComplaintDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OrderComplaintDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrderComplaint(response: HttpResponseBase): Observable<OrderComplaintDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OrderComplaintDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OrderComplaintDto>(<any>null);
+    }
+
+    /**
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @param sortBy (optional) 
+     * @param sortOrder (optional) 
+     * @param filter (optional) 
+     * @return Success
+     */
+    getAllOrderComplaint(page: number | undefined, pageSize: number | undefined, sortBy: string | undefined, sortOrder: string | undefined, filter: string | undefined): Observable<OrderComplaintDtoPageList> {
+        let url_ = this.baseUrl + "/api/OrderComplaint/get-all-OrderComplaint?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&"; 
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&"; 
+        if (sortBy === null)
+            throw new Error("The parameter 'sortBy' cannot be null.");
+        else if (sortBy !== undefined)
+            url_ += "SortBy=" + encodeURIComponent("" + sortBy) + "&"; 
+        if (sortOrder === null)
+            throw new Error("The parameter 'sortOrder' cannot be null.");
+        else if (sortOrder !== undefined)
+            url_ += "SortOrder=" + encodeURIComponent("" + sortOrder) + "&"; 
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllOrderComplaint(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllOrderComplaint(<any>response_);
+                } catch (e) {
+                    return <Observable<OrderComplaintDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OrderComplaintDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllOrderComplaint(response: HttpResponseBase): Observable<OrderComplaintDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OrderComplaintDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OrderComplaintDtoPageList>(<any>null);
+    }
+
+    /**
+     * @param command (optional) 
+     * @return Success
+     */
+    getAllOrderComplaintByUserId(command: GetOrderComplaintByUserIdCommand | undefined): Observable<OrderComplaintDto[]> {
+        let url_ = this.baseUrl + "/api/OrderComplaint/get-all-OrderComplaint-by-user-id?";
+        if (command === null)
+            throw new Error("The parameter 'command' cannot be null.");
+        else if (command !== undefined)
+            url_ += "command=" + encodeURIComponent("" + command) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllOrderComplaintByUserId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllOrderComplaintByUserId(<any>response_);
+                } catch (e) {
+                    return <Observable<OrderComplaintDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OrderComplaintDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllOrderComplaintByUserId(response: HttpResponseBase): Observable<OrderComplaintDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(OrderComplaintDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OrderComplaintDto[]>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getOrderComplaintDetail(id: string | undefined): Observable<OrderComplaintDto> {
+        let url_ = this.baseUrl + "/api/OrderComplaint/get-OrderComplaint-detail?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOrderComplaintDetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOrderComplaintDetail(<any>response_);
+                } catch (e) {
+                    return <Observable<OrderComplaintDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OrderComplaintDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetOrderComplaintDetail(response: HttpResponseBase): Observable<OrderComplaintDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OrderComplaintDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OrderComplaintDto>(<any>null);
     }
 }
 
@@ -3166,6 +3738,249 @@ export class UsersServiceProxy {
         }
         return _observableOf<UserDtoPageList>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    get(id: string): Observable<UserDto> {
+        let url_ = this.baseUrl + "/api/user-management/users/Get/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<UserDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<UserDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserDto>(<any>null);
+    }
+}
+
+export class EditAdComplaintCommand {
+    id?: string | undefined;
+    complaintReason?: string | undefined;
+    complaintReasonReplay?: string | undefined;
+    isComplaintSeen?: boolean | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.complaintReason = _data["complaintReason"];
+            this.complaintReasonReplay = _data["complaintReasonReplay"];
+            this.isComplaintSeen = _data["isComplaintSeen"];
+        }
+    }
+
+    static fromJS(data: any): EditAdComplaintCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditAdComplaintCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["complaintReason"] = this.complaintReason;
+        data["complaintReasonReplay"] = this.complaintReasonReplay;
+        data["isComplaintSeen"] = this.isComplaintSeen;
+        return data; 
+    }
+}
+
+export class AdComplaintDto {
+    id?: string | undefined;
+    complaintReason?: string | undefined;
+    complaintReasonReplay?: string | undefined;
+    isComplaintSeen?: boolean | undefined;
+    adId?: string | undefined;
+    clientId?: string | undefined;
+    clientName?: string | undefined;
+    adOwnerName?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.complaintReason = _data["complaintReason"];
+            this.complaintReasonReplay = _data["complaintReasonReplay"];
+            this.isComplaintSeen = _data["isComplaintSeen"];
+            this.adId = _data["adId"];
+            this.clientId = _data["clientId"];
+            this.clientName = _data["clientName"];
+            this.adOwnerName = _data["adOwnerName"];
+        }
+    }
+
+    static fromJS(data: any): AdComplaintDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AdComplaintDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["complaintReason"] = this.complaintReason;
+        data["complaintReasonReplay"] = this.complaintReasonReplay;
+        data["isComplaintSeen"] = this.isComplaintSeen;
+        data["adId"] = this.adId;
+        data["clientId"] = this.clientId;
+        data["clientName"] = this.clientName;
+        data["adOwnerName"] = this.adOwnerName;
+        return data; 
+    }
+}
+
+export class CreateAdComplaintCommand {
+    complaintReason?: string | undefined;
+    adId?: string | undefined;
+    clientId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.complaintReason = _data["complaintReason"];
+            this.adId = _data["adId"];
+            this.clientId = _data["clientId"];
+        }
+    }
+
+    static fromJS(data: any): CreateAdComplaintCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAdComplaintCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["complaintReason"] = this.complaintReason;
+        data["adId"] = this.adId;
+        data["clientId"] = this.clientId;
+        return data; 
+    }
+}
+
+export class PagedListMetaData {
+    readonly pageCount?: number;
+    readonly totalItemCount?: number;
+    readonly pageNumber?: number;
+    readonly pageSize?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+    readonly isFirstPage?: boolean;
+    readonly isLastPage?: boolean;
+    readonly firstItemOnPage?: number;
+    readonly lastItemOnPage?: number;
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).pageCount = _data["pageCount"];
+            (<any>this).totalItemCount = _data["totalItemCount"];
+            (<any>this).pageNumber = _data["pageNumber"];
+            (<any>this).pageSize = _data["pageSize"];
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"];
+            (<any>this).hasNextPage = _data["hasNextPage"];
+            (<any>this).isFirstPage = _data["isFirstPage"];
+            (<any>this).isLastPage = _data["isLastPage"];
+            (<any>this).firstItemOnPage = _data["firstItemOnPage"];
+            (<any>this).lastItemOnPage = _data["lastItemOnPage"];
+        }
+    }
+
+    static fromJS(data: any): PagedListMetaData {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedListMetaData();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pageCount"] = this.pageCount;
+        data["totalItemCount"] = this.totalItemCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        data["isFirstPage"] = this.isFirstPage;
+        data["isLastPage"] = this.isLastPage;
+        data["firstItemOnPage"] = this.firstItemOnPage;
+        data["lastItemOnPage"] = this.lastItemOnPage;
+        return data; 
+    }
+}
+
+export class AdComplaintDtoPageList {
+    items?: AdComplaintDto[] | undefined;
+    metadata?: PagedListMetaData | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AdComplaintDto.fromJS(item));
+            }
+            this.metadata = _data["metadata"] ? PagedListMetaData.fromJS(_data["metadata"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): AdComplaintDtoPageList {
+        data = typeof data === 'object' ? data : {};
+        let result = new AdComplaintDtoPageList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["metadata"] = this.metadata ? this.metadata.toJSON() : <any>undefined;
+        return data; 
+    }
 }
 
 export class ApplyForAdvertisementCommand {
@@ -3700,56 +4515,6 @@ export class CreateAdvertisementCommand {
     }
 }
 
-export class PagedListMetaData {
-    readonly pageCount?: number;
-    readonly totalItemCount?: number;
-    readonly pageNumber?: number;
-    readonly pageSize?: number;
-    readonly hasPreviousPage?: boolean;
-    readonly hasNextPage?: boolean;
-    readonly isFirstPage?: boolean;
-    readonly isLastPage?: boolean;
-    readonly firstItemOnPage?: number;
-    readonly lastItemOnPage?: number;
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).pageCount = _data["pageCount"];
-            (<any>this).totalItemCount = _data["totalItemCount"];
-            (<any>this).pageNumber = _data["pageNumber"];
-            (<any>this).pageSize = _data["pageSize"];
-            (<any>this).hasPreviousPage = _data["hasPreviousPage"];
-            (<any>this).hasNextPage = _data["hasNextPage"];
-            (<any>this).isFirstPage = _data["isFirstPage"];
-            (<any>this).isLastPage = _data["isLastPage"];
-            (<any>this).firstItemOnPage = _data["firstItemOnPage"];
-            (<any>this).lastItemOnPage = _data["lastItemOnPage"];
-        }
-    }
-
-    static fromJS(data: any): PagedListMetaData {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedListMetaData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["pageCount"] = this.pageCount;
-        data["totalItemCount"] = this.totalItemCount;
-        data["pageNumber"] = this.pageNumber;
-        data["pageSize"] = this.pageSize;
-        data["hasPreviousPage"] = this.hasPreviousPage;
-        data["hasNextPage"] = this.hasNextPage;
-        data["isFirstPage"] = this.isFirstPage;
-        data["isLastPage"] = this.isLastPage;
-        data["firstItemOnPage"] = this.firstItemOnPage;
-        data["lastItemOnPage"] = this.lastItemOnPage;
-        return data; 
-    }
-}
-
 export class AdvertisementDtoPageList {
     items?: AdvertisementDto[] | undefined;
     metadata?: PagedListMetaData | undefined;
@@ -3989,6 +4754,7 @@ export class FreeServiceDto {
 
 export class AdsDto {
     id?: string | undefined;
+    spaceId?: string | undefined;
     adType?: AdType;
     description?: string | undefined;
     address?: string | undefined;
@@ -3997,6 +4763,7 @@ export class AdsDto {
     title?: string | undefined;
     cityId?: string | undefined;
     countryId?: string | undefined;
+    intervalId?: string | undefined;
     vendorName?: string | undefined;
     price?: number;
     fromDate?: Date;
@@ -4009,6 +4776,7 @@ export class AdsDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.spaceId = _data["spaceId"];
             this.adType = _data["adType"];
             this.description = _data["description"];
             this.address = _data["address"];
@@ -4017,6 +4785,7 @@ export class AdsDto {
             this.title = _data["title"];
             this.cityId = _data["cityId"];
             this.countryId = _data["countryId"];
+            this.intervalId = _data["intervalId"];
             this.vendorName = _data["vendorName"];
             this.price = _data["price"];
             this.fromDate = _data["fromDate"] ? new Date(_data["fromDate"].toString()) : <any>undefined;
@@ -4046,6 +4815,7 @@ export class AdsDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["spaceId"] = this.spaceId;
         data["adType"] = this.adType;
         data["description"] = this.description;
         data["address"] = this.address;
@@ -4054,6 +4824,7 @@ export class AdsDto {
         data["title"] = this.title;
         data["cityId"] = this.cityId;
         data["countryId"] = this.countryId;
+        data["intervalId"] = this.intervalId;
         data["vendorName"] = this.vendorName;
         data["price"] = this.price;
         data["fromDate"] = this.fromDate ? this.fromDate.toISOString() : <any>undefined;
@@ -4303,6 +5074,10 @@ export class ClientRegisterCommand {
     phoneNumber?: string | undefined;
     password?: string | undefined;
     fullName?: string | undefined;
+    firstName?: string | undefined;
+    avatar?: string | undefined;
+    lastName?: string | undefined;
+    roles?: string[] | undefined;
 
     init(_data?: any) {
         if (_data) {
@@ -4310,6 +5085,14 @@ export class ClientRegisterCommand {
             this.phoneNumber = _data["phoneNumber"];
             this.password = _data["password"];
             this.fullName = _data["fullName"];
+            this.firstName = _data["firstName"];
+            this.avatar = _data["avatar"];
+            this.lastName = _data["lastName"];
+            if (Array.isArray(_data["roles"])) {
+                this.roles = [] as any;
+                for (let item of _data["roles"])
+                    this.roles!.push(item);
+            }
         }
     }
 
@@ -4326,6 +5109,14 @@ export class ClientRegisterCommand {
         data["phoneNumber"] = this.phoneNumber;
         data["password"] = this.password;
         data["fullName"] = this.fullName;
+        data["firstName"] = this.firstName;
+        data["avatar"] = this.avatar;
+        data["lastName"] = this.lastName;
+        if (Array.isArray(this.roles)) {
+            data["roles"] = [];
+            for (let item of this.roles)
+                data["roles"].push(item);
+        }
         return data; 
     }
 }
@@ -4410,6 +5201,166 @@ export class GetUserByIdCommand {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["userId"] = this.userId;
+        return data; 
+    }
+}
+
+export class EditOrderComplaintCommand {
+    id?: string | undefined;
+    complaintReason?: string | undefined;
+    complaintReasonReplay?: string | undefined;
+    isComplaintSeen?: boolean | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.complaintReason = _data["complaintReason"];
+            this.complaintReasonReplay = _data["complaintReasonReplay"];
+            this.isComplaintSeen = _data["isComplaintSeen"];
+        }
+    }
+
+    static fromJS(data: any): EditOrderComplaintCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditOrderComplaintCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["complaintReason"] = this.complaintReason;
+        data["complaintReasonReplay"] = this.complaintReasonReplay;
+        data["isComplaintSeen"] = this.isComplaintSeen;
+        return data; 
+    }
+}
+
+export class OrderComplaintDto {
+    id?: string | undefined;
+    complaintReason?: string | undefined;
+    complaintReasonReplay?: string | undefined;
+    isComplaintSeen?: boolean | undefined;
+    adId?: string | undefined;
+    clientId?: string | undefined;
+    clientName?: string | undefined;
+    adOwnerName?: string | undefined;
+    addtitle?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.complaintReason = _data["complaintReason"];
+            this.complaintReasonReplay = _data["complaintReasonReplay"];
+            this.isComplaintSeen = _data["isComplaintSeen"];
+            this.adId = _data["adId"];
+            this.clientId = _data["clientId"];
+            this.clientName = _data["clientName"];
+            this.adOwnerName = _data["adOwnerName"];
+            this.addtitle = _data["addtitle"];
+        }
+    }
+
+    static fromJS(data: any): OrderComplaintDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrderComplaintDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["complaintReason"] = this.complaintReason;
+        data["complaintReasonReplay"] = this.complaintReasonReplay;
+        data["isComplaintSeen"] = this.isComplaintSeen;
+        data["adId"] = this.adId;
+        data["clientId"] = this.clientId;
+        data["clientName"] = this.clientName;
+        data["adOwnerName"] = this.adOwnerName;
+        data["addtitle"] = this.addtitle;
+        return data; 
+    }
+}
+
+export class CreateOrderComplaintCommand {
+    complaintReason?: string | undefined;
+    orderId?: string | undefined;
+    clientId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.complaintReason = _data["complaintReason"];
+            this.orderId = _data["orderId"];
+            this.clientId = _data["clientId"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrderComplaintCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrderComplaintCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["complaintReason"] = this.complaintReason;
+        data["orderId"] = this.orderId;
+        data["clientId"] = this.clientId;
+        return data; 
+    }
+}
+
+export class OrderComplaintDtoPageList {
+    items?: OrderComplaintDto[] | undefined;
+    metadata?: PagedListMetaData | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(OrderComplaintDto.fromJS(item));
+            }
+            this.metadata = _data["metadata"] ? PagedListMetaData.fromJS(_data["metadata"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): OrderComplaintDtoPageList {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrderComplaintDtoPageList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["metadata"] = this.metadata ? this.metadata.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export class GetOrderComplaintByUserIdCommand {
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): GetOrderComplaintByUserIdCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetOrderComplaintByUserIdCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
         return data; 
     }
 }

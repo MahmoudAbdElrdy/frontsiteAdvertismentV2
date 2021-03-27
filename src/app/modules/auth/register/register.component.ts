@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, Validators, FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { IsNumber } from 'src/app/@core/Validator/number-validator';
 import { Router } from '@angular/router';
 import { RegisterDto } from 'src/app/@AppService/models/Register.model';
@@ -8,7 +8,12 @@ import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseCompone
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthServiceProxy, ClientRegisterCommand, UserManagementServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AuthenticationService } from 'src/app/@core/auth/authentication.service';
-
+export interface ImageInfo {
+  imageUrl: string;
+  imageName: string;
+  imageExtention: string;
+  imageSize: string;
+}
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -16,15 +21,16 @@ import { AuthenticationService } from 'src/app/@core/auth/authentication.service
 })
 export class RegisterComponent extends BaseComponent implements OnInit {
   RegisterForm: FormGroup;
+  ProfileImage: ImageInfo[] = [];
+  file2: File[];
 
-  constructor(public dialogRef: MatDialogRef<RegisterComponent>,private AuthServiceProxy:AuthServiceProxy,
-     private formBuilder: FormBuilder, private route: Router, private registerService: RegisterService) {
+  constructor(public dialogRef: MatDialogRef<RegisterComponent>, private AuthServiceProxy: AuthServiceProxy,
+    private formBuilder: FormBuilder, private route: Router, private registerService: RegisterService) {
     super();
   }
 
   ngOnInit() {
     this.buildForm();
-
   }
   get fc() {
     return this.RegisterForm.controls;
@@ -32,15 +38,18 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   //build Form
   buildForm() {
     this.RegisterForm = this.formBuilder.group({
-      fullName: ['', [Validators.required]],
+    //  fullName: ['', [Validators.required]],
       phoneNumber: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required],
-      roletype: ['', Validators.required],
       confirmPass: ['', Validators.required],
-    
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      avatar: ['', Validators.required],
+      Roles: new FormArray([],Validators.required),
+
     },
-    { validator: this.checkPasswords });
+      { validator: this.checkPasswords });
   }
 
   checkPasswords(group: FormGroup) {
@@ -49,51 +58,54 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     return pass === confirmPass ? null : { notSame: true };
   }
 
-
+  onCheckChange(event) {
+    debugger
+    const formArray: FormArray = this.RegisterForm.get('Roles') as FormArray;
+  
+    /* Selected */
+    if(event.checked){
+      // Add a new control in the arrayForm
+      formArray.push(new FormControl(event.source.value));
+    }
+    /* unselected */
+    else{
+      // find the unselected element
+      let i: number = 0;
+  
+      formArray.controls.forEach((ctrl: FormControl) => {
+        if(ctrl.value == event.source.value) {
+          // Remove the unselected element from the arrayForm
+          formArray.removeAt(i);
+          return;
+        }
+  
+        i++;
+      });
+    }
+  }
   //submit
   submitRegister() {
-    console.log('in progress');
+
+   if (this.ProfileImage[0].imageName != "") {
+      this.RegisterForm.controls['avatar'].setValue(this.ProfileImage[0].imageUrl);
+    }
     debugger;
-    var Check=this.RegisterForm.get('roletype').value;
     let registerDto: ClientRegisterCommand = this.RegisterForm.value;
+    this.AuthServiceProxy
+    .clientRegister(registerDto)
+    .subscribe(
+      (result) => {
+        this.showMessageWithType(0, "You have been registered successfully");
+        debugger;
 
-this.RegisterForm.removeControl('roletype');
-if(Check=='advertiser'){
-  this.AuthServiceProxy
-  .clientRegister(registerDto)
-  .subscribe(
-    (result) => {
-      this.showMessageWithType(0, "You have been registered successfully");
-      debugger;
-
-      this.goToList();
-      this.dialogRef.close();
-    },
-    (err) => {
-      console.log(err)
-      this.showMessageWithType(1, "An error has occurred please try again later"+err);
-    }
-  );
-}
-else{
-  this.AuthServiceProxy
-  .clientRegister(registerDto)
-  .subscribe(
-    (result) => {
-      this.showMessageWithType(0, "You have been registered successfully");
-      debugger;
-
-      this.goToList();
-      this.dialogRef.close();
-    },
-    (err) => {
-      console.log(err)
-      this.showMessageWithType(1, "An error has occurred please try again later"+err);
-    }
-  );
-}
-   
-
+        this.goToList();
+        this.dialogRef.close();
+      },
+      (err) => {
+        console.log(err)
+        this.showMessageWithType(1, "An error has occurred please try again later" + err);
+      }
+    );
   }
   goToList() {
     this.route.navigateByUrl('/');
@@ -102,4 +114,41 @@ else{
   closeDialog() {
     this.dialogRef.close();
   }
+  processDataFile2(fileInput: any) {
+    this.file2 = []
+    this.file2 = fileInput.files;
+    if (this.file2 !== null) {
+      for (let index = 0; index < this.file2.length; index++) {
+        const element = this.file2[index];
+        const size = element.size / Math.log(1024);
+        const reader = new FileReader();
+        let url
+        reader.readAsDataURL(element);
+        reader.onload = () => {
+          debugger
+          url = reader.result.toString();
+
+        };
+
+
+
+        if (this.ProfileImage.length < 1) {
+          setTimeout(() => {
+            debugger;
+            this.ProfileImage.push({
+              imageName: element.name,
+              imageSize: size.toString(),
+              imageUrl: url,
+              imageExtention: ""
+            });
+            //  this.secondFormGroup.get('images').setValue(url);
+            console.log()
+            console.log(this.ProfileImage)
+          }, 200);
+        }
+
+      }
+    }
+  }
+
 }

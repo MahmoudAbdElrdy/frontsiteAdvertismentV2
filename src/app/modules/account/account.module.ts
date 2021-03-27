@@ -38,7 +38,8 @@ import { RequestsComponent } from './requests/requests.component';
 import { ReceivedComplaintsComponent } from './received-complaints/received-complaints.component';
 import { ReplyComplaintComponent } from './reply-complaint/reply-complaint.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
-import { AdvertisementServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AdvertisementServiceProxy, OrderComplaintServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { ChangePasswordComponent } from '../auth/change-password/change-password.component';
 
 
 registerLocaleData(localeAr);
@@ -57,6 +58,7 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     RequestsComponent,
     ReceivedComplaintsComponent,
     EditProfileComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
@@ -103,9 +105,11 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     MatDatepickerModule,
     { provide: LOCALE_ID, useValue: 'ar-EG' },
     { provide: MAT_DATE_LOCALE, useValue: 'ar-EG' },
-    AdvertisementServiceProxy
+    AdvertisementServiceProxy,
+    OrderComplaintServiceProxy,
+    UsersServiceProxy
   ],
-  exports: [],
-  entryComponents: [SubmitComplaintComponent, ReplyComplaintComponent],
+  exports: [ChangePasswordComponent],
+  entryComponents: [SubmitComplaintComponent, ReplyComplaintComponent,ChangePasswordComponent],
 })
 export class AccountModule { }

@@ -4,14 +4,14 @@ import { Options } from "@angular-slider/ngx-slider";
 import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyAds } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { merge, of as observableOf,Subscription } from 'rxjs';
+import { merge, of as observableOf, Subscription } from 'rxjs';
 import { AppConsts } from 'src/AppConsts';
 @Component({
   selector: 'app-my-ads',
   templateUrl: './my-ads.component.html',
   styleUrls: ['./my-ads.component.scss']
 })
-export class MyAdsComponent  implements OnInit {
+export class MyAdsComponent implements OnInit {
   // --------------------------------------------------------
   value: number = 100;
   highValue: number = 800;
@@ -23,112 +23,98 @@ export class MyAdsComponent  implements OnInit {
   public adsImagesPath = 'assets/img/ads/';
   public adsList = [
   ];
-  List 		      : AdvertisementDtoPageList[];
+  List: AdvertisementDtoPageList[];
   dataSource: MatTableDataSource<any>;
-  popUpDeleteUserResponse : any;
+  popUpDeleteUserResponse: any;
   resultsLength = 0;
-  displayedColumns : string [] = ['id','vendorName','title','adType','cityName','price','fromDate','toDate','image', 'actions'];
-	@ViewChild(MatPaginator,{static: false}) paginator : MatPaginator;
-	@ViewChild(MatSort,{static: false}) sort           : MatSort;
+  displayedColumns: string[] = ['id', 'vendorName', 'title', 'adType', 'cityName', 'price', 'fromDate', 'toDate', 'image', 'actions'];
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
   close: any;
-  length=0;
-  subscriptions: Subscription[]=[];
-  myAdsList:any;
-  GetMyAds:GetMyAds=new GetMyAds();
+  length = 0;
+  subscriptions: Subscription[] = [];
+  myAdsList: any;
+  GetMyAds: GetMyAds = new GetMyAds();
   baseUrlImage = AppConsts.baseUrlImage;
+  isReject: any;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
-    private router : Router,private Service :AdvertisementServiceProxy,private _snackBar: MatSnackBar,
+    private router: Router, private Service: AdvertisementServiceProxy, private _snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {
 
   }
 
   ngAfterViewInit() {
-    ;
-   this.LoadData();
-   }
-ngOnInit(): void {
-}
-LoadData() {
- 
-   merge()
-     .pipe(
-       startWith({}),
-       switchMap(() => {
-  ;
-         return this.Service.getMyAds(this.GetMyAds)
-       }),
-       map((data) => {
-        debugger
-         this.myAdsList = data;
-       
-         return  this.myAdsList;
-       }),
-       catchError(() => {
-         return observableOf([]);
-       })
-     )
-     .subscribe((data) => {
-       ;
-     
-       this.myAdsList = data;
-       console.log(this.myAdsList);
-     });
- }
-  addToFavorite(e, indx){
+    this.LoadData();
+  }
+  ngOnInit(): void {
+  }
+  LoadData() {
+
+    merge()
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this.Service.getMySpaces(this.GetMyAds)
+        }),
+        map((data) => {
+          debugger
+          this.myAdsList = data;
+          return this.myAdsList;
+        }),
+        catchError(() => {
+          return observableOf([]);
+        })
+      )
+      .subscribe((data) => {
+        this.myAdsList = data;
+        console.log(this.myAdsList);
+      });
+  }
+  addToFavorite(e, indx) {
     e.stopPropagation();
     this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
   }
   goToDetails(id: number) {
-    ;
-   // this.router.navigate(["/lookups/Advertisements-Details", id]);
+    // this.router.navigate(["/lookups/Advertisements-Details", id]);
     this.router.navigateByUrl(
       '/ads/ads-details?id=' + id
     );
   }
   goToEdit(id: number) {
-    ;
-   // this.router.navigate(["/lookups/Advertisements-Details", id]);
+    // this.router.navigate(["/lookups/Advertisements-Details", id]);
     this.router.navigateByUrl(
       '/ads/edit-ads?id=' + id
     );
   }
-  Reject(el){
-     
-    if(el.rejected==false){
-      el.rejected=true;
-    }
-    else{
-      el.rejected=true;
-    }
-    this.Service.disableAdvertisement(el.rejected,el.id).subscribe( res=>{
-      ;
-if(res.rejected==true)
-{
-  this._snackBar.open("تم التفعيل بنجاح","التفعيل" ,{
-    duration: 2220,
-    
-  });
- 
-}
-else if(res.rejected==false){
-  this._snackBar.open("تم الايقاف بنجاح","الايقاف" ,{
-    duration: 2220,
-    
-  });
-}
-else
-{
-  this._snackBar.open("حدث خطأ  ","التفعيل" ,{
-    duration: 2220,
-   
-  });
-}
-this.LoadData();
-})
+  Reject(el) {
+    el.rejected= !el.rejected;
+    this.Service.disableAdvertisement(el.rejected, el.spaceId).subscribe(res => {
+      if (res.rejected == true) {
+        this._snackBar.open("تم التفعيل بنجاح", "التفعيل", {
+          duration: 2220,
+
+        });
+      }
+
+      else if (res.rejected == false) {
+        this._snackBar.open("تم الايقاف بنجاح", "الايقاف", {
+          duration: 2220,
+
+        });
+      }
+      else {
+        this._snackBar.open("حدث خطأ  ", "التفعيل", {
+          duration: 2220,
+
+        });
+      }
+      this.isReject=el.rejected;
+      this.LoadData();
+    })
   }
-  advancedSearch(){
+  advancedSearch() {
     console.log('in progress');
   }
 }
