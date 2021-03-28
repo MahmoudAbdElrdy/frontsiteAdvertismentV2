@@ -29,7 +29,7 @@ export class UserServicesComponent extends BaseComponent implements OnInit {
   ServicesDto: Services[]=[];
   paid: PaidServicesDto[]=[];
   AddPaidServicesCommand:AddPaidServicesCommand={} as AddPaidServicesCommand;
-  constructor(private formBuilder: FormBuilder, private route: Router, private activatedRoute: ActivatedRoute
+  constructor(private formBuilder: FormBuilder, private url: Router, private activatedRoute: ActivatedRoute
    , private _formBuilder: FormBuilder, 
     public dialog: MatDialog,
     private CitiesService :CitiesServiceProxy,
@@ -76,9 +76,9 @@ export class UserServicesComponent extends BaseComponent implements OnInit {
           
         });
        // this.router.navigateByUrl('/');
-      //  this.router.navigateByUrl(
-      //   '/ads/UserServices'
-      // );
+       this.url.navigateByUrl(
+        '/account/my-ads'
+      );
        
       
       }

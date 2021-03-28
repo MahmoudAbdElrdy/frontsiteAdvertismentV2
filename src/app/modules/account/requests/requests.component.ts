@@ -16,55 +16,10 @@ import { AppConsts } from 'src/AppConsts';
 })
 export class RequestsComponent  implements OnInit {
   public adsImagesPath = 'assets/img/ads/';
-  // public myRequests = [
-  //   {
-  //     id: 1,
-  //     requestNO: 584871,
-  //     title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-  //     image: 'ads1.png',
-  //     description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-  //     price: 3200,
-  //     owner: 'مصطفي خالد',
-  //     badge: 'قابل للمزايدة',
-  //     date: new Date()
-  //   },
-  //   {
-  //     id: 2,
-  //     requestNO: 584872,
-  //     title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-  //     image: 'ads2.png',
-  //     description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-  //     price: 4300,
-  //     owner: 'السيد حسان',
-  //     badge: '',
-  //     date: new Date()
-  //   },
-  //   {
-  //     id: 3,
-  //     requestNO: 584873,
-  //     title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-  //     image: 'ads3.png',
-  //     description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-  //     price: 6000,
-  //     owner: 'طاهر الطاهر',
-  //     badge: '',
-  //     date: new Date()
-  //   },
-  //   {
-  //     id: 4,
-  //     requestNO: 584874,
-  //     title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-  //     image: 'ads4.png',
-  //     description: 'رفوف كامله دهان كتروستاتيك معالج ضد الصدا حمولة الرف 80 كيلو',
-  //     price: 2200,
-  //     owner: 'سالم السالم',
-  //     badge: 'قابل للمزايدة',
-  //     date: new Date()
-  //   }
-  // ];
+  GetMyAds:GetMyAds=new GetMyAds();
+
 
   myAdsList:AdsDto[];
-  GetMyAds:GetMyAds=new GetMyAds();
   myRequests: AdsDto[];
   baseUrlImage = AppConsts.baseUrlImage;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
@@ -85,7 +40,7 @@ LoadData() {
      .pipe(
        startWith({}),
        switchMap(() => {
-         return this.Service.getMyAds(this.GetMySpaces)
+         return this.Service.getMyAds(this.GetMyAds)
        }),
        map((data) => {
         debugger
@@ -101,6 +56,9 @@ LoadData() {
        console.log(this.myAdsList);
      });
  }
+  GetMySpaces(GetMySpaces: any): import("rxjs").Observable<AdsDto[]> {
+    throw new Error('Method not implemented.');
+  }
   ngOnInit() {
   }
   goToDetails(id: number) {

@@ -26,18 +26,18 @@ export class MyAdsComponent implements OnInit {
   List: AdvertisementDtoPageList[];
   dataSource: MatTableDataSource<any>;
   popUpDeleteUserResponse: any;
-    resultsLength = 0;
-    displayedColumns: string[] = ['id', 'adTitle', 'clientName', 'fromDate', 'toDate'];
+  resultsLength = 0;
+  displayedColumns: string[] = ['id', 'adTitle', 'clientName', 'fromDate', 'toDate'];
 
- // displayedColumns: string[] = ['id', 'vendorName', 'title', 'adType', 'cityName', 'price', 'fromDate', 'toDate', 'image', 'actions'];
+  // displayedColumns: string[] = ['id', 'vendorName', 'title', 'adType', 'cityName', 'price', 'fromDate', 'toDate', 'image', 'actions'];
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   close: any;
-  length=0;
-  subscriptions: Subscription[]=[];
-  myAdsList:any;
-  getMySpaces:GetMySpaces=new GetMySpaces();
-  GetAdIntervals:GetAdIntervals=new GetAdIntervals();
+  length = 0;
+  subscriptions: Subscription[] = [];
+  myAdsList: any;
+  getMySpaces: GetMySpaces = new GetMySpaces();
+  GetAdIntervals: GetAdIntervals = new GetAdIntervals();
   baseUrlImage = AppConsts.baseUrlImage;
   isReject: any;
   Intervals: any;
@@ -50,7 +50,7 @@ export class MyAdsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.LoadData();
+    this.LoadData();    
   }
   ngOnInit(): void {
   }
@@ -60,7 +60,7 @@ export class MyAdsComponent implements OnInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          return this.Service.getMySpaces(this.GetMyAds)
+          return this.Service.getMySpaces(this.getMySpaces)
         }),
         map((data) => {
           debugger
@@ -80,15 +80,15 @@ export class MyAdsComponent implements OnInit {
     e.stopPropagation();
     this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
   }
-  LoadIntervals(oneAds){
+  LoadIntervals(oneAds) {
     debugger
-this.GetAdIntervals.adId=oneAds.id;
-    return this.Service.getAdIntervals(this.GetAdIntervals).subscribe(res=>{
-      this.Intervals=res;
+    this.GetAdIntervals.adId = oneAds.id;
+    return this.Service.getAdIntervals(this.GetAdIntervals).subscribe(res => {
+      this.Intervals = res;
       console.log(this.Intervals)
     })
-   
-    
+
+
   }
   goToDetails(id: number) {
     // this.router.navigate(["/lookups/Advertisements-Details", id]);
@@ -103,7 +103,7 @@ this.GetAdIntervals.adId=oneAds.id;
     );
   }
   Reject(el) {
-    el.rejected= !el.rejected;
+    el.rejected = !el.rejected;
     this.Service.disableAdvertisement(el.rejected, el.spaceId).subscribe(res => {
       if (res.rejected == true) {
         this._snackBar.open("تم التفعيل بنجاح", "التفعيل", {
@@ -124,7 +124,7 @@ this.GetAdIntervals.adId=oneAds.id;
 
         });
       }
-      this.isReject=el.rejected;
+      this.isReject = el.rejected;
       this.LoadData();
     })
   }

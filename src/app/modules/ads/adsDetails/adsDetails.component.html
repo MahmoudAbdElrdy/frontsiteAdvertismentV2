@@ -11,56 +11,31 @@
                         matTooltip="{{ 'clickFor' | translate }} {{'rateAds' | translate}}"
                         matTooltipPosition="above"><span><i class="fa fa-star-half-o" aria-hidden="true"></i></span>
                         4.5</button>
-                    <p class="price primary-font-color">{{AdvertisementDetailDto?.price}} {{ 'SAR' | translate }} 
-                        <!-- <small *ngIf="AdvertisementDetailDto?.isAuction" class="border border-info rounded p-1">{{ 'negotiable' | translate }} </small></p> -->
-                    <form (ngSubmit)="submitAuctionForm()" [formGroup]="auctionFormGroup">
-                        <!-- <div class="row">
-                            <div class="form-group col-md-8">
-                                <div class="input-group mt-3">
-                                    <mat-form-field *ngIf="AdvertisementDetailDto?.isAuction"  appearance="fill" class="w-100">
-                                        <input matInput  type="password" placeholder="{{'enter' | translate }} {{'auctionPrice' | translate }}" formControlName="auctionPrice">
-                                        <mat-error *ngIf="auctionFormGroup.controls.auctionPrice.errors?.required" class="mat-error">
-                                            {{ 'auctionPrice' | translate }} {{ 'isrequired' | translate }}
-                                        </mat-error>
-                                    </mat-form-field>
-                                    <button *ngIf="AdvertisementDetailDto?.isAuction" type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
-                                </div>
-                            </div>
-                        </div> -->
+                    <p class="price primary-font-color">{{AdvertisementDetailDto?.price}} {{ 'SAR' | translate }}
+                    <form (ngSubmit)="submitAuctionForm()" [formGroup]="auctionFormGroup">                       
                     </form>
-                    <hr />
-                    <!-- <p class="timer mb-2"> {{ 'auctionEndTime' | translate }} <span class="badge bg-success p-2">01 : 03
-                            : 45 : 22</span></p> -->
-                    <!-- <p class="quantity"> {{ 'quantity' | translate }} 10</p> -->
-                    <!-- <h3>عرض الاعلان</h3>
-                    <p class="text-start">من تاريخ :{{AdvertisementDetailDto?.adIntervalFromDate|date}}</p>
-                    <p class="text-start">الي تاريخ:{{AdvertisementDetailDto?.adIntervalToDate|date}}</p>
-                    <br> -->
+                    <hr />                    
                     <h3>حجز الاعلان</h3>
-                    <div  class="form-group col-md-6">
-                        <div class="form-row">
-                            <mat-form-field>
-                                <input matInput [matDatepicker]="picker1" placeholder="من تاريخ" [matDatepickerFilter]="dateFilterFn" [(ngModel)]="ApplyForAdvertisementCommand.fromDate">
+                    <div class="form-row position-relative mt-6">
+                        <div class="form-group col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [matDatepicker]="picker1" placeholder="من تاريخ"
+                                    [matDatepickerFilter]="dateFilterFn"
+                                    [(ngModel)]="ApplyForAdvertisementCommand.fromDate">
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
-                              </mat-form-field>
-                              
+                            </mat-form-field>
                         </div>
-                        <div class="form-row">
-                            <mat-form-field>
-                                <input matInput [matDatepicker]="picker2" placeholder="الي تاريخ" [matDatepickerFilter]="dateFilterFn" [(ngModel)]="ApplyForAdvertisementCommand.toDate">
+                        <div class="form-group col-md-6">
+                            <mat-form-field  appearance="outline" class="w-100">
+                                <input matInput [matDatepicker]="picker2" placeholder="الي تاريخ"
+                                    [matDatepickerFilter]="dateFilterFn"
+                                    [(ngModel)]="ApplyForAdvertisementCommand.toDate">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
-                              </mat-form-field>
-                              
+                            </mat-form-field>
                         </div>
-                        <!-- <div *ngIf="AdvertisementDetailDto?.adCategory==2" class="form-row">
-                            <mat-form-field>
-                                <input matInput  placeholder="عدد مرات"  [(ngModel)]="ApplyForAdvertisementCommand.numberOfShowTimes">
-                                    </mat-form-field>
-                              
-                        </div> -->
-                    </div>
+                      </div>                   
                     <hr />
 
                     <div class="actions">

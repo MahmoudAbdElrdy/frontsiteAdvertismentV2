@@ -85,6 +85,7 @@
   "invoice": "الفاتورة",
   "requestSuccessMsg": "تم إرسال طلبك بنجاح",
   "youCanRequestServiceProvider": "يمكنك طلب مقدم خدمة",
+  "AddService":"اضافة الخدمة",
   "selectServiceProviderType": "يرجى إختيار نوع مقدم الخدمة",
   "confirm": "تأكيد",  
   "next": "التالي",

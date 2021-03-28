@@ -88,6 +88,7 @@
   "selectServiceProviderType": "Please select the type of service provider",
   "confirm": "Confirm",
   "next": "Next",
+  "AddService":"Add Service",
   "prev": "Previous",
   "cancel": "Cancel",
   "commercialRegister": "Commercial Register",

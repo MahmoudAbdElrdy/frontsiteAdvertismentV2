@@ -1,59 +1,71 @@
-<div class="service-provider-request-form">
-    <h5 class="text-center text-success">{{ 'youCanRequestServiceProvider' | translate }}</h5>
-    <div class="row">
-        <table  class="table">
-            <tr>
-              <th>مقدم الخدمة</th>
-              <th>اسم الخدمة</th>
-             
-            </tr>
-              <tr *ngFor="let d of fieldArray let i = index" > <!--each row id == id-->
-                  <td>{{ d.ProviderName }}</td>
-                  <td>{{ d.ServiceName }}</td>
-                 
-                  <button style="margin-left: 20px;" id="remove" (click)="deleteFieldValue(i)">حذف</button>
-              </tr>
-          </table> 
-        
+<div class="container">
+    <div class="service-provider-request-form">
+        <h5 class="text-center text-success">{{ 'youCanRequestServiceProvider' | translate }}</h5>
+        <div class="row">
+            <div class="col-md-12">
+                <form (ngSubmit)="submitServiceProviderRequest()" [formGroup]="serviceProviderRequestForm">
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="text-center primary-font-color w-100">{{ 'selectServiceProviderType' |
+                                    translate}}</label>
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-select name="serviceId" placeholder="اختار خدمة"
+                                        (selectionChange)="Change($event)" [(ngModel)]="selectedService"
+                                        formControlName="services">
+                                        <mat-option *ngFor="let service of services" [value]="service.id">
+                                            {{service.name.ar}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 text-start">
+                            <mat-radio-group aria-label="Select an option" class="d-block text-center"
+                                formControlName="provider">
+                                <mat-radio-button *ngFor="let Provider of servicerProvider"
+                                    (change)="changeRadioValue(Provider)" [value]="Provider.id">
+                                    <div class="text-success">{{Provider.userName}}</div>
+                                    <div class="primary-font-color">{{Provider.price}} {{'SAR' | translate }}</div>
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary  text-center" [disabled]="fieldArray.length==0"
+                                style="width: 48%;">{{'confirm' | translate }}</button>
+                            <button type="button" class="btn btn-info text-center" (click)="addFieldValue()"
+                                style="width: 48%; margin-right: 50px;">{{'AddService' | translate }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12">
+                <table class="table">
+                    <tr>
+                        <th class="text-center">مقدم الخدمة</th>
+                        <th class="text-center">اسم الخدمة</th>
+                        <th class="text-center">العمليات</th>
+
+
+                    </tr>
+                    <tr *ngFor="let d of fieldArray let i = index">
+                        <!--each row id == id-->
+                        <td class="text-center">{{ d.ProviderName }}</td>
+                        <td class="text-center">{{ d.ServiceName }}</td>
+                        <td class="text-center">
+                            <button mat-icon-button color="warn" class="btn btn-danger" aria-label="delete icon" #tooltip="matTooltip" matTooltip="حذف" (click)="deleteFieldValue(i)">
+                                <span class="material-icons">delete_forever</span>
+                              </button>
+                           
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
-    <form (ngSubmit)="submitServiceProviderRequest()"  [formGroup]="serviceProviderRequestForm">
-      
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="form-group col-md-4">
-                <label class="text-center primary-font-color w-100">{{ 'selectServiceProviderType' | translate }}</label>
-                <mat-form-field appearance="fill" class="w-100">
-                    <mat-select name="serviceId" placeholder="اختار خدمة" (selectionChange)="Change($event)" [(ngModel)]="selectedService" formControlName="services">
-                        <mat-option  *ngFor="let service of services" [value]="service.id">
-                            {{service.name.ar}}
-                        </mat-option>
-                    </mat-select>
-                    
-                    <mat-error *ngIf="serviceProviderRequestForm.controls.services.errors?.required" class="mat-error">
-                        {{ 'selectServiceProviderType' | translate }} {{ 'isrequired' | translate }}
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4"></div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-12 text-start">
-                <mat-radio-group aria-label="Select an option"   class="d-block text-center" formControlName="provider">
-                    <!-- <mat-radio-button value="1">
-                        <div>ياسر محمود</div>
-                        <div class="text-success">تركيب لوحات</div>
-                        <div class="primary-font-color">200 {{'SAR' | translate }}</div>
-                    </mat-radio-button> -->
-                    <mat-radio-button  *ngFor="let Provider of servicerProvider" (change)="changeRadioValue(Provider)"  [value]="Provider.id">
-                       
-                        <div class="text-success" >{{Provider.userName}}</div>
-                        <div class="primary-font-color">{{Provider.price}} {{'SAR' | translate }}</div>
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
-            <button class="btn btn-default" type="button" (click)="addFieldValue()">اضافة</button>
-<br>
-            <button type="submit" class="btn btn-primary w-50 text-center">{{'confirm' | translate }}</button>
-        </div>
-    </form>
 </div>
