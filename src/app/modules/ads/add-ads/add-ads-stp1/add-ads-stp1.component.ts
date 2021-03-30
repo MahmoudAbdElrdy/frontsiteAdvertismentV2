@@ -71,6 +71,7 @@ export class AddAdsStp1Component  implements OnInit {
 Check(){
   this.Autuser.isUserHasCommercialRecord(this.IsUserHasCommercialRecordCommand)
   .subscribe(res=>{
+    debugger
     if(res){
        let adsStep1Data = {
       firstFormGroup: this.firstFormGroup.value
@@ -79,6 +80,13 @@ Check(){
     console.log(adsStep1Data);
     this.next.emit(adsStep1Data);
     }
+    else
+    {
+      // this._snackBar.open(" يجب اضافة السجل لاستكمال الاعلان","الاضافة",{
+      //   duration: 2220,
+        
+      // });
+    } 
   })
 }
   
@@ -140,7 +148,7 @@ Check(){
           firstFormGroup: this.firstFormGroup.value
         }
     
-        console.log(adsStep1Data);
+       
         this.next.emit(adsStep1Data);
         
         }
@@ -154,15 +162,14 @@ Check(){
      
       })
     }
-    else{
-      let adsStep1Data = {
-        firstFormGroup: this.firstFormGroup.value
-      }
-  
-      console.log(adsStep1Data);
-      this.next.emit(adsStep1Data);
-    }
-  
+    else
+    {
+      this._snackBar.open(" يجب اضافة السجل لاستكمال الاعلان","الاضافة",{
+        duration: 2220,
+        
+      });
+    } 
+    
     
   }
 }
