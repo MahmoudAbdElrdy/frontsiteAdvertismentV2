@@ -51,7 +51,7 @@
                                 (click)="addToFavorite($event, oneAds)"><i class="fa fa-heart"
                                     aria-hidden="true"></i></button>
                                      
-                            <img mat-card-image  [src]="baseUrlImage+oneAds.images[0]+'?w=100&h=100'" [alt]="oneAds.title">
+                            <img mat-card-image  [src]="baseUrlImage+oneAds.images[0]+'?w=300&h=300'" [alt]="oneAds.title">
                             <mat-card-content (click)="goToDetails(oneAds.id)" class="text-start">
                                 <h4>{{ oneAds.title | slice:0:80 }} </h4>
                                 <p class="ads-desc">{{ oneAds.description }}</p>
@@ -72,7 +72,7 @@
     </div>
 </section>
 
-<section class="mt-6" id="beMemberSection">
+<section class="mt-6" id="beMemberSection" *ngIf=!isLogin()>
     <div class="container main-raduis">
         <div class="row d-flex h-100 align-items-center">
             <div class="col-md-12 mb-3">
