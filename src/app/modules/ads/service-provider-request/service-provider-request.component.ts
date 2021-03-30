@@ -124,7 +124,7 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
 
           });
 
-
+          this.route.navigateByUrl('/account/requests');
         }
         else {
           this._snackBar.open("حدث خطأ عند الاضافة", "الاضافة", {
