@@ -62,9 +62,9 @@ LoadData() {
   ngOnInit() {
   }
   goToDetails(id: number) {
-    this.router.navigateByUrl(
-      '/ads/ads-details?id=' + id
-    );
+    // this.router.navigateByUrl(
+    //   '/ads/ads-details?id=' + id
+    // );
   }
   openSubmitComplaintDialog(ad) {
     const dialogRef = this.dialog.open(SubmitComplaintComponent, {

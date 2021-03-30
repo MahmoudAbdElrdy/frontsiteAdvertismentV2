@@ -3,7 +3,6 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
