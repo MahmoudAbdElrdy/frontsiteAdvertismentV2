@@ -144,7 +144,49 @@ this.SearchService.SearchAdvertisementCommand.adCategoryies=new Array<AdCategory
       console.log(`Dialog result: ${result}`);
     });
   }
+  openAds(){
+   
+    if(!this.isAuthenticated){
+this.openLoginDialog();
+    }
+    else{
+      this.router.navigateByUrl(
+        '/ads/add-ads' 
+      );
+    }
+  }
+  opennotifications(){
+    if(!this.isAuthenticated){
+      this.openLoginDialog();
+          }
+          else{
+            this.router.navigateByUrl(
+              '/account/notifications' 
+            );
+          }
+  }
+  openfavorites(){
+    if(!this.isAuthenticated){
+      this.openLoginDialog();
+          }
+          else{
+            this.router.navigateByUrl(
+              '/account/favorites' 
+            );
+          }
+  }
+  openmyads(){
+    if(!this.isAuthenticated){
+      this.openLoginDialog();
+          }
+          else{
+            this.router.navigateByUrl(
+              '/ads/add-ads' 
+            );
+          }
+  }
   search(){
+    debugger
     this.SearchService.SearchAdvertisementCommand.cityId.push(this.cityId);
     this.SearchService.SearchAdvertisementCommand.countryId.push(this.countryid);
     this.SearchService.SearchAdvertisementCommand.title=this.searchProduct;

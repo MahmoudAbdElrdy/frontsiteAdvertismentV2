@@ -252,6 +252,9 @@ Model=new CreateAdvertisementCommand;
       this.secondFormGroup.removeControl('countryId');
       let formArray = this.secondFormGroup.controls['images'] as FormArray;
       formArray.patchValue(this.imageInfo2.map(x=>x.imageUrl));
+      if(this.imageInfo2.length<0){
+        
+      }
      if( this.secondFormGroup.value.isAuction==true||this.secondFormGroup.value.isAuction==null){
       this.secondFormGroup.value.isAuction=0;
       this.secondFormGroup.value.auctionDays=0;
