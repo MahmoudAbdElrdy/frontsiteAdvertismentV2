@@ -23,6 +23,10 @@
                         </div>
 
                     </div>
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-info text-center" (click)="dohome()"
+                        style="width: 48%; margin-right: 50px;">تخطي</button>    
+                    </div>
                     <div class="row">
                         <div class="form-group col-md-12 text-start">
                             <mat-radio-group aria-label="Select an option" class="d-block text-center"
@@ -39,7 +43,10 @@
                                 style="width: 48%;">{{'confirm' | translate }}</button>
                             <button type="button" class="btn btn-info text-center" (click)="addFieldValue()"
                                 style="width: 48%; margin-right: 50px;">{{'AddService' | translate }}</button>
+                               
                         </div>
+                       
+                        
                     </div>
                 </form>
             </div>

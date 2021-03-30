@@ -4,7 +4,7 @@
             <div class="col-md-6 d-flex pointer-cursor" (click)="goToEdit(oneAds.id)">
                 <div class="m-1"><img  [src]="baseUrlImage+oneAds.images[0]+'?w=100&h=100'" style="max-height: 100px;max-width: 150px;" class="img-fluid" [alt]="oneAds.title"></div>
                 <div class="m-1">
-                    <p class="date">{{ oneAds.fromDate | date: 'shortTime' }} - {{oneAds.fromDate | date: 'shortDate' }} </p>
+                    <!-- <p class="date">{{ oneAds.fromDate | date: 'shortTime' }} - {{oneAds.fromDate | date: 'shortDate' }} </p> -->
                     <h4>{{ oneAds.title | slice:0:80 }} </h4>
                     <p class="ads-desc">{{ oneAds.description }}</p>
                 </div>
