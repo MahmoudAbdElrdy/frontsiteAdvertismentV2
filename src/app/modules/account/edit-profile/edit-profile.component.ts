@@ -148,7 +148,6 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
     }
   }
   removeAttachments2(e) {
-    ;
     this.ProfileImage.splice(e, 1)
   }
 }

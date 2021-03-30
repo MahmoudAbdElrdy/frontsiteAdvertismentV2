@@ -3,9 +3,9 @@ export class AppConsts {
     static remoteServiceBaseUrl: string;
     static appBaseUrl: string;
     static appBaseHref: string; // returns angular's base-href parameter value if used during the publish
-    static baseUrl = "http://localhost:5000"; 
+    static baseUrl = "http://assemebaid5-001-site1.ctempurl.com"; 
     static localeMappings: any = [];
-    static baseUrlImage = "http://localhost:5000/"; 
+    static baseUrlImage = "http://assemebaid5-001-site1.ctempurl.com/"; 
     static readonly userManagement = {
         defaultAdminUserName: 'admin'
     };

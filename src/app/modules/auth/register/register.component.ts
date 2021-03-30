@@ -114,6 +114,9 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
+  removeAttachments2(e) {
+    this.ProfileImage.splice(e, 1)
+  }
   processDataFile2(fileInput: any) {
     this.file2 = []
     this.file2 = fileInput.files;

@@ -20,7 +20,7 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
   services = [
 
   ];
-  private fieldArray: Array<any> = [];
+  public fieldArray: Array<any> = [];
   private newAttribute: any = {};
   selectedService = 1;
   ServiceTypeList: ServiceTypeDto[];
