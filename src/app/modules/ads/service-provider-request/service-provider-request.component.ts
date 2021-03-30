@@ -136,5 +136,9 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
       })
     //this.submitted = true;
   }
-
+  dohome(){
+ 
+    this.route.navigateByUrl('/pages/home');
+   
+  }
 }

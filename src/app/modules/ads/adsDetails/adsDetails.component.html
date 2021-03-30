@@ -21,6 +21,7 @@
                             <mat-form-field appearance="outline" class="w-100">
                                 <input matInput [matDatepicker]="picker1" placeholder="من تاريخ"
                                     [matDatepickerFilter]="dateFilterFn"
+                                    required 
                                     [(ngModel)]="ApplyForAdvertisementCommand.fromDate">
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
@@ -30,6 +31,7 @@
                             <mat-form-field  appearance="outline" class="w-100">
                                 <input matInput [matDatepicker]="picker2" placeholder="الي تاريخ"
                                     [matDatepickerFilter]="dateFilterFn"
+                                    required 
                                     [(ngModel)]="ApplyForAdvertisementCommand.toDate">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
@@ -40,12 +42,16 @@
 
                     <div class="actions">
                         <!-- routerLink="/ads/send-request" -->
-                        <a href="javascript:;" class="btn btn-primary m-2" routerLink="/ads/ServiceProviderRequest"><i
+                        <button href="javascript:;" class="btn btn-primary m-2"  (click)="SendRequest()"><i
                                 class="fa fa-paper-plane" aria-hidden="true"></i>
-                            {{'sendRequest' | translate}}</a>
+                            {{'sendRequest' | translate}}</button>
+                            <button type="button" class="btn btn-dark m-2" (click)="dohome()"><i
+                                class="fa" aria-hidden="true"></i>
+                           عودة للصفحة الرئسية</button>
                         <button type="button" class="btn btn-dark m-2" (click)="openAdsLocationDialog()"><i
                                 class="fa fa-map-marker" aria-hidden="true"></i>
                             {{'goToLocation' | translate}}</button>
+                            
                     </div>
                 </div>
                 <div class="col-md-12 mt-3">

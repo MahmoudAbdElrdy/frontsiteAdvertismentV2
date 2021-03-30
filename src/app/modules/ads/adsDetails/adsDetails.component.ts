@@ -10,6 +10,7 @@ import { GoToLocationComponent } from '../go-to-location/go-to-location.componen
 import {  AdsDto, AdvertisementServiceProxy, ApplyForAdvertisementCommand, SpaceInfoDto } from 'src/shared/service-proxies/service-proxies';
 import { ModelServiceService } from 'src/app/shared/model-service.service';
 import { AppConsts } from 'src/AppConsts';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-adsDetails',
@@ -34,6 +35,7 @@ export class AdsDetailsComponent implements OnInit {
   public relatedAdsList = [
   
   ];
+  disableBtn:false;
   id: any;
 AdvertisementDetailDto:SpaceInfoDto;
 AdDto:AdsDto[];
@@ -46,7 +48,7 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
     private route: Router,private activatedRoute: ActivatedRoute,
-    private Service: AdvertisementServiceProxy,private ModelServiceService:ModelServiceService
+    private Service: AdvertisementServiceProxy,private ModelServiceService:ModelServiceService,private _snackBar: MatSnackBar,
   ) {
 
   }
@@ -144,7 +146,43 @@ debugger
       console.log(`Dialog result: ${result}`);
     });
   }
+SendRequest(){
+  ///ads/ServiceProviderRequest
+  debugger
+  if(this.ApplyForAdvertisementCommand.fromDate===null||this.ApplyForAdvertisementCommand.fromDate===undefined){
+    
+         this._snackBar.open(" يجب اضافة التاريخ  ","التاريخ",{
+        duration: 2220,
+        
+      });
+        return;
+    
+  }
+  if(this.ApplyForAdvertisementCommand.toDate===null||this.ApplyForAdvertisementCommand.toDate===undefined){
+    
+    this._snackBar.open(" يجب اضافة التاريخ  ","التاريخ",{
+   duration: 2660,
+   
+ });
+   return;
 
+}
+if(this.ApplyForAdvertisementCommand.fromDate>=this.ApplyForAdvertisementCommand.toDate){
+  this._snackBar.open(" يجب التاريخ من اصغر من الي   ","التاريخ",{
+    duration: 2660,
+    
+  });
+    return;
+}
+  this.route.navigateByUrl(
+    '/ads/ServiceProviderRequest' 
+  );
+}
+dohome(){
+ 
+  this.route.navigateByUrl('/pages/home');
+ 
+}
   openAdsLocationDialog() {
     const dialogRef = this.dialog.open(GoToLocationComponent, {
       width: '70%'
