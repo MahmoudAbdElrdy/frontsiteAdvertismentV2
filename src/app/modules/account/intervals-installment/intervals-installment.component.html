@@ -1,0 +1,19 @@
+<h2 style="text-align: center;">الاقساط</h2>
+<div class="col-md-12">
+    <table class="table">
+        <tr>
+            <th class="text-center">الكمية</th>
+            <th class="text-center">التاريخ</th>
+            <th class="text-center">مدفوع</th>
+         
+        </tr>
+        <tr *ngFor="let d of Intervals let i = index">
+            <!--each row id == id-->
+            <td class="text-center">{{ d?.amount }}</td>
+            <td class="text-center">{{ d?.dueDate|date }}</td>
+            <td class="text-center">{{ d?.isPaid}}</td>
+          
+        
+        </tr>
+    </table>
+</div>

@@ -40,6 +40,8 @@ import { ReplyComplaintComponent } from './reply-complaint/reply-complaint.compo
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { AdvertisementServiceProxy, OrderComplaintServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { ChangePasswordComponent } from '../auth/change-password/change-password.component';
+import { IntervalsComponent } from './intervals/intervals.component';
+import { IntervalsInstallmentComponent } from './intervals-installment/intervals-installment.component';
 
 
 registerLocaleData(localeAr);
@@ -58,7 +60,9 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     RequestsComponent,
     ReceivedComplaintsComponent,
     EditProfileComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    IntervalsComponent,
+    IntervalsInstallmentComponent
   ],
   imports: [
     CommonModule,

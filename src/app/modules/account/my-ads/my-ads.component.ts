@@ -82,12 +82,10 @@ export class MyAdsComponent implements OnInit {
   }
   LoadIntervals(oneAds) {
     debugger
-    this.GetAdIntervals.adId = oneAds.id;
-    return this.Service.getAdIntervals(this.GetAdIntervals).subscribe(res => {
-      this.Intervals = res;
-      console.log(this.Intervals)
-    })
-
+ 
+    this.router.navigateByUrl(
+      '/account/ads-Intervals?id=' + oneAds.id
+    );
 
   }
   goToDetails(id: number) {
