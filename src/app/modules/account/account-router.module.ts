@@ -10,6 +10,8 @@ import { MyAdsComponent } from './my-ads/my-ads.component';
 import { RequestsComponent } from './requests/requests.component';
 import { ReceivedComplaintsComponent } from './received-complaints/received-complaints.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { IntervalsComponent } from './intervals/intervals.component';
+import { IntervalsInstallmentComponent } from './intervals-installment/intervals-installment.component';
 
 const routes: Routes = [
     {
@@ -43,6 +45,15 @@ const routes: Routes = [
             {
                 path: 'edit-profile',
                 component: EditProfileComponent,
+            },
+            {
+             path:'ads-Intervals',
+             component:IntervalsComponent
+            }
+            ,
+            {
+             path:'ads-IntervalsInstallment',
+             component:IntervalsInstallmentComponent
             }
         ],
     },

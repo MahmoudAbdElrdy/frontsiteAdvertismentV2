@@ -621,6 +621,126 @@ export class AdvertisementServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    getMyService(body: GetMyServiceCommand | undefined): Observable<PaidServicesDto[]> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-my-service";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyService(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyService(<any>response_);
+                } catch (e) {
+                    return <Observable<PaidServicesDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PaidServicesDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMyService(response: HttpResponseBase): Observable<PaidServicesDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PaidServicesDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaidServicesDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getAdServices(body: GetAdServicesCommand | undefined): Observable<PaidServicesOfAdDto[]> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-ad-services";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAdServices(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAdServices(<any>response_);
+                } catch (e) {
+                    return <Observable<PaidServicesOfAdDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PaidServicesOfAdDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAdServices(response: HttpResponseBase): Observable<PaidServicesOfAdDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PaidServicesOfAdDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaidServicesOfAdDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     editAdvertisement(body: EditAdvertisementCommand | undefined): Observable<AdvertisementDto> {
         let url_ = this.baseUrl + "/api/Advertisement/edit-Advertisement";
         url_ = url_.replace(/[?&]$/, "");
@@ -1273,6 +1393,66 @@ export class AdvertisementServiceProxy {
             }));
         }
         return _observableOf<AdsDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getAdIntervalsInstallment(body: GetAdIntervalInstallments | undefined): Observable<AdIntervalInstallmentDto[]> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-ad-intervalsInstallment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAdIntervalsInstallment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAdIntervalsInstallment(<any>response_);
+                } catch (e) {
+                    return <Observable<AdIntervalInstallmentDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdIntervalInstallmentDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAdIntervalsInstallment(response: HttpResponseBase): Observable<AdIntervalInstallmentDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AdIntervalInstallmentDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdIntervalInstallmentDto[]>(<any>null);
     }
 
     /**
@@ -4591,6 +4771,73 @@ export class AddPaidServicesCommand {
     }
 }
 
+export class GetMyServiceCommand {
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): GetMyServiceCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMyServiceCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export class GetAdServicesCommand {
+    adIntervalId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.adIntervalId = _data["adIntervalId"];
+        }
+    }
+
+    static fromJS(data: any): GetAdServicesCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAdServicesCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["adIntervalId"] = this.adIntervalId;
+        return data; 
+    }
+}
+
+export class PaidServicesOfAdDto {
+    serviceTypeName?: string | undefined;
+    price?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.serviceTypeName = _data["serviceTypeName"];
+            this.price = _data["price"];
+        }
+    }
+
+    static fromJS(data: any): PaidServicesOfAdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaidServicesOfAdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceTypeName"] = this.serviceTypeName;
+        data["price"] = this.price;
+        return data; 
+    }
+}
+
 export class EditAdvertisementCommand {
     id?: string | undefined;
     images?: string[] | undefined;
@@ -5167,6 +5414,61 @@ export class GetMyFavourite {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export class GetAdIntervalInstallments {
+    adIntervalId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.adIntervalId = _data["adIntervalId"];
+        }
+    }
+
+    static fromJS(data: any): GetAdIntervalInstallments {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAdIntervalInstallments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["adIntervalId"] = this.adIntervalId;
+        return data; 
+    }
+}
+
+export class AdIntervalInstallmentDto {
+    id?: string | undefined;
+    amount?: number;
+    isPaid?: boolean;
+    dueDate?: Date;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.amount = _data["amount"];
+            this.isPaid = _data["isPaid"];
+            this.dueDate = _data["dueDate"] ? new Date(_data["dueDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): AdIntervalInstallmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AdIntervalInstallmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["amount"] = this.amount;
+        data["isPaid"] = this.isPaid;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         return data; 
     }
 }

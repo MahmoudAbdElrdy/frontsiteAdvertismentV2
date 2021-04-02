@@ -51,7 +51,8 @@ const routes: Routes = [
             {
                 path: 'edit-ads',
                 component:EditAdsComponent
-            }
+            },
+            
             //edit-ads
         ],
     },

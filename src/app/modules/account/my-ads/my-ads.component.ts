@@ -78,7 +78,15 @@ export class MyAdsComponent implements OnInit {
   addToFavorite(e, indx) {
     e.stopPropagation();
     this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
-  }  
+  }
+  LoadIntervals(oneAds) {
+    debugger
+ 
+    this.router.navigateByUrl(
+      '/account/ads-Intervals?id=' + oneAds.id
+    );
+
+  }
   goToDetails(id: number) {
     // this.router.navigate(["/lookups/Advertisements-Details", id]);
     this.router.navigateByUrl(

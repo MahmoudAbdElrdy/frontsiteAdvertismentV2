@@ -1,0 +1,60 @@
+ <!-- <div id="opening">
+    <table  mat-table *ngIf="Intervals!==null" [dataSource]="Intervals" matSort class="w-100">
+
+        <ng-container hidden matColumnDef="id">
+          <th hidden mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+          <td hidden mat-cell *matCellDef="let row"> {{row?.id}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="adTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>عنوان الاعلان </th>
+            <td mat-cell *matCellDef="let row"> {{row?.adTitle}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="clientName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  اسم المشترك </th>
+            <td mat-cell *matCellDef="let row"> {{row?.clientName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="fromDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  تاريخ البداية </th>
+            <td mat-cell *matCellDef="let row"> {{row?.fromDate|date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="toDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  تاريخ النهاية </th>
+            <td mat-cell *matCellDef="let row"> {{row?.toDate|date}} </td>
+          </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+</div> -->
+<h2 style="text-align: center;">الفترات</h2>
+<div class="col-md-12">
+    <table class="table">
+        <tr>
+            <th class="text-center">عنوان الاعلان</th>
+            <th class="text-center">اسم المشترك</th>
+            <th class="text-center">تاريخ البداية</th>
+            <th class="text-center">تاريخ النهاية</th>
+            <th class="text-center">العمليات</th>
+
+
+        </tr>
+        <tr *ngFor="let d of Intervals let i = index">
+            <!--each row id == id-->
+            <td class="text-center">{{ d?.adTitle }}</td>
+            <td class="text-center">{{ d?.clientName }}</td>
+            <td class="text-center">{{ d?.fromDate|date }}</td>
+            <td class="text-center">{{ d?.toDate|date }}</td>
+            <td class="text-center">
+                <button mat-icon-button  class="btn btn-secondary"  (click)="goToDetails(d.id)">
+                  الاقساط
+                  </button>
+
+            </td>
+
+        </tr>
+    </table>
+</div>
