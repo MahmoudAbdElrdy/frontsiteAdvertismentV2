@@ -104,7 +104,7 @@ export class MapModalComponent implements OnInit, OnDestroy {
     this.search = value.address;
   }
   closeDialog() {
-    debugger
+    
     this.dialogRef.close({
       latitude: this.latitude,
       longitude: this.longitude,

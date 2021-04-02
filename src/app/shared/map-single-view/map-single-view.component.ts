@@ -82,7 +82,7 @@ export class MapSingleViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    debugger;
+    ;
       this.latitude = +this.latitude;
       this.longitude = +this.longitude;
       this.search = this.address;

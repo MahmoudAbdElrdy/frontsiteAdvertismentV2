@@ -105,7 +105,7 @@ export class OsmSingleViewComponent implements OnInit {
 
   setCurrentLocation() {
     this.geoLocationService.getLocation().subscribe((position) => {
-      debugger;
+      ;
       this.position = position;
       if (!this.dirtyPosition) {
         this.dirtyPosition = true;

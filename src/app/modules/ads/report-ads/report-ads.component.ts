@@ -29,7 +29,7 @@ export class ReportAdsComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(parm => {
-      debugger
+      
        this.AdID = parm['id'];
        this.ServiceAdvertisement.getAdvertisementDetail(this.AdID).subscribe(
         (result) => {
@@ -65,7 +65,7 @@ export class ReportAdsComponent extends BaseComponent implements OnInit {
     this.Service.addAdComplaint(add).subscribe(res => {
       if (res !== null) {
         this.showMessageWithType(0, "تم الابلاغ بنجاح");
-        debugger;
+        ;
         this._snackBar.open("تم الابلاغ بنجاح", " تبليغ عن اعلان", {
           duration: 2220,
         });

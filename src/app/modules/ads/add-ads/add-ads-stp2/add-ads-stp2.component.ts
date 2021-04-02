@@ -85,7 +85,7 @@ Model=new CreateAdvertisementCommand;
   }
  
   ngOnInit() {
-  debugger
+  
   this.LoadServiceTypeList();
     this.LoadCountries();
   
@@ -148,7 +148,7 @@ Model=new CreateAdvertisementCommand;
     
   }
   Change(countryid) {
-    debugger
+    
    this. Loadcities(countryid);
 }
   Loadcities(countryId){
@@ -180,7 +180,7 @@ Model=new CreateAdvertisementCommand;
         let url
         reader.readAsDataURL(element);
         reader.onload = () => {
-          debugger
+          
           url = reader.result.toString();
      
         };
@@ -189,7 +189,7 @@ Model=new CreateAdvertisementCommand;
 
         if (this.imageInfo2.length < 4) {
           setTimeout(() => {
-            debugger;
+            ;
             this.imageInfo2.push({
               imageName: element.name,
               imageSize: size.toString(),
@@ -222,7 +222,7 @@ Model=new CreateAdvertisementCommand;
       width: '70%'
     });
     dialogRef.afterClosed().subscribe(data => {
-      debugger
+      
       console.log('Child component\'s event was triggered', data);
       this.secondFormGroup.get('lat').setValue(data.latitude);
       this.secondFormGroup.get('lng').setValue(data.longitude);
@@ -245,9 +245,9 @@ Model=new CreateAdvertisementCommand;
     return this.secondFormGroup.controls;
   }
   nextstep() {
-   debugger
+   
     if (this.secondFormGroup.valid) {
-      debugger;
+      ;
     
       this.secondFormGroup.removeControl('countryId');
       let formArray = this.secondFormGroup.controls['images'] as FormArray;

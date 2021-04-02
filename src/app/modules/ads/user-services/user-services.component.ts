@@ -60,7 +60,7 @@ export class UserServicesComponent extends BaseComponent implements OnInit {
   }
  
   submituserServices() {
-    debugger;
+    ;
    
    var array=this.services.filter(x=>x.Checked==true);
    this.paid = array.map(function(obj) {

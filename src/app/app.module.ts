@@ -42,6 +42,8 @@ import { API_BASE_URL, AuthServiceProxy } from 'src/shared/service-proxies/servi
 import { InterceptService } from 'src/app/_helpers/intercept.service';
 import { ModelServiceService } from './shared/model-service.service';
 import { SearchService } from './shared/search-service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 export function getApiBaseUrl(): string {
   return AppConfigService.appConfig.MobileBaseURL;
 }
@@ -89,6 +91,8 @@ export function getBaseUrl(): string {
         deps: [HttpClient],
       },
     }),
+
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [AuthServiceProxy,ModelServiceService,SearchService,
     TranslateService,

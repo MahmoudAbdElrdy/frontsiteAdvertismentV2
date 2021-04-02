@@ -65,21 +65,21 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
     })
   }
   Change(id) {
-    debugger
+    
     this.LoadservicerProvider(id.value);
-    debugger
+    
     this.triggerValue = id.source.triggerValue;
     this.servicesId = id.value;
     console.log(id.source.triggerValue)
   }
   changeRadioValue(Provider) {
-    debugger
+    
     this.provider = Provider.userName;
     this.providerId = Provider.id;
     console.log(this.serviceProviderRequestForm.get('provider').value);
   }
   addFieldValue() {
-    debugger
+    
     this.newAttribute.ProviderName = this.provider;
     this.newAttribute.ServiceName = this.triggerValue;
     this.newAttribute.ProviderName = this.provider;
@@ -97,7 +97,7 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
   LoadservicerProvider(id) {
 
     return this.ServiceProxy.getServicesListByTypeId(id).subscribe(res => {
-      debugger
+      
       this.servicerProvider = res;
       console.log(this.servicerProvider)
     })
@@ -113,7 +113,7 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
   }
 
   submitServiceProviderRequest() {
-    debugger
+    
     this.ApplyForAdvertisementCommand = this.ModelServiceService.ApplyForAdvertisementCommand;
     this.ApplyForAdvertisementCommand.servicesIds = this.fieldArray.map(x => x.servicesId);
     this.AdvertisementService.applyForAdvertisement(this.ApplyForAdvertisementCommand).subscribe(

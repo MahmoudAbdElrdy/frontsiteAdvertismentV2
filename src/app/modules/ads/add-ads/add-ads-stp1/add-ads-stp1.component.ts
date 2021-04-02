@@ -71,7 +71,7 @@ export class AddAdsStp1Component  implements OnInit {
 Check(){
   this.Autuser.isUserHasCommercialRecord(this.IsUserHasCommercialRecordCommand)
   .subscribe(res=>{
-    debugger
+    
     if(res){
        let adsStep1Data = {
       firstFormGroup: this.firstFormGroup.value
@@ -129,7 +129,7 @@ Check(){
   }
 
   saveData(){
-    debugger;
+    ;
     let formArray = this.firstFormGroup.controls['commercialRegisterAttachments'] as FormArray;
     formArray.patchValue(this.imageInfo.map(x=>x.imageUrl));
 

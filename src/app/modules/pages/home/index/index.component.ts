@@ -67,7 +67,7 @@ export class IndexComponent implements OnInit {
   getLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        debugger;
+        ;
         this.longitude = position.coords.longitude;
         this.latitude = position.coords.latitude;
         console.log(this.longitude)
@@ -83,13 +83,13 @@ export class IndexComponent implements OnInit {
 
     return this.Service.getTopAds(this.latitude, this.longitude)
       .subscribe(res => {
-        debugger
+        
         this.List = res;
         console.log(res);
       })
   }
   addToFavorite(e, oneAds) {
-    debugger
+    
     this.AddFavouriteCommand.adId = oneAds.adId;
     this.Service.addFavourite(this.AddFavouriteCommand)
       .subscribe(
@@ -139,7 +139,7 @@ export class IndexComponent implements OnInit {
   }
   isLogin()
   {
-    debugger
+    
     return Boolean(localStorage.getItem('isLoggedin'));
   }
 }

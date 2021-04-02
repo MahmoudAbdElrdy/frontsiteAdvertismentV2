@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetAdIntervals, GetMyAds, GetMySpaces } from 'src/shared/service-proxies/service-proxies';
+import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyAds, GetMySpaces } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subscription } from 'rxjs';
@@ -37,7 +37,6 @@ export class MyAdsComponent implements OnInit {
   subscriptions: Subscription[] = [];
   myAdsList: any;
   getMySpaces: GetMySpaces = new GetMySpaces();
-  GetAdIntervals: GetAdIntervals = new GetAdIntervals();
   baseUrlImage = AppConsts.baseUrlImage;
   isReject: any;
   Intervals: any;
@@ -63,7 +62,7 @@ export class MyAdsComponent implements OnInit {
           return this.Service.getMySpaces(this.getMySpaces)
         }),
         map((data) => {
-          debugger
+          
           this.myAdsList = data;
           return this.myAdsList;
         }),
@@ -79,17 +78,7 @@ export class MyAdsComponent implements OnInit {
   addToFavorite(e, indx) {
     e.stopPropagation();
     this.adsList[indx].isFavorite = !this.adsList[indx].isFavorite;
-  }
-  LoadIntervals(oneAds) {
-    debugger
-    this.GetAdIntervals.adId = oneAds.id;
-    return this.Service.getAdIntervals(this.GetAdIntervals).subscribe(res => {
-      this.Intervals = res;
-      console.log(this.Intervals)
-    })
-
-
-  }
+  }  
   goToDetails(id: number) {
     // this.router.navigate(["/lookups/Advertisements-Details", id]);
     this.router.navigateByUrl(

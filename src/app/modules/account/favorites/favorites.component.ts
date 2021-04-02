@@ -67,7 +67,7 @@ export class FavoritesComponent implements OnInit {
   // }
 
   ngOnInit() {
-    //debugger;
+    //;
     // this.homeSliderService
     //   .GetLoadById(0)
     //   .subscribe((data) => {
@@ -79,7 +79,7 @@ export class FavoritesComponent implements OnInit {
   getLocation(): void{
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position)=>{
-          debugger;
+          ;
           this.longitude = position.coords.longitude;
           this.latitude = position.coords.latitude;
           console.log(this.longitude)
@@ -95,12 +95,12 @@ export class FavoritesComponent implements OnInit {
 
     return this.Service.getMyFavourites(this.GetMyFavourite)
     .subscribe(res=>{
-    debugger
+    
       this.List=res;
       console.log(res);
     })}
     addToFavorite(e, oneAds){
-      debugger
+      
   this.AddFavouriteCommand.adId=oneAds.adId;
       this.Service.addFavourite(this.AddFavouriteCommand)
         .subscribe( 

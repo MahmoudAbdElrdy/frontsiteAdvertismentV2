@@ -51,7 +51,7 @@ export class SubmitComplaintComponent extends BaseComponent implements OnInit {
     this.Service.addOrderComplaint(add).subscribe(res => {
       if (res !== null) {
         this.showMessageWithType(0, "تم الابلاغ بنجاح");
-        debugger;
+        ;
         this._snackBar.open("تم الابلاغ بنجاح", " تبليغ عن اعلان", {
           duration: 2220,
         });

@@ -15,12 +15,12 @@ import { ServiceUrls } from '../Common/ServiceUrls';
       this.configuration$ = this.config.settings;
     }
     Register(model: RegisterDto): Observable<BaseResult> {
-        debugger;
+        ;
          let url = this.configuration$.WebApiProxyBaseUrl+ServiceUrls.Register;
          return this.generalService.postData<BaseResult>(url,model);
        }
     // Register(registerDto: RegisterDto): Observable<BaseResult> {
-    //     debugger;
+    //     ;
 
     //      let url = this.configuration$.WebApiBaseUrl;
         

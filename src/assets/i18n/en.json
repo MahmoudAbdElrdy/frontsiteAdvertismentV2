@@ -131,5 +131,7 @@
   "rememberMe": "Remember Me",
   "mobileSentCode": "The code sent to your mobile",
   "auctionPrice": "Auction Price",
-  "adCategory":"Ad Type"
+  "adCategory":"Ad Type",
+  "ads": "ad",
+  "service": "service"
 }

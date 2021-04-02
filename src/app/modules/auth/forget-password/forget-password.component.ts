@@ -48,14 +48,14 @@ export class ForgetPasswordComponent  extends BaseComponent implements OnInit {
   }
 
   SendMobile(){
-    debugger
+    
     if(this.firstFormGroup.valid){      
       console.log('try to submit');    
       
     this.ForgetPassword.username=this.firstFormGroup.value.phoneNumber;
    this.username=this.firstFormGroup.value.phoneNumber;
     this.AuthServiceProxy.forgetPassword(this.ForgetPassword).subscribe((data:Result)=>{
-      debugger;
+      ;
     
       if(data.success != false)
        { 
@@ -80,7 +80,7 @@ export class ForgetPasswordComponent  extends BaseComponent implements OnInit {
        });
        }
      },
-    err=>{debugger;
+    err=>{;
       console.log(err)
       this.showStepper = true;
       this.showSuccessMsg = false;
@@ -97,14 +97,14 @@ export class ForgetPasswordComponent  extends BaseComponent implements OnInit {
     }
   }
   SendCode(){
-    debugger
+    
     if(this.secondFormGroup.valid){      
       console.log('try to submit');    
       
     this.VerifyCodeCommand.username=this.firstFormGroup.value.phoneNumber;
     this.VerifyCodeCommand.code=this.secondFormGroup.value.sentCode;
     this.AuthServiceProxy.verifyCode(this.VerifyCodeCommand).subscribe((data:Result)=>{
-      debugger;
+      ;
     
       if(data.success != false)
        { 
@@ -129,7 +129,7 @@ export class ForgetPasswordComponent  extends BaseComponent implements OnInit {
        });
        }
      },
-    err=>{debugger;
+    err=>{;
       console.log(err)
       this.showStepper = true;
       this.showSuccessMsg = false;
@@ -146,14 +146,14 @@ export class ForgetPasswordComponent  extends BaseComponent implements OnInit {
     }
   }
   SendPassword(){
-    debugger
+    
     if(this.secondFormGroup.valid){      
       console.log('try to submit');    
       
     this.VerifyCodeCommand.username=this.firstFormGroup.value.phoneNumber;
     this.VerifyCodeCommand.code=this.secondFormGroup.value.sentCode;
     this.AuthServiceProxy.changePassword(this.VerifyCodeCommand).subscribe((data:Result)=>{
-      debugger;
+      ;
     
       if(data.success != false)
        { 
@@ -178,7 +178,7 @@ export class ForgetPasswordComponent  extends BaseComponent implements OnInit {
        });
        }
      },
-    err=>{debugger;
+    err=>{;
       console.log(err)
       this.showStepper = true;
       this.showSuccessMsg = false;

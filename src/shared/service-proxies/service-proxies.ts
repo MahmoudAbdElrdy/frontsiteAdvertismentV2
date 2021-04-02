@@ -1339,8 +1339,8 @@ export class AdvertisementServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    getAdIntervals(body: GetAdIntervals | undefined): Observable<AdIntervalsDto[]> {
-        let url_ = this.baseUrl + "/api/Advertisement/get-ad-intervals";
+    getMyServices(body: GetMyServices | undefined): Observable<ServicesDto[]> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-my-services";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1356,20 +1356,20 @@ export class AdvertisementServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAdIntervals(response_);
+            return this.processGetMyServices(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAdIntervals(<any>response_);
+                    return this.processGetMyServices(<any>response_);
                 } catch (e) {
-                    return <Observable<AdIntervalsDto[]>><any>_observableThrow(e);
+                    return <Observable<ServicesDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AdIntervalsDto[]>><any>_observableThrow(response_);
+                return <Observable<ServicesDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAdIntervals(response: HttpResponseBase): Observable<AdIntervalsDto[]> {
+    protected processGetMyServices(response: HttpResponseBase): Observable<ServicesDto[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1383,7 +1383,7 @@ export class AdvertisementServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(AdIntervalsDto.fromJS(item));
+                    result200!.push(ServicesDto.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -1392,7 +1392,7 @@ export class AdvertisementServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AdIntervalsDto[]>(<any>null);
+        return _observableOf<ServicesDto[]>(<any>null);
     }
 }
 
@@ -1859,7 +1859,7 @@ export class AuthServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    isUserHasCommercialRecord(body: IsUserHasCommercialRecordCommand | undefined): Observable<boolean> {
+    isUserHasCommercialRecord(body: IsUserHasCommercialRecordCommand | undefined): Observable<ClientDto> {
         let url_ = this.baseUrl + "/api/Auth/is-user-has-commercial-record";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1882,14 +1882,14 @@ export class AuthServiceProxy {
                 try {
                     return this.processIsUserHasCommercialRecord(<any>response_);
                 } catch (e) {
-                    return <Observable<boolean>><any>_observableThrow(e);
+                    return <Observable<ClientDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<boolean>><any>_observableThrow(response_);
+                return <Observable<ClientDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processIsUserHasCommercialRecord(response: HttpResponseBase): Observable<boolean> {
+    protected processIsUserHasCommercialRecord(response: HttpResponseBase): Observable<ClientDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1900,7 +1900,7 @@ export class AuthServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            result200 = ClientDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1908,7 +1908,7 @@ export class AuthServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<boolean>(<any>null);
+        return _observableOf<ClientDto>(<any>null);
     }
 }
 
@@ -5189,49 +5189,48 @@ export class GetMySpaces {
     }
 }
 
-export class GetAdIntervals {
-    adId?: string | undefined;
+export class GetMyServices {
 
     init(_data?: any) {
-        if (_data) {
-            this.adId = _data["adId"];
-        }
     }
 
-    static fromJS(data: any): GetAdIntervals {
+    static fromJS(data: any): GetMyServices {
         data = typeof data === 'object' ? data : {};
-        let result = new GetAdIntervals();
+        let result = new GetMyServices();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["adId"] = this.adId;
         return data; 
     }
 }
 
-export class AdIntervalsDto {
+export class ServicesDto {
     id?: string | undefined;
-    adTitle?: string | undefined;
-    clientName?: string | undefined;
-    fromDate?: Date;
-    toDate?: Date;
+    vendorName?: string | undefined;
+    price?: number;
+    name?: { [key: string]: string; } | undefined;
 
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.adTitle = _data["adTitle"];
-            this.clientName = _data["clientName"];
-            this.fromDate = _data["fromDate"] ? new Date(_data["fromDate"].toString()) : <any>undefined;
-            this.toDate = _data["toDate"] ? new Date(_data["toDate"].toString()) : <any>undefined;
+            this.vendorName = _data["vendorName"];
+            this.price = _data["price"];
+            if (_data["name"]) {
+                this.name = {} as any;
+                for (let key in _data["name"]) {
+                    if (_data["name"].hasOwnProperty(key))
+                        this.name![key] = _data["name"][key];
+                }
+            }
         }
     }
 
-    static fromJS(data: any): AdIntervalsDto {
+    static fromJS(data: any): ServicesDto {
         data = typeof data === 'object' ? data : {};
-        let result = new AdIntervalsDto();
+        let result = new ServicesDto();
         result.init(data);
         return result;
     }
@@ -5239,10 +5238,15 @@ export class AdIntervalsDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["adTitle"] = this.adTitle;
-        data["clientName"] = this.clientName;
-        data["fromDate"] = this.fromDate ? this.fromDate.toISOString() : <any>undefined;
-        data["toDate"] = this.toDate ? this.toDate.toISOString() : <any>undefined;
+        data["vendorName"] = this.vendorName;
+        data["price"] = this.price;
+        if (this.name) {
+            data["name"] = {};
+            for (let key in this.name) {
+                if (this.name.hasOwnProperty(key))
+                    data["name"][key] = this.name[key];
+            }
+        }
         return data; 
     }
 }
@@ -5571,6 +5575,24 @@ export class GetUserByIdCommand {
     }
 }
 
+export class IsUserHasCommercialRecordCommand {
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): IsUserHasCommercialRecordCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new IsUserHasCommercialRecordCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
 export class EditOrderComplaintCommand {
     id?: string | undefined;
     complaintReason?: string | undefined;
@@ -5721,24 +5743,6 @@ export class GetOrderComplaintByUserIdCommand {
     static fromJS(data: any): GetOrderComplaintByUserIdCommand {
         data = typeof data === 'object' ? data : {};
         let result = new GetOrderComplaintByUserIdCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
-}
-
-export class IsUserHasCommercialRecordCommand {
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): IsUserHasCommercialRecordCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new IsUserHasCommercialRecordCommand();
         result.init(data);
         return result;
     }

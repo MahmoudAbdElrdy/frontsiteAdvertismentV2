@@ -37,14 +37,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
    
-    debugger;
+    ;
   
     this.LoginCommand.username=this.loginForm.value.phoneNumber;
     this.LoginCommand.password=this.loginForm.value.password;
     this.AuthServiceProxy.login(this.LoginCommand).subscribe((data:any)=>{
      let obj =data.data;
       if(obj.token != null)
-       { debugger;
+       { ;
          localStorage.setItem('isLoggedin', 'true');
          localStorage.setItem('isAuthenticated', 'true');
              localStorage.setItem('userToken',obj.token );
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
        });
        }
      },
-    err=>{debugger;
+    err=>{;
       console.log(err)
       this._snackBar.open("   ",err,{
         duration: 2220,

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyAds } from 'src/shared/service-proxies/service-proxies';
+import { AdsDto, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyAds, GetMyServices, ServicesDto } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf,Subscription } from 'rxjs';
@@ -17,11 +17,16 @@ import { AppConsts } from 'src/AppConsts';
 export class RequestsComponent  implements OnInit {
   public adsImagesPath = 'assets/img/ads/';
   GetMyAds:GetMyAds=new GetMyAds();
+  GetMyServices:GetMyServices=new GetMyServices();
+
 
 
   myAdsList:AdsDto[];
   myRequests: AdsDto[];
+  myservices: ServicesDto[];
+
   baseUrlImage = AppConsts.baseUrlImage;
+  servies: import("e:/MyWork/GitAdvertisementFornt/frontsiteAdvertismentV2/src/shared/service-proxies/service-proxies").ServicesDto[];
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
     private router : Router,private Service :AdvertisementServiceProxy,private _snackBar: MatSnackBar,
@@ -31,8 +36,8 @@ export class RequestsComponent  implements OnInit {
   }
 
   ngAfterViewInit() {
-    ;
    this.LoadData();
+   this.LoadDataSercies();
    }
 
 LoadData() { 
@@ -42,8 +47,7 @@ LoadData() {
        switchMap(() => {
          return this.Service.getMyAds(this.GetMyAds)
        }),
-       map((data) => {
-        debugger
+       map((data) => {        
          this.myRequests = data;       
          return  this.myRequests;
        }),
@@ -56,6 +60,25 @@ LoadData() {
        console.log(this.myAdsList);
      });
  }
+ LoadDataSercies() { 
+  merge()
+    .pipe(
+      startWith({}),
+      switchMap(() => {
+        return this.Service.getMyServices(this.GetMyServices)
+      }),
+      map((data) => {       
+        this.myservices = data;       
+        return  this.myservices;
+      }),
+      catchError(() => {
+        return observableOf([]);
+      })
+    )
+    .subscribe((data) => {
+      this.myservices = data;
+    });
+}
   GetMySpaces(GetMySpaces: any): import("rxjs").Observable<AdsDto[]> {
     throw new Error('Method not implemented.');
   }

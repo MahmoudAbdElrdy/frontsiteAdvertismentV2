@@ -77,7 +77,7 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
             var galleryImage=result.images;
            
             galleryImage.forEach((item, index) => {
-debugger
+
 //[src]="this.baseUrlImage+oneAds.image+'?w=100&h=100'"
               this.galleryImages.push({ small: this.baseUrlImage+item+'?w=100&h=100',
                medium:this.baseUrlImage+item+'?w=100&h=100',big:this.baseUrlImage+item+'?w=100&h=100' });
@@ -148,7 +148,7 @@ debugger
   }
 SendRequest(){
   ///ads/ServiceProviderRequest
-  debugger
+  
   if(this.ApplyForAdvertisementCommand.fromDate===null||this.ApplyForAdvertisementCommand.fromDate===undefined){
     
          this._snackBar.open(" يجب اضافة التاريخ  ","التاريخ",{

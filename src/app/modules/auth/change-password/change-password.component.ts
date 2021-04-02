@@ -42,7 +42,7 @@ export class ChangePasswordComponent extends BaseComponent implements OnInit {
   }
 
   SendPassword() {
-    debugger
+    
     if (this.FormGroup.valid) {
       console.log('try to submit');
 
@@ -51,9 +51,9 @@ export class ChangePasswordComponent extends BaseComponent implements OnInit {
       this.ChangePassword.oldPassword = this.FormGroup.value.oldPassword;
 
       this.AuthServiceProxy.changePassword(this.ChangePassword).subscribe((data: Result) => {
-        debugger;
+        ;
         if (data.success != false) {
-          debugger;
+          ;
           this._snackBar.open("تم تغيير كلمة المرور بنجاح", "  ", {
             duration: 2220,
           });
@@ -70,7 +70,7 @@ export class ChangePasswordComponent extends BaseComponent implements OnInit {
         }
       },
         err => {
-          debugger;
+          ;
           console.log(err)
           this.showStepper = true;
           this.showSuccessMsg = false;

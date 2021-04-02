@@ -1,14 +1,14 @@
 <mat-card class="myads-card mb-4" *ngFor="let oneAds of myRequests; let i=index">
     <mat-card-content class="text-start">
         <div class="row d-flex align-items-center">
-            <div class="col-md-6 d-flex pointer-cursor" (click)="goToDetails(oneAds.id)">
-                        
+            <div class="col-md-5 d-flex pointer-cursor " (click)="goToDetails(oneAds.id)">
                 <div class="m-1"><img  [src]="baseUrlImage+oneAds.images[0]+'?w=100&h=100'" style="max-height: 100px;max-width: 150px;" class="img-fluid" [alt]="oneAds.title"></div>
                 <div class="m-1">
                     <h4>{{ oneAds.title | slice:0:80 }} </h4>
                     <p class="ads-desc">{{ oneAds.description }}</p>
                 </div>
             </div>
+                       
             <div class="col-md-2">
                 <p class="price primary-font-color text-center">
                     <span>{{'invoice' | translate}}</span>
@@ -21,8 +21,41 @@
                     {{ oneAds.vendorName }}
                 </p>
             </div>
+            <span class="requestType"> {{'ads' | translate}}</span>
+
             <div class="col-md-2 text-center">
                 <button type="button" class="btn btn-secondary text-danger"  (click)="openSubmitComplaintDialog(oneAds)">{{'submitComplaint' | translate}}</button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="myads-card mb-4" *ngFor="let service of myservices; let i=index">
+    <mat-card-content class="text-start">
+        <div class="row d-flex align-items-center">
+            <div class="col-md-5 d-flex pointer-cursor " (click)="goToDetails(service.id)">
+                <div class="m-1"><img  src="assets/img/service.jpg" style="max-height: 100px;max-width: 150px;" class="img-fluid" [alt]="service.title"></div>
+                <div class="m-1">
+                    <h4>{{ service.name.ar | slice:0:80 }} </h4>
+                </div>
+            </div>
+                       
+            <div class="col-md-2">
+                <p class="price primary-font-color text-center">
+                    <span>{{'invoice' | translate}}</span>
+                    {{ service.price }} {{ 'SAR' | translate }}
+                </p>
+            </div>
+            <div class="col-md-2">
+                <p class="owner text-success text-center border-end">
+                    <span>{{'seller' | translate}}</span>
+                    {{ service.vendorName }}
+                </p>
+            </div>
+            <span class="requestType"> {{'service' | translate}}</span>
+
+            <div class="col-md-2 text-center">
+                <button type="button" class="btn btn-secondary text-danger"  (click)="openSubmitComplaintDialog(service)">{{'submitComplaint' | translate}}</button>
             </div>
         </div>
     </mat-card-content>

@@ -156,12 +156,12 @@ export class EditAdsComponent implements OnInit {
                 })
               }
             }
-            debugger
+            
             var list: any = result.freeServices.map(x => x.serviceTypeId);
 
 
             this.services.map((perm, i) => {
-              debugger
+              
               //  this.permissionsArr.at(i).patchValue(true)
               if (list.find(x => x == perm.id) != null) {
                 let obj: any = { name: perm.name.ar, value: true, serviceTypeId: perm.id };
@@ -194,7 +194,7 @@ export class EditAdsComponent implements OnInit {
   }
   onCheckboxChange(e) {
     const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
-    debugger
+    
     if (e.target.checked) {
       checkArray.push(new FormControl(e.target.value));
     } else {
@@ -303,12 +303,12 @@ export class EditAdsComponent implements OnInit {
     ;
     if (this.secondFormGroup.valid) {
       ;
-      debugger
+      
       this.secondFormGroup.removeControl('countryId');
       let formArray = this.secondFormGroup.controls['images'] as FormArray;
       var res = this.imageInfo2.map(x => x.imageUrl);
       this.images.map((perm, i) => {
-        debugger
+        
 
         if (res.find(x => x == this.baseUrl + perm + '?w=100&h=100')) {
 

@@ -62,7 +62,7 @@ this.SearchAdvertisementCommand.adCategoryies=new Array<AdCategoryEnum>();
   ngAfterViewInit() {
     ;
    this.LoadData();
-   debugger
+   
    if(this.SearchService.SearchAdvertisementCommand!==null){
      this.advanced();
    }
@@ -81,7 +81,7 @@ LoadData() {
          return this.Service.getAllAdvertisement(this.paginator.pageIndex+1,this.paginator.pageSize,"","","")
        }),
        map((data) => {
-        debugger
+        
          this.List = data.items;
          console.log(this.List)
          this.resultsLength = data.metadata.totalItemCount;
@@ -108,7 +108,7 @@ LoadData() {
   
 }
 Change(event,countryid) {
-  debugger
+  
  
  this. Loadcities(countryid);
       if (event.checked === true) {
@@ -122,7 +122,7 @@ Change(event,countryid) {
         }
 }
 ChangeCities(event,cityId) {
-  debugger
+  
  //this. Loadcities(countryid);
       if (event.checked === true) {
             this.SearchAdvertisementCommand.cityId.push(cityId);
@@ -142,7 +142,7 @@ Loadcities(countryId){
   })
 }
   addToFavorite(e, oneAds){
-    debugger
+    
 this.AddFavouriteCommand.adId=oneAds.adId;
     this.Service.addFavourite(this.AddFavouriteCommand)
       .subscribe( 
@@ -183,7 +183,7 @@ this.AddFavouriteCommand.adId=oneAds.adId;
     );
   }
   advancedSearch(){
-    debugger
+    
 //this.SearchAdvertisementCommand.cityId=
 this.SearchAdvertisementCommand.title=localStorage.getItem("searchProduct");
 this.SearchAdvertisementCommand.maxPrice=this.highValue;
@@ -201,7 +201,7 @@ this.checkboxesDataList.forEach((value, index) => {
         return this.Service.searchAdvertisement(this.SearchAdvertisementCommand)
       }),
       map((data) => {
-       debugger
+       
         this.List = data.items;
         this.resultsLength = data.metadata.totalItemCount;
       
@@ -219,7 +219,7 @@ this.checkboxesDataList.forEach((value, index) => {
     console.log('in progress');
   }
   advanced(){
-    debugger
+    
 
     merge(this.paginator.page)
     .pipe(
@@ -229,7 +229,7 @@ this.checkboxesDataList.forEach((value, index) => {
         return this.Service.searchAdvertisement(this.SearchService.SearchAdvertisementCommand)
       }),
       map((data) => {
-       debugger
+       
         this.List = data.items;
         this.resultsLength = data.metadata.totalItemCount;
       

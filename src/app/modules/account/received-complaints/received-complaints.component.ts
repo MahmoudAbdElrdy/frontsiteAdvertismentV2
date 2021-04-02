@@ -36,7 +36,7 @@ export class ReceivedComplaintsComponent extends BaseComponent implements OnInit
           return this.Service.getAllOrderComplaintByUserId(undefined)
         }),
         map((data) => {
-          debugger
+          
           this.myComplaints = data;
           return this.myComplaints;
         }),

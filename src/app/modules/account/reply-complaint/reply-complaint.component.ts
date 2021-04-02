@@ -23,7 +23,7 @@ export class ReplyComplaintComponent extends BaseComponent implements OnInit {
 
      @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     super();
-debugger
+
     this.complain=data;
 
   }

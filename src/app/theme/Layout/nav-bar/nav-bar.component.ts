@@ -88,11 +88,11 @@ this.SearchService.SearchAdvertisementCommand.adCategoryies=new Array<AdCategory
 
   }
   SetValue(){
-    debugger
+    
     localStorage.setItem("searchProduct",this.searchProduct)
   }
   SetValuecityId(){
-    debugger
+    
     localStorage.setItem("selectedCity",this.cityId)
   }
   LoadCountries(){
@@ -105,13 +105,13 @@ this.SearchService.SearchAdvertisementCommand.adCategoryies=new Array<AdCategory
     
   }
   ChangeCity(City) {
-    debugger
+    
    
  this.cityId=City;
    localStorage.setItem("CityId",City)
   }
   Change(countryid) {
-    debugger
+    
     this.countryid=countryid;
    this.Loadcities(countryid);
    localStorage.setItem("countryid",countryid)
@@ -186,7 +186,7 @@ this.openLoginDialog();
           }
   }
   search(){
-    debugger
+    
     this.SearchService.SearchAdvertisementCommand.cityId.push(this.cityId);
     this.SearchService.SearchAdvertisementCommand.countryId.push(this.countryid);
     this.SearchService.SearchAdvertisementCommand.title=this.searchProduct;

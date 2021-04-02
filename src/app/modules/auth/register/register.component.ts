@@ -59,7 +59,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   }
 
   onCheckChange(event) {
-    debugger
+    
     const formArray: FormArray = this.RegisterForm.get('Roles') as FormArray;
   
     /* Selected */
@@ -89,14 +89,14 @@ export class RegisterComponent extends BaseComponent implements OnInit {
    if (this.ProfileImage[0].imageName != "") {
       this.RegisterForm.controls['avatar'].setValue(this.ProfileImage[0].imageUrl);
     }
-    debugger;
+    ;
     let registerDto: ClientRegisterCommand = this.RegisterForm.value;
     this.AuthServiceProxy
     .clientRegister(registerDto)
     .subscribe(
       (result) => {
         this.showMessageWithType(0, "You have been registered successfully");
-        debugger;
+        ;
 
         this.goToList();
         this.dialogRef.close();
@@ -128,7 +128,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
         let url
         reader.readAsDataURL(element);
         reader.onload = () => {
-          debugger
+          
           url = reader.result.toString();
 
         };
@@ -137,7 +137,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
 
         if (this.ProfileImage.length < 1) {
           setTimeout(() => {
-            debugger;
+            ;
             this.ProfileImage.push({
               imageName: element.name,
               imageSize: size.toString(),

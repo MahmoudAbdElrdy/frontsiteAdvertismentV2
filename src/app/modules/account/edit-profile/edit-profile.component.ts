@@ -41,7 +41,7 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
   baseUrl = AppConsts.baseUrlImage;
 
   loadData() {
-    debugger
+    
     this.Service.get(this.userId).subscribe(
       (result) => {
         this.userDto = result;
@@ -122,7 +122,7 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
         let url
         reader.readAsDataURL(element);
         reader.onload = () => {
-          debugger
+          
           url = reader.result.toString();
 
         };
@@ -131,7 +131,7 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
 
         if (this.ProfileImage.length < 1) {
           setTimeout(() => {
-            debugger;
+            ;
             this.ProfileImage.push({
               imageName: element.name,
               imageSize: size.toString(),
