@@ -4545,6 +4545,7 @@ export class AdvertisementDto {
     auctionStatus?: AuctionStatus;
     auctionDays?: number;
     adCategory?: AdCategoryEnum;
+    isFavorite?: boolean | undefined;
 
     init(_data?: any) {
         if (_data) {
@@ -4576,6 +4577,7 @@ export class AdvertisementDto {
             this.auctionStatus = _data["auctionStatus"];
             this.auctionDays = _data["auctionDays"];
             this.adCategory = _data["adCategory"];
+            this.isFavorite = _data["isFavorite"];
         }
     }
 
@@ -4616,6 +4618,7 @@ export class AdvertisementDto {
         data["auctionStatus"] = this.auctionStatus;
         data["auctionDays"] = this.auctionDays;
         data["adCategory"] = this.adCategory;
+        data["isFavorite"] = this.isFavorite;
         return data; 
     }
 }
@@ -5252,6 +5255,7 @@ export class AdsDto {
     toDate?: Date;
     images?: string[] | undefined;
     rejected?: boolean;
+    isFavorite?: boolean | undefined;
     adCategory?: AdCategoryEnum;
     freeServices?: FreeServiceDto[] | undefined;
 
@@ -5278,6 +5282,7 @@ export class AdsDto {
                     this.images!.push(item);
             }
             this.rejected = _data["rejected"];
+            this.isFavorite = _data["isFavorite"];
             this.adCategory = _data["adCategory"];
             if (Array.isArray(_data["freeServices"])) {
                 this.freeServices = [] as any;
@@ -5317,6 +5322,7 @@ export class AdsDto {
                 data["images"].push(item);
         }
         data["rejected"] = this.rejected;
+        data["isFavorite"] = this.isFavorite;
         data["adCategory"] = this.adCategory;
         if (Array.isArray(this.freeServices)) {
             data["freeServices"] = [];
@@ -5348,11 +5354,13 @@ export class GetMyAds {
 export class AddFavouriteCommand {
     adId?: string | undefined;
     clientId?: string | undefined;
+    isFavorite?: boolean | undefined;
 
     init(_data?: any) {
         if (_data) {
             this.adId = _data["adId"];
             this.clientId = _data["clientId"];
+            this.isFavorite = _data["isFavorite"];
         }
     }
 
@@ -5367,6 +5375,7 @@ export class AddFavouriteCommand {
         data = typeof data === 'object' ? data : {};
         data["adId"] = this.adId;
         data["clientId"] = this.clientId;
+        data["isFavorite"] = this.isFavorite;
         return data; 
     }
 }

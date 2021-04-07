@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AdCategoryEnum, AddFavouriteCommand, AdvertisementDtoPageList, AdvertisementServiceProxy, CitiesServiceProxy, RegionManagementServiceProxy,SearchAdvertisementCommand,ServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AdCategoryEnum, AddFavouriteCommand, AdvertisementDtoPageList, AdvertisementServiceProxy, CitiesServiceProxy, GetMyFavourite, RegionManagementServiceProxy,SearchAdvertisementCommand,ServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf,Subscription } from 'rxjs';
@@ -30,6 +30,7 @@ export class ListAdsComponent implements OnInit {
   List 		      : AdvertisementDtoPageList[];
   dataSource: MatTableDataSource<any>;
   popUpDeleteUserResponse : any;
+  GetMyFavourite:GetMyFavourite=new GetMyFavourite();
   resultsLength = 0;
   displayedColumns : string [] = ['id','vendorName','title','adType','cityName','price','fromDate','toDate','image', 'actions'];
 	@ViewChild(MatPaginator,{static: false}) paginator : MatPaginator;
@@ -47,6 +48,7 @@ export class ListAdsComponent implements OnInit {
     {name : "اللوحات الإعلانية المحمولة", id : 1,isChecked: false},
     {name : "اللوحات الإعلانية الرقمية", id :  2,isChecked: false},
     {name : "إعلان التواصل ", id :  3,isChecked: false},]
+  ListFavourites: any[];
   constructor(
     private router : Router,private Service :AdvertisementServiceProxy,private _snackBar: MatSnackBar,
     private dialog: MatDialog,private CitiesService :CitiesServiceProxy,
@@ -57,20 +59,36 @@ this.SearchAdvertisementCommand.cityId=new Array<string>();
 this.SearchAdvertisementCommand.maxPrice=this.highValue;
 this.SearchAdvertisementCommand.minPrice=this.value;
 this.SearchAdvertisementCommand.adCategoryies=new Array<AdCategoryEnum>();
+
   }
 
   ngAfterViewInit() {
-    ;
-   this.LoadData();
+  this.LoadtMyFavourites();
+ 
    debugger
-   if(this.SearchService.SearchAdvertisementCommand!==null){
+   if(this.SearchService.SearchAdvertisementCommand.cityId.length!==0
+    ||this.SearchService.SearchAdvertisementCommand.countryId.length!==0
+    ||this.SearchService.SearchAdvertisementCommand.adCategoryies.length!==0
+    ||this.SearchService.SearchAdvertisementCommand.maxPrice!==0
+    ||this.SearchService.SearchAdvertisementCommand.minPrice!==0
+    ){
      this.advanced();
    }
+   this.LoadData();
    }
 ngOnInit(): void {
+  
   this.LoadCountries();
  
 }
+LoadtMyFavourites(){
+
+  return this.Service.getMyFavourites(this.GetMyFavourite)
+  .subscribe(res=>{
+  debugger
+    this.ListFavourites=res.map(x=>x.id);
+    console.log(res);
+  })}
 LoadData() {
  
    merge(this.paginator.page)
@@ -82,10 +100,18 @@ LoadData() {
        }),
        map((data) => {
         debugger
+        if(this.ListFavourites!==undefined){
+          for (let i = 0; i < data.items.length; i++) {
+            if (this.ListFavourites.indexOf(data.items[i].adId) !== -1) {
+              data.items[i].isFavorite = true;
+             
+            }
+          }
+        }
          this.List = data.items;
-         console.log(this.List)
-         this.resultsLength = data.metadata.totalItemCount;
        
+         this.resultsLength = data.metadata.totalItemCount;
+        
          return  this.List;
        }),
        catchError(() => {
@@ -144,15 +170,12 @@ Loadcities(countryId){
   addToFavorite(e, oneAds){
     debugger
 this.AddFavouriteCommand.adId=oneAds.adId;
+this.AddFavouriteCommand.isFavorite=!oneAds.isFavorite;
+oneAds.isFavorite=!oneAds.isFavorite;
     this.Service.addFavourite(this.AddFavouriteCommand)
       .subscribe( 
         
-        error => {
-          console.log(error)
-          this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
-          duration: 2220,
-          
-        })},
+     
         res=>{
          
          
@@ -173,7 +196,13 @@ this.AddFavouriteCommand.adId=oneAds.adId;
         }
      
       })
-    
+    ,
+    error => {
+      console.log(error)
+      this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
+      duration: 2220,
+      
+    })}
   }
   goToDetails(id: number) {
     ;
@@ -202,6 +231,14 @@ this.checkboxesDataList.forEach((value, index) => {
       }),
       map((data) => {
        debugger
+       if(this.ListFavourites!==undefined){
+        for (let i = 0; i < data.items.length; i++) {
+          if (this.ListFavourites.indexOf(data.items[i].adId) !== -1) {
+            data.items[i].isFavorite = true;
+           
+          }
+        }
+      }
         this.List = data.items;
         this.resultsLength = data.metadata.totalItemCount;
       
@@ -230,6 +267,14 @@ this.checkboxesDataList.forEach((value, index) => {
       }),
       map((data) => {
        debugger
+       if(this.ListFavourites!==undefined){
+        for (let i = 0; i < data.items.length; i++) {
+          if (this.ListFavourites.indexOf(data.items[i].adId) !== -1) {
+            data.items[i].isFavorite = true;
+           
+          }
+        }
+      }
         this.List = data.items;
         this.resultsLength = data.metadata.totalItemCount;
       
