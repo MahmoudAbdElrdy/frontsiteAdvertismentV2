@@ -1574,6 +1574,62 @@ export class AdvertisementServiceProxy {
         }
         return _observableOf<AdIntervalsDto[]>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addRating(body: AddRatingCommand | undefined): Observable<RatingDto> {
+        let url_ = this.baseUrl + "/api/Advertisement/add-rating";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddRating(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddRating(<any>response_);
+                } catch (e) {
+                    return <Observable<RatingDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RatingDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddRating(response: HttpResponseBase): Observable<RatingDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RatingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<RatingDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -5132,6 +5188,7 @@ export class SpaceInfoDto {
     adId?: string | undefined;
     adIntervalFromDate?: Date;
     adIntervalToDate?: Date;
+    ratingValue?: number | undefined;
 
     init(_data?: any) {
         if (_data) {
@@ -5165,6 +5222,7 @@ export class SpaceInfoDto {
             this.adId = _data["adId"];
             this.adIntervalFromDate = _data["adIntervalFromDate"] ? new Date(_data["adIntervalFromDate"].toString()) : <any>undefined;
             this.adIntervalToDate = _data["adIntervalToDate"] ? new Date(_data["adIntervalToDate"].toString()) : <any>undefined;
+            this.ratingValue = _data["ratingValue"];
         }
     }
 
@@ -5207,6 +5265,7 @@ export class SpaceInfoDto {
         data["adId"] = this.adId;
         data["adIntervalFromDate"] = this.adIntervalFromDate ? this.adIntervalFromDate.toISOString() : <any>undefined;
         data["adIntervalToDate"] = this.adIntervalToDate ? this.adIntervalToDate.toISOString() : <any>undefined;
+        data["ratingValue"] = this.ratingValue;
         return data; 
     }
 }
@@ -5554,6 +5613,76 @@ export class AdIntervalsDto {
         data["clientName"] = this.clientName;
         data["fromDate"] = this.fromDate ? this.fromDate.toISOString() : <any>undefined;
         data["toDate"] = this.toDate ? this.toDate.toISOString() : <any>undefined;
+        return data; 
+    }
+}
+
+export class AddRatingCommand {
+    id?: string | undefined;
+    adId?: string | undefined;
+    clientId?: string | undefined;
+    ratingValue?: number | undefined;
+    ratingText?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adId = _data["adId"];
+            this.clientId = _data["clientId"];
+            this.ratingValue = _data["ratingValue"];
+            this.ratingText = _data["ratingText"];
+        }
+    }
+
+    static fromJS(data: any): AddRatingCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddRatingCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adId"] = this.adId;
+        data["clientId"] = this.clientId;
+        data["ratingValue"] = this.ratingValue;
+        data["ratingText"] = this.ratingText;
+        return data; 
+    }
+}
+
+export class RatingDto {
+    id?: string | undefined;
+    adId?: string | undefined;
+    clientId?: string | undefined;
+    ratingValue?: number | undefined;
+    ratingText?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adId = _data["adId"];
+            this.clientId = _data["clientId"];
+            this.ratingValue = _data["ratingValue"];
+            this.ratingText = _data["ratingText"];
+        }
+    }
+
+    static fromJS(data: any): RatingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RatingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adId"] = this.adId;
+        data["clientId"] = this.clientId;
+        data["ratingValue"] = this.ratingValue;
+        data["ratingText"] = this.ratingText;
         return data; 
     }
 }

@@ -49,6 +49,7 @@ import{MapModalComponent} from 'src/app/shared/map-modal/map-modal.component'
 import { GeoLocationService } from 'src/app/shared/services/geo-location.service';
 import { from } from 'rxjs';
 import { EditAdsComponent } from './edit-ads/edit-ads.component';
+import { BarRatingModule } from 'ngx-bar-rating';
 
 
 registerLocaleData(localeAr);
@@ -111,7 +112,7 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     MatButtonToggleModule,
     MatRadioModule,
     NgxSliderModule,
-    NgxGalleryModule
+    NgxGalleryModule,BarRatingModule
   ],
   providers: [
     RegionManagementServiceProxy,CountriesServiceProxy,ServiceProxy,AdComplaintServiceProxy,
