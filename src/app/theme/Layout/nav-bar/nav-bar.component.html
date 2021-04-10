@@ -51,8 +51,7 @@
                 </form>
             </div>
             <div class="top-left-part">
-                <nav class="nav-btns my-2 my-md-0">
-                   
+                <nav class="nav-btns my-2 my-md-0">                   
                     <a href="javascript:;" (click)="openAds()" class="btn btn-primary shadow-sm" #tooltip="matTooltip" matTooltip="{{'addAds' | translate}}"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{'addAds' | translate}}</a>
                     <a href="javascript:;" class="btn btn-light shadow-sm" #tooltip="matTooltip" matTooltip="{{'notifications' | translate}}" (click)="opennotifications()" ><i class="fa fa-bell" aria-hidden="true"></i></a>
                     <button *ngIf="!isAuthenticated" (click)="openLoginDialog()" class="btn btn-success shadow-sm" #tooltip="matTooltip" matTooltip="{{'login' | translate}}"><i class="fa fa-user" aria-hidden="true"></i> {{'login' | translate}}</button>

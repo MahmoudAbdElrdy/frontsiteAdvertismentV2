@@ -7,6 +7,8 @@ import { FavoritesComponent } from './favorites/favorites.component';
 import { AuthGuard } from 'src/app/shared/AuthGuard';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MyAdsComponent } from './my-ads/my-ads.component';
+import { MyservicesComponent } from './my-services/my-services.component';
+
 import { RequestsComponent } from './requests/requests.component';
 import { ReceivedComplaintsComponent } from './received-complaints/received-complaints.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
@@ -33,6 +35,10 @@ const routes: Routes = [
             {
                 path: 'my-ads',
                 component: MyAdsComponent,
+            },
+            {
+                path: 'my-services',
+                component: MyservicesComponent,
             },
             {
                 path: 'requests',

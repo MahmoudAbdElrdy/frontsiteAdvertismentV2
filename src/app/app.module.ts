@@ -44,6 +44,11 @@ import { ModelServiceService } from './shared/model-service.service';
 import { SearchService } from './shared/search-service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
+import { MessagingService } from 'service/messaging.service';
 export function getApiBaseUrl(): string {
   return AppConfigService.appConfig.MobileBaseURL;
 }
@@ -78,6 +83,10 @@ export function getBaseUrl(): string {
     MatDatepickerModule,
     MatNativeDateModule,
     MatMenuModule,
+    AngularFireDatabaseModule,
+      AngularFireAuthModule,
+      AngularFireMessagingModule,
+      AngularFireModule.initializeApp(environment.firebase),
     OAuthModule.forRoot({
       resourceServer: {
         sendAccessToken: true,
@@ -92,9 +101,9 @@ export function getBaseUrl(): string {
       },
     }),
 
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    //ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [AuthServiceProxy,ModelServiceService,SearchService,
+  providers: [AuthServiceProxy,ModelServiceService,SearchService,MessagingService,
     TranslateService,
     HttpClientModule,
     {

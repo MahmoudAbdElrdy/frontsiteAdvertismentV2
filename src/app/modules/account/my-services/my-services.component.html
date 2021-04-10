@@ -1,0 +1,65 @@
+﻿<mat-card class="myservices-card mb-4" *ngFor="let oneservices of myservicesList; let i=index">
+  <mat-card-content class="text-start">
+    <div class="row d-flex align-items-center">
+      <div class="col-md-4 d-flex pointer-cursor">
+        <div class="m-1"><img src="assets/img/service.jpg" style="max-height: 100px;max-width: 150px;" class="img-fluid"
+            [alt]="oneservices.serviceName.ar"></div>
+        <div class="m-1">
+          <!-- <p class="date">{{ oneservices.fromDate | date: 'shortTime' }} - {{oneservices.fromDate | date: 'shortDate' }} </p> -->
+          <h4>{{ oneservices.serviceName.ar | slice:0:80 }} </h4>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <p class="price primary-font-color text-center" *ngIf="!oneservices.showEdit">{{ oneservices.price }} {{ 'SAR' | translate
+          }}</p>
+        <mat-form-field appearance="fill" class="w-50" *ngIf="oneservices.showEdit">
+          <input matInput [value]="oneservices.price" type="number" placeholder="{{ 'Price' | translate }}"
+            [(ngModel)]="oneservices.price" id="id_{{i}}" name="{{ i }}" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <!-- <button mat-raised-button class="btn btn-secondary text-info mr-2 ml-2" color="accent"
+          (click)="Reject(oneservices)">
+          {{isReject?'Stopservices':'switchservices' | translate}}
+        </button> -->
+        <button type="button" (click)="showEidtFun(oneservices)" class="btn btn-info mr-2 ml-2" *ngIf='!oneservices.showEdit'>{{'editservices'
+          | translate}}</button>
+        <button type="button" (click)="goToEdit(oneservices)" *ngIf='oneservices.showEdit'
+          class="btn btn-success mr-2 ml-2">{{'save' | translate}}</button>
+
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<!-- <div id="opening">
+    <table  mat-table *ngIf="Intervals!==null" [dataSource]="Intervals" matSort class="w-100">
+      
+        <ng-container hidden matColumnDef="id">
+          <th hidden mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+          <td hidden mat-cell *matCellDef="let row"> {{row?.id}} </td>
+        </ng-container>
+    
+       
+        <ng-container matColumnDef="adTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>عنوان الاعلان </th>
+            <td mat-cell *matCellDef="let row"> {{row?.adTitle}} </td>
+          </ng-container>
+         
+          <ng-container matColumnDef="clientName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  اسم المشترك </th>
+            <td mat-cell *matCellDef="let row"> {{row?.clientName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="fromDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  تاريخ البداية </th>
+            <td mat-cell *matCellDef="let row"> {{row?.fromDate|date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="toDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  تاريخ النهاية </th>
+            <td mat-cell *matCellDef="let row"> {{row?.toDate|date}} </td>
+          </ng-container>
+        
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table> 
+</div> -->

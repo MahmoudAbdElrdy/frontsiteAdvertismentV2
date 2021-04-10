@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { SwPush } from '@angular/service-worker';
-// import { OAuthService, AuthConfig } from "angular-oauth2-oidc";
-// import { HttpClient } from "@angular/common/http";
+//import { SwPush } from '@angular/service-worker';
+import { MessagingService } from 'service/messaging.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,9 +12,11 @@ export class AppComponent {
   title = 'E3lany | إعلاني';
   configLoaded = null;
 
-  readonly VAPID_PUBLIC_KEY = "BP_iWY6SV-8gYIJme3fIvZhuhMgWRF7W5lPUTi_D7VUc1gV34YsRa4d2Zks4wwS12UvguZEa1M1Ujui_FIc6WoA";
+  readonly VAPID_PUBLIC_KEY = "BAQo9ciFQyqrXmYFQ2nC1WM9PEcU6JC0P8uwJzPf1g2nquD8G5Fl3DI1SSpiasIRafpbrt88QwwpSZSGzXYvsRs";
+  message: any;
   constructor(private router: Router,
-    private swPush: SwPush) {
+    private messagingService: MessagingService//, private swPush: SwPush
+    ) {
     
   }
 
@@ -25,19 +27,23 @@ export class AppComponent {
       }
       window.scrollTo(0, 0)
   });
-  this.subscribeToNotifications();
+ // this.subscribeToNotifications();
+  this.messagingService.requestPermission()
+  this.messagingService.receiveMessage()
+  this.message = this.messagingService.currentMessage
+  console.log(this.message )
   }
   subscribeToNotifications() {
     debugger
-    this.swPush.requestSubscription({
-        serverPublicKey: this.VAPID_PUBLIC_KEY
-    })
-    .then(sub =>
-      {
-        debugger 
-        console.log(sub);        
-      }
-      //this.newsletterService.addPushSubscriber(sub).subscribe()
-    ).catch(err => console.error("Could not subscribe to notifications", err));
+    // this.swPush.requestSubscription({
+    //     serverPublicKey: this.VAPID_PUBLIC_KEY
+    // })
+    // .then(sub =>
+    //   {
+    //     debugger 
+    //     console.log(sub);        
+    //   }
+    //   //this.newsletterService.addPushSubscriber(sub).subscribe()
+    // ).catch(err => console.error("Could not subscribe to notifications", err));
 }
 }

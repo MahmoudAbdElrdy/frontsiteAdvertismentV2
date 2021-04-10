@@ -33,6 +33,7 @@ import { NgxGalleryModule } from 'ngx-gallery';
 import { SubmitComplaintComponent } from './submit-complaint/submit-complaint.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MyAdsComponent } from './my-ads/my-ads.component';
+import { MyservicesComponent } from './my-services/my-services.component';
 import { MyAccountSidebarComponent } from './my-account-sidebar/my-account-sidebar.component';
 import { RequestsComponent } from './requests/requests.component';
 import { ReceivedComplaintsComponent } from './received-complaints/received-complaints.component';
@@ -42,7 +43,6 @@ import { AdvertisementServiceProxy, OrderComplaintServiceProxy, UsersServiceProx
 import { ChangePasswordComponent } from '../auth/change-password/change-password.component';
 import { IntervalsComponent } from './intervals/intervals.component';
 import { IntervalsInstallmentComponent } from './intervals-installment/intervals-installment.component';
-
 
 registerLocaleData(localeAr);
 
@@ -56,6 +56,7 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     ReplyComplaintComponent,
     NotificationsComponent,
     MyAdsComponent,
+    MyservicesComponent,
     MyAccountSidebarComponent,
     RequestsComponent,
     ReceivedComplaintsComponent,
