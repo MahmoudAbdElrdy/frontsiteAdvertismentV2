@@ -62,7 +62,7 @@ export class IndexComponent implements OnInit {
   }
   ngOnInit() {
   this.LoadtMyFavourites();
-    this.getLocation();
+  //  this.getLocation();
     this.Load();
   }
   getLocation(): void {
@@ -88,22 +88,48 @@ export class IndexComponent implements OnInit {
       console.log(res);
     })}
   Load() {
-
-    return this.Service.getTopAds(this.latitude, this.longitude)
-      .subscribe(res => {
-        debugger
-        if(this.ListFavourites!==undefined){
-          for (let i = 0; i < res.length; i++) {
-            if (this.ListFavourites.indexOf(res[i].id) !== -1) {
-            res[i].isFavorite = true;
-             
+    debugger
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        debugger;
+        this.longitude = position.coords.longitude;
+        this.latitude = position.coords.latitude;
+        console.log(this.longitude)
+        console.log(this.latitude)
+        return this.Service.getTopAds(this.latitude, this.longitude)
+        .subscribe(res => {
+          debugger
+          if(this.ListFavourites!==undefined){
+            for (let i = 0; i < res.length; i++) {
+              if (this.ListFavourites.indexOf(res[i].id) !== -1) {
+              res[i].isFavorite = true;
+               
+              }
             }
           }
-        }
-      
-        this.List = res;
-        console.log(res);
-      })
+        
+          this.List = res;
+          console.log(res);
+        })
+      });
+    } else {
+      return this.Service.getTopAds(this.latitude, this.longitude)
+        .subscribe(res => {
+          debugger
+          if(this.ListFavourites!==undefined){
+            for (let i = 0; i < res.length; i++) {
+              if (this.ListFavourites.indexOf(res[i].id) !== -1) {
+              res[i].isFavorite = true;
+               
+              }
+            }
+          }
+        
+          this.List = res;
+          console.log(res);
+        })
+    }
+   
   }
   addToFavorite(e, oneAds) {
     debugger
