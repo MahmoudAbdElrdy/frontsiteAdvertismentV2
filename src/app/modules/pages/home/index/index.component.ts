@@ -3,7 +3,7 @@ import { RegisterComponent } from 'src/app/modules/auth/register/register.compon
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from "@angular-slider/ngx-slider";
-import { AddFavouriteCommand, AdvertisementDtoPageList, AdvertisementServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AddFavouriteCommand, AdvertisementDtoPageList, AdvertisementServiceProxy, GetMyFavourite } from 'src/shared/service-proxies/service-proxies';
 import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subscription } from 'rxjs';
@@ -44,7 +44,7 @@ export class IndexComponent implements OnInit {
   resultsLength = 0;
   baseUrlImage = AppConsts.baseUrlImage;
   AddFavouriteCommand: AddFavouriteCommand = new AddFavouriteCommand();
-
+  GetMyFavourite:GetMyFavourite=new GetMyFavourite();
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   close: any;
@@ -52,6 +52,7 @@ export class IndexComponent implements OnInit {
   subscriptions: Subscription[] = [];
   longitude: number;
   latitude: number;
+  ListFavourites: any[];
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
     private router: Router, private Service: AdvertisementServiceProxy, private _snackBar: MatSnackBar,
@@ -60,8 +61,8 @@ export class IndexComponent implements OnInit {
 
   }
   ngOnInit() {
-
-    this.getLocation();
+  this.LoadtMyFavourites();
+  //  this.getLocation();
     this.Load();
   }
   getLocation(): void {
@@ -78,29 +79,68 @@ export class IndexComponent implements OnInit {
       console.log("No support for geolocation")
     }
   }
+  LoadtMyFavourites(){
 
+    return this.Service.getMyFavourites(this.GetMyFavourite)
+    .subscribe(res=>{
+    debugger
+      this.ListFavourites=res.map(x=>x.id);
+      console.log(res);
+    })}
   Load() {
-
-    return this.Service.getTopAds(this.latitude, this.longitude)
-      .subscribe(res => {
+    debugger
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        debugger;
+        this.longitude = position.coords.longitude;
+        this.latitude = position.coords.latitude;
+        console.log(this.longitude)
+        console.log(this.latitude)
+        return this.Service.getTopAds(this.latitude, this.longitude)
+        .subscribe(res => {
+          debugger
+          if(this.ListFavourites!==undefined){
+            for (let i = 0; i < res.length; i++) {
+              if (this.ListFavourites.indexOf(res[i].id) !== -1) {
+              res[i].isFavorite = true;
+               
+              }
+            }
+          }
         
-        this.List = res;
-        console.log(res);
-      })
+          this.List = res;
+          console.log(res);
+        })
+      });
+    } else {
+      return this.Service.getTopAds(this.latitude, this.longitude)
+        .subscribe(res => {
+          debugger
+          if(this.ListFavourites!==undefined){
+            for (let i = 0; i < res.length; i++) {
+              if (this.ListFavourites.indexOf(res[i].id) !== -1) {
+              res[i].isFavorite = true;
+               
+              }
+            }
+          }
+        
+          this.List = res;
+          console.log(res);
+        })
+    }
+   
   }
   addToFavorite(e, oneAds) {
-    
-    this.AddFavouriteCommand.adId = oneAds.adId;
+    debugger
+
+    this.AddFavouriteCommand.adId = oneAds.id;
+    this.AddFavouriteCommand.isFavorite=!oneAds.isFavorite;
+    oneAds.isFavorite=!oneAds.isFavorite;
     this.Service.addFavourite(this.AddFavouriteCommand)
       .subscribe(
 
-        error => {
-          console.log(error)
-          this._snackBar.open("حدث خطأ عند الاضافة", "الاضافة", {
-            duration: 2220,
-
-          })
-        },
+       
         res => {
 
 
@@ -118,7 +158,14 @@ export class IndexComponent implements OnInit {
             });
           }
 
-        })
+        }),
+        error => {
+          console.log(error)
+          this._snackBar.open("حدث خطأ عند الاضافة", "الاضافة", {
+            duration: 2220,
+
+          })
+        }
 
   }
   goToDetails(id: number) {

@@ -40,6 +40,7 @@ export class AdsDetailsComponent implements OnInit {
 AdvertisementDetailDto:SpaceInfoDto;
 AdDto:AdsDto[];
 images: string[];
+starRating:any;
 baseUrlImage = AppConsts.baseUrlImage;
 ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisementCommand;
   dateFilterFn: (date: Date) => boolean;
@@ -54,6 +55,7 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
   }
 
   ngOnInit() {
+    debugger
     this.activatedRoute.queryParams.subscribe(parm => {
       let querySting = parm['id'];
       if (querySting) {
@@ -65,6 +67,7 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
             console.log(result);
             ;
             this.AdvertisementDetailDto = result;
+            this.starRating=result.ratingValue;
             //this.dateFilterFn = (date: Date)=> [result.adIntervalFromDate.getDay(),result.adIntervalToDate.getDay()].includes(date.getDay());    
             this.dateFilterFn = (d: Date): boolean => {
               // Prevent dates in ranges from being selected.
@@ -142,7 +145,9 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
       width: '33%'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().
+    subscribe(result => {
+      this.ngOnInit();
       console.log(`Dialog result: ${result}`);
     });
   }
