@@ -156,16 +156,18 @@ export class EditAdsComponent implements OnInit {
                 })
               }
             }
-            
+
             var list: any = result.freeServices.map(x => x.serviceTypeId);
 
+            const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
 
             this.services.map((perm, i) => {
-              
+
               //  this.permissionsArr.at(i).patchValue(true)
               if (list.find(x => x == perm.id) != null) {
                 let obj: any = { name: perm.name.ar, value: true, serviceTypeId: perm.id };
                 this.service.push(obj)
+                checkArray.push(new FormControl(perm.id));
                 //this.permissionsArr.at(i).patchValue(true)
               } else {
                 let obj: any = { name: perm.name.ar, value: false, serviceTypeId: perm.id };
@@ -193,19 +195,13 @@ export class EditAdsComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   onCheckboxChange(e) {
+    debugger
     const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
-    
-    if (e.target.checked) {
-      checkArray.push(new FormControl(e.target.value));
+
+    if (e.checked) {
+      checkArray.push(new FormControl(e.source.value));
     } else {
-      let i: number = 0;
-      checkArray.controls.forEach((item: FormControl) => {
-        if (item.value == e.target.value) {
-          checkArray.removeAt(i);
-          return;
-        }
-        i++;
-      });
+      checkArray.removeAt(checkArray.value.findIndex(x => x === e.source.value));
     }
     console.log(this.secondFormGroup.get('FreeServiceIds').value)
   }
@@ -240,7 +236,6 @@ export class EditAdsComponent implements OnInit {
     })
   }
   processDataFile2(fileInput: any) {
-    ;
     this.file2 = []
     this.file2 = fileInput.files;
     if (this.file2 !== null) {
@@ -251,28 +246,18 @@ export class EditAdsComponent implements OnInit {
         let url
         reader.readAsDataURL(element);
         reader.onload = () => {
-
           url = reader.result.toString();
-
         };
-
-
-
         if (this.imageInfo2.length < 4) {
           setTimeout(() => {
-            ;
             this.imageInfo2.push({
               imageName: element.name,
               imageSize: size.toString(),
               imageUrl: url,
               imageExtention: ""
-            })
-            //  this.secondFormGroup.get('images').setValue(url);
-            console.log()
-            console.log(this.imageInfo2)
+            })           
           }, 200);
         }
-
       }
     }
   }
@@ -300,38 +285,29 @@ export class EditAdsComponent implements OnInit {
     return this.secondFormGroup.controls;
   }
   nextstep() {
-    ;
-    if (this.secondFormGroup.valid) {
-      ;
-      
+    if (this.secondFormGroup.valid) {  
       this.secondFormGroup.removeControl('countryId');
       let formArray = this.secondFormGroup.controls['images'] as FormArray;
-      var res = this.imageInfo2.map(x => x.imageUrl);
+      var res = this.imageInfo2.filter(x=>x.imageSize!="").map(x => x.imageUrl);
+      debugger
       this.images.map((perm, i) => {
-        
-
         if (res.find(x => x == this.baseUrl + perm + '?w=100&h=100')) {
-
           res.splice(i, 1);
-
         }
       })
       formArray.patchValue(res);
-      const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
-      var cc = this.service.filter(x => x.value == true);
-      cc.forEach(element => {
-        checkArray.push(new FormControl(element.serviceTypeId));
-      });
-
-
-      console.log("بطيخ", this.service)
-      console.log("سسس", this.secondFormGroup.value)
+      // const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
+      // var cc = this.service.filter(x => x.value == true);
+      // cc.forEach(element => {
+      //   checkArray.push(new FormControl(element.serviceTypeId));
+      // });
       this.EditAdvertisementCommand = this.secondFormGroup.value;
       this.EditAdvertisementCommand.id = this.id;
       if (this.secondFormGroup.value.lng === null || this.secondFormGroup.value.lng === "0")
         this.EditAdvertisementCommand.lng = this.longitude;
       if (this.secondFormGroup.value.lat === null || this.secondFormGroup.value.lat === "0")
         this.EditAdvertisementCommand.lat = this.latitude;
+    //  this.EditAdvertisementCommand.images = this.EditAdvertisementCommand.images.filter(x=>x.imageSize!="");
       this.AdvertisementService.editAdvertisement(this.EditAdvertisementCommand).subscribe(
         res => {
           if (res !== null) {

@@ -124,12 +124,12 @@ Model=new CreateAdvertisementCommand;
   onCheckboxChange(e) {
     const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
   
-    if (e.target.checked) {
-      checkArray.push(new FormControl(e.target.value));
+    if (e.checked) {
+      checkArray.push(new FormControl(e.source.value));
     } else {
       let i: number = 0;
       checkArray.controls.forEach((item: FormControl) => {
-        if (item.value == e.target.value) {
+        if (item.value ==e.source.value) {
           checkArray.removeAt(i);
           return;
         }

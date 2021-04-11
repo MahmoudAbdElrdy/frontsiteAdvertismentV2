@@ -100,6 +100,7 @@ export class MyAdsComponent implements OnInit {
     );
   }
   Reject(el) {
+    debugger
     el.rejected = !el.rejected;
     this.Service.disableAdvertisement(el.rejected, el.spaceId).subscribe(res => {
       if (res.rejected == true) {
