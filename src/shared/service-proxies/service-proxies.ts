@@ -1635,6 +1635,40 @@ export class AdvertisementServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    addRating(body: AddRatingCommand | undefined): Observable<RatingDto> {
+        let url_ = this.baseUrl + "/api/Advertisement/add-rating";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddRating(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddRating(<any>response_);
+                } catch (e) {
+                    return <Observable<RatingDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RatingDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     getMyServices(body: GetMyServices | undefined): Observable<ServicesDto[]> {
         let url_ = this.baseUrl + "/api/Advertisement/get-my-services";
         url_ = url_.replace(/[?&]$/, "");
@@ -1690,40 +1724,7 @@ export class AdvertisementServiceProxy {
         }
         return _observableOf<ServicesDto[]>(<any>null);
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    addRating(body: AddRatingCommand | undefined): Observable<RatingDto> {
-        let url_ = this.baseUrl + "/api/Advertisement/add-rating";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddRating(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAddRating(<any>response_);
-                } catch (e) {
-                    return <Observable<RatingDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<RatingDto>><any>_observableThrow(response_);
-        }));
-    }
+}
 
     protected processAddRating(response: HttpResponseBase): Observable<RatingDto> {
         const status = response.status;
@@ -5475,7 +5476,6 @@ export class AdsDto {
     images?: string[] | undefined;
     rejected?: boolean;
     isFavorite?: boolean | undefined;
-    distance?: number | undefined;
     adCategory?: AdCategoryEnum;
     freeServices?: FreeServiceDto[] | undefined;
 
@@ -5503,7 +5503,6 @@ export class AdsDto {
             }
             this.rejected = _data["rejected"];
             this.isFavorite = _data["isFavorite"];
-            this.distance = _data["distance"];
             this.adCategory = _data["adCategory"];
             if (Array.isArray(_data["freeServices"])) {
                 this.freeServices = [] as any;
@@ -5544,7 +5543,6 @@ export class AdsDto {
         }
         data["rejected"] = this.rejected;
         data["isFavorite"] = this.isFavorite;
-        data["distance"] = this.distance;
         data["adCategory"] = this.adCategory;
         if (Array.isArray(this.freeServices)) {
             data["freeServices"] = [];
