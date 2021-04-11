@@ -6,24 +6,27 @@
                     [attr.data-slide-to]="i"></li>
             </ol> -->
             <div class="carousel-inner main-raduis">
-                <div class="carousel-item" *ngFor="let slide of homeSlides; let first = first;" [ngClass]="{ active: first}">
+                <div class="carousel-item" *ngFor="let slide of homeSlides; let first = first;"
+                    [ngClass]="{ active: first}">
                     <img src="assets/img/home-slider/{{slide.image}}" class="d-block w-100" [alt]="slide.title">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>{{slide.caption}}</h3>
-                      </div>
+                    </div>
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev" title="{{ 'prev' | translate }}">
+            <a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev"
+                title="{{ 'prev' | translate }}">
                 <span class="material-icons">
                     arrow_back_ios
                 </span>
                 <span class="sr-only">Previous</span>
             </a>
-            <a class="carousel-control-next" href="#homeCarousel" role="button" data-slide="next" title="{{ 'Next' | translate }}">
+            <a class="carousel-control-next" href="#homeCarousel" role="button" data-slide="next"
+                title="{{ 'Next' | translate }}">
                 <span class="material-icons">
                     arrow_forward_ios
                 </span>
-    
+
                 <span class="sr-only">Next</span>
             </a>
         </div>
@@ -32,7 +35,7 @@
 
 <section id="latestAds" class="mt-6">
     <div class="container gray-bg main-raduis pt-4">
-        <h2 class="page-title text-start">{{ 'latestAds' | translate }} 
+        <h2 class="page-title text-start">{{ 'latestAds' | translate }}
             <span class="float-end">
                 <a class="btn btn-danger view-more-btn" routerLink="/ads/list-ads">{{ 'viewMore' | translate }}</a>
             </span>
@@ -43,16 +46,16 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-3 mb-4" *ngFor="let oneAds of List; let i=index">
                         <!-- routerLink="/ads/ads-details" -->
-                        <mat-card class="ads-card" >
+                        <mat-card class="ads-card">
                             <span class="badge bg-danger">{{ oneAds?.adType }}</span>
                             <button type="button" class="btn btn-light addtoWishListbtn"
                                 [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
                                 matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}"
                                 (click)="addToFavorite($event, oneAds)">
-                                <i class="fa fa-heart" 
-                                aria-hidden="true"></i></button>
-                                     
-                            <img mat-card-image  [src]="baseUrlImage+oneAds.images[0]+'?w=300&h=300'" [alt]="oneAds.title">
+                                <i class="fa fa-heart" aria-hidden="true"></i></button>
+
+                            <img mat-card-image [src]="baseUrlImage+oneAds.images[0]+'?w=300&h=300'"
+                                [alt]="oneAds.title">
                             <mat-card-content (click)="goToDetails(oneAds.id)" class="text-start">
                                 <h4>{{ oneAds.title | slice:0:80 }} </h4>
                                 <p class="ads-desc">{{ oneAds.description }}</p>
@@ -80,7 +83,8 @@
                 <div class="d-flex align-items-center h-100 flex-column">
                     <h4 class="text-nowrap text-white">{{'beAmember' | translate}}</h4>
                     <p class="text-white">{{'beAmemberMsg' | translate}}</p>
-                    <button (click)="openRegisterDialog()" class="btn btn-light mt-4">{{'register' | translate}}</button>
+                    <button (click)="openRegisterDialog()" class="btn btn-light mt-4">{{'register' |
+                        translate}}</button>
                 </div>
             </div>
         </div>
@@ -89,7 +93,7 @@
 
 <section id="featuredAds" class="mt-6">
     <div class="container gray-bg main-raduis pt-4">
-        <h2 class="page-title text-start">{{ 'featuredAds' | translate }} 
+        <h2 class="page-title text-start">{{ 'featuredAds' | translate }}
             <span class="float-end">
                 <a class="btn btn-danger view-more-btn" routerLink="/ads/list-ads">{{ 'viewMore' | translate }}</a>
             </span>
@@ -99,9 +103,10 @@
             <div class="col-sm-6 col-md-3 penta mb-4" *ngFor="let oneAds of latestAds; let i=index">
                 <mat-card class="ads-card" routerLink="/ads/ads-details">
                     <span class="badge bg-danger">{{ oneAds?.badge }}</span>
-                    <button type="button" class="btn btn-light addtoWishListbtn" [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
-                    matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}" (click)="addToFavorite($event, i)"><i
-                        class="fa fa-heart" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-light addtoWishListbtn"
+                        [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
+                        matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}"
+                        (click)="addToFavorite($event, i)"><i class="fa fa-heart" aria-hidden="true"></i></button>
                     <img mat-card-image src="{{adsImagesPath}}{{oneAds.image}}" [alt]="oneAds.title">
                     <mat-card-content class="text-start">
                         <h4>{{ oneAds.title | slice:0:80 }} </h4>
@@ -122,8 +127,7 @@
                 <div class="d-flex align-items-center flex-column h-100">
                     <h4 class="text-nowrap mb-3">{{'downloadApp' | translate}}</h4>
                     <div>
-                        <a href="https://play.google.com/store/apps"
-                            target="_blank">
+                        <a href="https://play.google.com/store/apps" target="_blank">
                             <img src="assets/img/play.png" alt="Google play" class="stores-img pl-2">
                         </a>
                         <a href="https://apps.apple.com/" target="_blank">
