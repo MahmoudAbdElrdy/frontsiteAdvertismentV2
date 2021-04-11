@@ -26,7 +26,7 @@ export class RequestsComponent  implements OnInit {
   myservices: ServicesDto[];
 
   baseUrlImage = AppConsts.baseUrlImage;
-  servies: import("e:/MyWork/GitAdvertisementFornt/frontsiteAdvertismentV2/src/shared/service-proxies/service-proxies").ServicesDto[];
+  servies:ServicesDto[];
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
     private router : Router,private Service :AdvertisementServiceProxy,private _snackBar: MatSnackBar,
