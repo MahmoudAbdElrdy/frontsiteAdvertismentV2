@@ -31,10 +31,10 @@ export class AddAdsStp2Component  implements OnInit {
   file2: File[];
   imageInfo2: ImageInfo[] = [];
   AdCategoryList : any[] = [
-    {id : 0, name :"Fixed"},
-    {id : 1, name : "movable"},
-    {id : 2, name :  "Digital"},
-    {id : 3, name :  "SocialMedia"},
+    {id : 0, name :"Fixed",nameAR:"ثابت"},
+    {id : 1, name : "movable",nameAR:"متحرك"},
+    {id : 2, name :  "Digital",nameAR:"رقمي"},
+    {id : 3, name :  "SocialMedia",nameAR:"التواصل الاجتماعي"},
    
   ];
   AdCategory:any;
