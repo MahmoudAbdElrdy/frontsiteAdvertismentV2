@@ -88,7 +88,7 @@
                                     (click)="addToFavorite($event, oneAds)">
                                     <i class="fa fa-heart" aria-hidden="true"></i></button>
 
-                                <img mat-card-image [src]="baseUrlImage+oneAds.image+'?w=100&h=100'"
+                                <img mat-card-image [src]="baseUrlImage+oneAds.image+'?w=300&h=300'"
                                     [alt]="oneAds.title">
                                 <mat-card-content (click)="goToDetails(oneAds.adId)" class="text-start">
                                     <h4>{{ oneAds.title | slice:0:80 }} </h4>
