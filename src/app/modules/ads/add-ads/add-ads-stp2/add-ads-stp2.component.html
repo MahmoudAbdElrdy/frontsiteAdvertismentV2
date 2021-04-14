@@ -16,7 +16,7 @@
                             <mat-select name="adCategory" placeholder="{{ 'adCategory' | translate }}"
                                 formControlName="adCategory">
                                 <mat-option *ngFor="let Category of AdCategoryList" [value]="Category.id">
-                                    {{Category.name}}
+                                    {{Category.nameAR}}
                                 </mat-option>
                             </mat-select>
                             <mat-error *ngIf="fc.adCategory?.errors?.required" class="mat-error">
