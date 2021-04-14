@@ -42,7 +42,6 @@ import { API_BASE_URL, AuthServiceProxy } from 'src/shared/service-proxies/servi
 import { InterceptService } from 'src/app/_helpers/intercept.service';
 import { ModelServiceService } from './shared/model-service.service';
 import { SearchService } from './shared/search-service';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { AngularFireDatabaseModule } from '@angular/fire/database';

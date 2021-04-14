@@ -136,11 +136,10 @@ export class EditAdsComponent implements OnInit {
               lng: [result.lng],
               images: [result.images, []],
               address: [result.address],
-              fromDate: new FormControl(result.fromDate),
-              toDate: new FormControl(result.toDate),
+              // fromDate: new FormControl(result.fromDate),
+              // toDate: new FormControl(result.toDate),
               FreeServiceIds: new FormArray([]),
-              adCategory: [result.adCategory, Validators.required],
-
+              adCategory: [result.adCategory, Validators.required]
             });
             if (result.cityId != null) {
               this.Loadcities(result.countryId);
@@ -255,7 +254,7 @@ export class EditAdsComponent implements OnInit {
               imageSize: size.toString(),
               imageUrl: url,
               imageExtention: ""
-            })           
+            })
           }, 200);
         }
       }
@@ -285,10 +284,10 @@ export class EditAdsComponent implements OnInit {
     return this.secondFormGroup.controls;
   }
   nextstep() {
-    if (this.secondFormGroup.valid) {  
+    if (this.secondFormGroup.valid) {
       this.secondFormGroup.removeControl('countryId');
       let formArray = this.secondFormGroup.controls['images'] as FormArray;
-      var res = this.imageInfo2.filter(x=>x.imageSize!="").map(x => x.imageUrl);
+      var res = this.imageInfo2.filter(x => x.imageSize != "").map(x => x.imageUrl);
       debugger
       this.images.map((perm, i) => {
         if (res.find(x => x == this.baseUrl + perm + '?w=100&h=100')) {
@@ -307,7 +306,7 @@ export class EditAdsComponent implements OnInit {
         this.EditAdvertisementCommand.lng = this.longitude;
       if (this.secondFormGroup.value.lat === null || this.secondFormGroup.value.lat === "0")
         this.EditAdvertisementCommand.lat = this.latitude;
-    //  this.EditAdvertisementCommand.images = this.EditAdvertisementCommand.images.filter(x=>x.imageSize!="");
+      //  this.EditAdvertisementCommand.images = this.EditAdvertisementCommand.images.filter(x=>x.imageSize!="");
       this.AdvertisementService.editAdvertisement(this.EditAdvertisementCommand).subscribe(
         res => {
           if (res !== null) {

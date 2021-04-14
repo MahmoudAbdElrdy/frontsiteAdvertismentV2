@@ -101,8 +101,8 @@ Model=new CreateAdvertisementCommand;
       lng: [null],    
       images:[[],[]],
       address:[""],
-      fromDate:new FormControl(new Date()),
-      toDate:new FormControl(new Date()),
+      // fromDate:new FormControl(new Date()),
+      // toDate:new FormControl(new Date()),
       FreeServiceIds:this._formBuilder.array([]),
       adCategory: ['', Validators.required],
     });
@@ -139,16 +139,12 @@ Model=new CreateAdvertisementCommand;
     console.log(this.secondFormGroup.get('FreeServiceIds').value)
   }
   LoadCountries(){
-
     return this.Service.countries(1,150,"","","").subscribe(res=>{
       this.countries=res.items;
       console.log(this.countries)
-    })
-   
-    
+    })    
   }
-  Change(countryid) {
-    
+  Change(countryid) {    
    this. Loadcities(countryid);
 }
   Loadcities(countryId){

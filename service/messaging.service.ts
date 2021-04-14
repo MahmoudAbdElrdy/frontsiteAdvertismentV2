@@ -15,6 +15,13 @@ export class MessagingService {
   requestPermission() {
     this.angularFireMessaging.requestToken.subscribe(
       (token) => {
+        var fcm_web_token = localStorage.getItem('fcm_web_token');
+        if (fcm_web_token == undefined) {
+          localStorage.setItem('fcm_web_token', token);       
+        } else {
+          if (fcm_web_token != token) {           
+          }
+        }
         console.log(token);
       },
       (err) => {
@@ -26,6 +33,15 @@ export class MessagingService {
     this.angularFireMessaging.messages.subscribe(
       (payload) => {
         console.log("new message received. ", payload);
+        this.currentMessage.next(payload);
+      })
+  }
+  deleteToken() {
+    var fcm_web_token = localStorage.getItem('fcm_web_token');
+
+    this.angularFireMessaging.deleteToken(fcm_web_token).subscribe(
+      (payload) => {
+        console.log("delete token");
         this.currentMessage.next(payload);
       })
   }
