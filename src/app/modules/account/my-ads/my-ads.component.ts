@@ -6,6 +6,7 @@ import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } fro
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { AppConsts } from 'src/AppConsts';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-my-ads',
   templateUrl: './my-ads.component.html',
@@ -40,18 +41,20 @@ export class MyAdsComponent implements OnInit {
   baseUrlImage = AppConsts.baseUrlImage;
   isReject: any;
   Intervals: any;
+  StopAds: any;
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
     private router: Router, private Service: AdvertisementServiceProxy, private _snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,private translate: TranslateService
   ) {
-
+   
   }
 
   ngAfterViewInit() {
     this.LoadData();    
   }
   ngOnInit(): void {
+    this.StopAds= this.translate.stream('StopAds');
   }
   LoadData() {
 

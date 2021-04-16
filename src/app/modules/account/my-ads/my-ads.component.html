@@ -15,11 +15,11 @@
             <div class="col-md-6">               
                 <button mat-raised-button class="btn btn-secondary text-info mr-2 ml-2"  color="accent"
                 (click)="Reject(oneAds)">
-                {{oneAds.rejected?'StopAds':'switchAds' | translate}}
+                {{(oneAds.rejected?'StopAds' :'switchAds') | translate}}
              </button>
                 <button type="button" (click)="goToEdit(oneAds.id)" class="btn btn-secondary text-success mr-2 ml-2">{{'editAds' | translate}}</button>
          
-                <button type="button" (click)="LoadIntervals(oneAds)" class="btn btn-secondary text-success mr-2 ml-2">الفترات</button>
+                <button type="button" (click)="LoadIntervals(oneAds)" class="btn btn-secondary text-success mr-2 ml-2">{{'interval'|translate}}</button>
 
               </div>
         </div>
