@@ -99,7 +99,7 @@ Model=new CreateAdvertisementCommand;
       cityId: ['', Validators.required],
       lat: [null],
       lng: [null],    
-      images:[[],[]],
+      images:[[], Validators.required],
       address:[""],
       // fromDate:new FormControl(new Date()),
       // toDate:new FormControl(new Date()),
@@ -241,13 +241,13 @@ Model=new CreateAdvertisementCommand;
     return this.secondFormGroup.controls;
   }
   nextstep() {
-   
+    let formArray = this.secondFormGroup.controls['images'] as FormArray;
+      formArray.patchValue(this.imageInfo2.map(x=>x.imageUrl));
     if (this.secondFormGroup.valid) {
       ;
     
       this.secondFormGroup.removeControl('countryId');
-      let formArray = this.secondFormGroup.controls['images'] as FormArray;
-      formArray.patchValue(this.imageInfo2.map(x=>x.imageUrl));
+     
       if(this.imageInfo2.length<0){
         
       }

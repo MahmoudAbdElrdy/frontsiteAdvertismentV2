@@ -190,7 +190,9 @@ dohome(){
 }
   openAdsLocationDialog() {
     const dialogRef = this.dialog.open(GoToLocationComponent, {
-      width: '70%'
+      width: '70%',
+      data: {latitude: this.AdvertisementDetailDto.lat, longitude: this.AdvertisementDetailDto.lng,address:this.AdvertisementDetailDto.address}
+
     });
   }
 }

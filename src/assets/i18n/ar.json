@@ -155,5 +155,6 @@
   "firstName":" الاسم الاول",
   "LastName":"الاسم الاخير",
   "AdvertisementOwner":"مالك الاعلان",
-  "Client":"مستخدم"
+  "Client":"مستخدم",
+  "images":"الصور"
 }
