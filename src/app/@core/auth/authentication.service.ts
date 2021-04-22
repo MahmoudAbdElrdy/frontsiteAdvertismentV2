@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { User } from './app-user';
 import { UserToken } from './app-user-token';
+import { MessagingService } from 'service/messaging.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private userSessionName = 'ipmats-currentUser';
   private userTokenSessionName = 'ipmats-currentUserToken';
 
-  constructor() { }
+  constructor(private MessagingService: MessagingService,
+  ) { }
   public currentUser(): User {
     return this.getUser();
   }
@@ -58,6 +60,9 @@ export class AuthenticationService {
     // remove user from local storage to log user out
     localStorage.removeItem(this.userSessionName);
     localStorage.removeItem(this.userTokenSessionName);
+    
+    this.MessagingService.deleteToken();
+    localStorage.removeItem('fcm_web_token');
   }
 
   private getUser(): User {

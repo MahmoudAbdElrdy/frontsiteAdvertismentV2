@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
+import { NotificationDto, NotificationServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-notifications',
@@ -8,56 +9,32 @@ import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseCompone
   styleUrls: ['./notifications.component.scss']
 })
 export class NotificationsComponent extends BaseComponent implements OnInit {
-  public notificationsList = [
-    {
-      id: 1,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      description: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات',
-      date: new Date(),
-      readed: false
-    },
-    {
-      id: 2,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      description: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات',
-      date: new Date(),
-      readed: false
-    },
-    {
-      id: 3,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      description: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات',
-      date: new Date(),
-      readed: false
-    },
-    {
-      id: 4,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      description: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات',
-      date: new Date(),
-      readed: false
-    },
-    {
-      id: 5,
-      title: 'شاشة العرض LED للإيجار للإعلان لوحات كاملة الألوان',
-      description: 'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات',
-      date: new Date(),
-      readed: false
-    }
-  ];
+  public notificationsList :NotificationDto[];
 
   //homeSlides2: CreatUpdtaeHomeSliderDto;
   constructor(
-    private route: Router
+    private route: Router,
+    private service:NotificationServiceProxy
   ) {
     super();
   }
 
   ngOnInit() {
+    this.loadNotification();
+  }
+  loadNotification() {
+    this.service.getAllNotification(1,1000,undefined,undefined,undefined).subscribe(n=>{
+      this.notificationsList=n.items;
+    });
   }
 
-  changeStatus(indx){
-    this.notificationsList[indx].readed = true;
+  changeStatus(notification:NotificationDto,indx){
+    this.service.read(notification.id).subscribe(n=>{
+      if(n.success)
+      {
+        this.notificationsList[indx].read = true;
+      }
+    });
   }
 }
 

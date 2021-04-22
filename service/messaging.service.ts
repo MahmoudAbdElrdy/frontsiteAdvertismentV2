@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { BehaviorSubject } from 'rxjs'
+import { SetTokenCommand, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
 @Injectable()
 export class MessagingService {
   currentMessage = new BehaviorSubject(null);
-  constructor(private angularFireMessaging: AngularFireMessaging) {
+  constructor(private angularFireMessaging: AngularFireMessaging, private userService: UsersServiceProxy) {
     this.angularFireMessaging.messaging.subscribe(
       (_messaging) => {
         _messaging.onMessage = _messaging.onMessage.bind(_messaging);
@@ -13,13 +14,19 @@ export class MessagingService {
     )
   }
   requestPermission() {
+    debugger
     this.angularFireMessaging.requestToken.subscribe(
       (token) => {
         var fcm_web_token = localStorage.getItem('fcm_web_token');
         if (fcm_web_token == undefined) {
-          localStorage.setItem('fcm_web_token', token);       
+          localStorage.setItem('fcm_web_token', token);
         } else {
-          if (fcm_web_token != token) {           
+          if (fcm_web_token != token && localStorage.getItem("isLoggedin") == "true") {
+            var command: SetTokenCommand = new SetTokenCommand();
+            command.webToken = token;
+            this.userService.setToken(command).subscribe(t=>{
+              debugger
+            });
           }
         }
         console.log(token);
@@ -38,7 +45,6 @@ export class MessagingService {
   }
   deleteToken() {
     var fcm_web_token = localStorage.getItem('fcm_web_token');
-
     this.angularFireMessaging.deleteToken(fcm_web_token).subscribe(
       (payload) => {
         console.log("delete token");

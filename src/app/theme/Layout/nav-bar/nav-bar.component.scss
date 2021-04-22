@@ -107,3 +107,16 @@ $mainColor: #1db1e3 !important;
         padding: 0 10px;
     }
 }
+.notificationcount{
+    position: relative;
+    top: -9px;
+    left: 20px;
+    font-size: 10px;
+    text-align: center;
+    border-radius: 50%;
+    border: px solid red;
+    width: auto;
+    height: auto;
+    color: white;
+    background-color: red;
+}

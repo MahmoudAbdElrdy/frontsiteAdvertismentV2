@@ -38,7 +38,7 @@ import { getArabicPaginatorIntl } from './shared/arabic-paginator-intl';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthGuard } from './shared/AuthGuard';
 import { AppConsts } from 'src/AppConsts';
-import { API_BASE_URL, AuthServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { API_BASE_URL, AuthServiceProxy, NotificationServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { InterceptService } from 'src/app/_helpers/intercept.service';
 import { ModelServiceService } from './shared/model-service.service';
 import { SearchService } from './shared/search-service';
@@ -102,7 +102,7 @@ export function getBaseUrl(): string {
 
     //ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [AuthServiceProxy,ModelServiceService,SearchService,MessagingService,
+  providers: [UsersServiceProxy,AuthServiceProxy,NotificationServiceProxy,ModelServiceService,SearchService,MessagingService,
     TranslateService,
     HttpClientModule,
     {

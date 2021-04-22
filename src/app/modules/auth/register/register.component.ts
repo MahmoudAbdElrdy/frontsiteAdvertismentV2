@@ -8,6 +8,7 @@ import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseCompone
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthServiceProxy, ClientRegisterCommand, UserManagementServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AuthenticationService } from 'src/app/@core/auth/authentication.service';
+import { TranslateService } from '@ngx-translate/core';
 export interface ImageInfo {
   imageUrl: string;
   imageName: string;
@@ -23,10 +24,12 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   RegisterForm: FormGroup;
   ProfileImage: ImageInfo[] = [];
   file2: File[];
+  lang: string;
 
   constructor(public dialogRef: MatDialogRef<RegisterComponent>, private AuthServiceProxy: AuthServiceProxy,
-    private formBuilder: FormBuilder, private route: Router, private registerService: RegisterService) {
+    private formBuilder: FormBuilder, private route: Router, private translate: TranslateService) {
     super();
+    this.lang = this.translate.getDefaultLang();
   }
 
   ngOnInit() {
@@ -38,7 +41,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   //build Form
   buildForm() {
     this.RegisterForm = this.formBuilder.group({
-    //  fullName: ['', [Validators.required]],
+      //  fullName: ['', [Validators.required]],
       phoneNumber: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required],
@@ -46,7 +49,9 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       avatar: ['', Validators.required],
-      Roles: new FormArray([],Validators.required),
+      lang: [this.lang],
+      webToken: [localStorage.getItem("fcm_web_token")],
+      Roles: new FormArray([], Validators.required),
 
     },
       { validator: this.checkPasswords });
@@ -59,26 +64,26 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   }
 
   onCheckChange(event) {
-    
+
     const formArray: FormArray = this.RegisterForm.get('Roles') as FormArray;
-  
+
     /* Selected */
-    if(event.checked){
+    if (event.checked) {
       // Add a new control in the arrayForm
       formArray.push(new FormControl(event.source.value));
     }
     /* unselected */
-    else{
+    else {
       // find the unselected element
       let i: number = 0;
-  
+
       formArray.controls.forEach((ctrl: FormControl) => {
-        if(ctrl.value == event.source.value) {
+        if (ctrl.value == event.source.value) {
           // Remove the unselected element from the arrayForm
           formArray.removeAt(i);
           return;
         }
-  
+
         i++;
       });
     }
@@ -86,26 +91,27 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   //submit
   submitRegister() {
 
-   if (this.ProfileImage[0].imageName != "") {
+    if (this.ProfileImage[0].imageName != "") {
       this.RegisterForm.controls['avatar'].setValue(this.ProfileImage[0].imageUrl);
     }
     ;
     let registerDto: ClientRegisterCommand = this.RegisterForm.value;
-    this.AuthServiceProxy
-    .clientRegister(registerDto)
-    .subscribe(
-      (result) => {
-        this.showMessageWithType(0, "You have been registered successfully");
-        ;
 
-        this.goToList();
-        this.dialogRef.close();
-      },
-      (err) => {
-        console.log(err)
-        this.showMessageWithType(1, "An error has occurred please try again later" + err);
-      }
-    );
+    this.AuthServiceProxy
+      .clientRegister(registerDto)
+      .subscribe(
+        (result) => {
+          this.showMessageWithType(0, "You have been registered successfully");
+          ;
+
+          this.goToList();
+          this.dialogRef.close();
+        },
+        (err) => {
+          console.log(err)
+          this.showMessageWithType(1, "An error has occurred please try again later" + err);
+        }
+      );
   }
   goToList() {
     this.route.navigateByUrl('/');
@@ -128,7 +134,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
         let url
         reader.readAsDataURL(element);
         reader.onload = () => {
-          
+
           url = reader.result.toString();
 
         };

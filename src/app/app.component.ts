@@ -14,8 +14,7 @@ export class AppComponent {
 
   readonly VAPID_PUBLIC_KEY = "BAQo9ciFQyqrXmYFQ2nC1WM9PEcU6JC0P8uwJzPf1g2nquD8G5Fl3DI1SSpiasIRafpbrt88QwwpSZSGzXYvsRs";
   message: any;
-  constructor(private router: Router,
-    private messagingService: MessagingService//, private swPush: SwPush
+  constructor(private router: Router
     ) {
     
   }
@@ -28,10 +27,7 @@ export class AppComponent {
       window.scrollTo(0, 0)
   });
  // this.subscribeToNotifications();
-  this.messagingService.requestPermission()
-  this.messagingService.receiveMessage()
-  this.message = this.messagingService.currentMessage
-  console.log(this.message )
+
   }
   subscribeToNotifications() {
     debugger

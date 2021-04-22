@@ -39,7 +39,7 @@ import { RequestsComponent } from './requests/requests.component';
 import { ReceivedComplaintsComponent } from './received-complaints/received-complaints.component';
 import { ReplyComplaintComponent } from './reply-complaint/reply-complaint.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
-import { AdvertisementServiceProxy, OrderComplaintServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AdvertisementServiceProxy, NotificationServiceProxy, OrderComplaintServiceProxy, UsersServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { ChangePasswordComponent } from '../auth/change-password/change-password.component';
 import { IntervalsComponent } from './intervals/intervals.component';
 import { IntervalsInstallmentComponent } from './intervals-installment/intervals-installment.component';
@@ -112,7 +112,8 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     { provide: MAT_DATE_LOCALE, useValue: 'ar-EG' },
     AdvertisementServiceProxy,
     OrderComplaintServiceProxy,
-    UsersServiceProxy
+    UsersServiceProxy,
+    NotificationServiceProxy
   ],
   exports: [ChangePasswordComponent],
   entryComponents: [SubmitComplaintComponent, ReplyComplaintComponent,ChangePasswordComponent],

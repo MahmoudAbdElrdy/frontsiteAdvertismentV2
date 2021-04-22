@@ -2,13 +2,13 @@
     <h2 class="page-title text-center mb-4">{{'notifications' | translate}}</h2>
     <div class="row">
         <div class="col-sm-12 col-md-6 mb-4" *ngFor="let notification of notificationsList; let i=index">
-            <mat-card class="notification-card" (click)="changeStatus(i)">
-                <mat-card-content class="text-start p-2" [ngClass]="{'not-readed': !notification.readed }">
+            <mat-card class="notification-card" (click)="changeStatus(notification,i)">
+                <mat-card-content class="text-start p-2" [ngClass]="{'not-readed': !notification.read }">
                     <p class="date"><button class="btn btn-light"><i class="fa fa-bell"
-                                aria-hidden="true"></i></button>{{ notification.date | date: 'shortTime' }} - {{
+                                aria-hidden="true"></i></button>{{ notification.createdDate | date: 'shortTime' }} - {{
                         notification.date | date: 'shortDate' }} </p>
-                    <!-- <h6>{{ notification.title | slice:0:80 }} </h6> -->
-                    <p class="desc">{{ notification.description }}</p>
+                    <h6>{{ notification.subject | slice:0:80 }} </h6>
+                    <p class="desc">{{ notification.body }}</p>
                 </mat-card-content>
             </mat-card>
         </div>

@@ -44,7 +44,7 @@ export class IndexComponent implements OnInit {
   resultsLength = 0;
   baseUrlImage = AppConsts.baseUrlImage;
   AddFavouriteCommand: AddFavouriteCommand = new AddFavouriteCommand();
-  GetMyFavourite:GetMyFavourite=new GetMyFavourite();
+  GetMyFavourite: GetMyFavourite = new GetMyFavourite();
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   close: any;
@@ -61,8 +61,8 @@ export class IndexComponent implements OnInit {
 
   }
   ngOnInit() {
-  this.LoadtMyFavourites();
-  //  this.getLocation();
+    this.LoadtMyFavourites();
+    //  this.getLocation();
     this.Load();
   }
   getLocation(): void {
@@ -79,14 +79,15 @@ export class IndexComponent implements OnInit {
       console.log("No support for geolocation")
     }
   }
-  LoadtMyFavourites(){
+  LoadtMyFavourites() {
 
     return this.Service.getMyFavourites(this.GetMyFavourite)
-    .subscribe(res=>{
-    debugger
-      this.ListFavourites=res.map(x=>x.id);
-      console.log(res);
-    })}
+      .subscribe(res => {
+        debugger
+        this.ListFavourites = res.map(x => x.id);
+        console.log(res);
+      })
+  }
   Load() {
     debugger
     if (navigator.geolocation) {
@@ -97,50 +98,50 @@ export class IndexComponent implements OnInit {
         console.log(this.longitude)
         console.log(this.latitude)
         return this.Service.getTopAds(this.latitude, this.longitude)
-        .subscribe(res => {
-          debugger
-          if(this.ListFavourites!==undefined){
-            for (let i = 0; i < res.length; i++) {
-              if (this.ListFavourites.indexOf(res[i].id) !== -1) {
-              res[i].isFavorite = true;
-               
+          .subscribe(res => {
+            debugger
+            if (this.ListFavourites !== undefined) {
+              for (let i = 0; i < res.length; i++) {
+                if (this.ListFavourites.indexOf(res[i].id) !== -1) {
+                  res[i].isFavorite = true;
+
+                }
               }
             }
-          }
-        
-          this.List = res;
-          console.log(res);
-        })
+
+            this.List = res;
+            console.log(res);
+          })
       });
     } else {
       return this.Service.getTopAds(this.latitude, this.longitude)
         .subscribe(res => {
           debugger
-          if(this.ListFavourites!==undefined){
+          if (this.ListFavourites !== undefined) {
             for (let i = 0; i < res.length; i++) {
               if (this.ListFavourites.indexOf(res[i].id) !== -1) {
-              res[i].isFavorite = true;
-               
+                res[i].isFavorite = true;
+
               }
             }
           }
-        
+
           this.List = res;
           console.log(res);
         })
     }
-   
+
   }
   addToFavorite(e, oneAds) {
     debugger
 
     this.AddFavouriteCommand.adId = oneAds.id;
-    this.AddFavouriteCommand.isFavorite=!oneAds.isFavorite;
-    oneAds.isFavorite=!oneAds.isFavorite;
+    this.AddFavouriteCommand.isFavorite = !oneAds.isFavorite;
+    oneAds.isFavorite = !oneAds.isFavorite;
     this.Service.addFavourite(this.AddFavouriteCommand)
       .subscribe(
 
-       
+
         res => {
 
 
@@ -159,13 +160,13 @@ export class IndexComponent implements OnInit {
           }
 
         }),
-        error => {
-          console.log(error)
-          this._snackBar.open("حدث خطأ عند الاضافة", "الاضافة", {
-            duration: 2220,
+      error => {
+        console.log(error)
+        this._snackBar.open("حدث خطأ عند الاضافة", "الاضافة", {
+          duration: 2220,
 
-          })
-        }
+        })
+      }
 
   }
   goToDetails(id: number) {
@@ -184,9 +185,8 @@ export class IndexComponent implements OnInit {
       console.log(`Dialog result: ${result}`);
     });
   }
-  isLogin()
-  {
-    
+  isLogin() {
+
     return Boolean(localStorage.getItem('isLoggedin'));
   }
 }
