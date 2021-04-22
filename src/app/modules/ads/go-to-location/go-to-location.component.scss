@@ -1,0 +1,21 @@
+.mat-dialog-actions .btn{
+    margin-right: 1rem;
+    margin-right: 1rem;
+    min-width: 120px;
+}
+
+.input-group{
+    position: relative;
+    margin-inline-start: 25%;
+    width: 50%;
+    .form-control{
+        border-radius: 6px !important;
+        background-color: rgb(241,241,241);
+        border-color: rgb(241,241,241);
+    }
+    .btn{
+        position: absolute;
+        left: 0;
+        color: black;
+    }
+}

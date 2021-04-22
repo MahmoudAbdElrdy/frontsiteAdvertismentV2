@@ -1,4 +1,4 @@
-<div mat-dialog-title class="text-start">
+<!-- <div mat-dialog-title class="text-start">
     <button class="btn btn-light rounded-circle float-end" title="{{'Close' | translate}}" mat-dialog-close><i
             class="fa fa-times"></i></button>
     <h4 class="text-center mb-2 mt-2">{{'adsLocationMap' | translate}}</h4>
@@ -10,4 +10,31 @@
             width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
             tabindex="0"></iframe>
     </div>
-</mat-dialog-content>
+</mat-dialog-content> -->
+<!-- <div class="modal-header">
+  
+    <div class="exit-button" (click)="closeDialog()">
+        <i class="material-icons-outlined">close</i>
+    </div>
+</div> -->
+<div mat-dialog-content>
+    <mat-form-field class="w-100 m-b-20 " appearance="outline">
+       
+        <input class="w-100 search-input" [(ngModel)]="search" (keydown)="keyDown ()" disabled="disabled"
+            matInput name="search" [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let item of searchList" (click)="setAddress(item.lat , item.lon,item.address)"
+                [value]="item.id">
+                {{ item.address}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <app-osm-single-view *ngIf="viewMap" (latlongChange)="latlongChanges($event)" [latitude]="latitude" [mapModal]="false"
+        [longitude]="longitude">
+    </app-osm-single-view>
+   
+</div>
+<mat-dialog-actions class="justify-content-center">
+    <button (click)="closeDialog()" class="btn btn-light" mat-dialog-close>{{ 'cancel' | translate }}</button>
+   </mat-dialog-actions> 

@@ -79,14 +79,29 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
     console.log(this.serviceProviderRequestForm.get('provider').value);
   }
   addFieldValue() {
-    
+    debugger
     this.newAttribute.ProviderName = this.provider;
     this.newAttribute.ServiceName = this.triggerValue;
     this.newAttribute.ProviderName = this.provider;
     this.newAttribute.servicesId = this.providerId;
     if (this.newAttribute.ProviderName !== null && this.newAttribute.ProviderName !== undefined && this.newAttribute.ServiceName !== null && this.newAttribute.ServiceName !== undefined) {
-      this.fieldArray.push(this.newAttribute)
+      const found = this.fieldArray.some(el => el.ProviderName === this.newAttribute.ProviderName&&el.ServiceName==this.newAttribute.ServiceName);
+      if (!found) 
+      { 
+        this.fieldArray.push(this.newAttribute)
       this.newAttribute = {};
+      }
+      else
+      { this._snackBar.open("تم الاضافة من قبل", "", {
+        duration: 2220,
+
+      });
+
+      }
+         // this.fieldArray.push(this.newAttribute)
+         
+        
+     
     }
 
     console.log(this.fieldArray);

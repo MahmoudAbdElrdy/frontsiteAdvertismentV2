@@ -11,7 +11,7 @@
                                 <label class="text-center primary-font-color w-100">{{ 'selectServiceProviderType' |
                                     translate}}</label>
                                 <mat-form-field appearance="fill" class="w-100">
-                                    <mat-select name="serviceId" placeholder="اختار خدمة"
+                                    <mat-select name="serviceId" placeholder="{{'ChooseServices'|translate}}"
                                         (selectionChange)="Change($event)" [(ngModel)]="selectedService"
                                         formControlName="services">
                                         <mat-option *ngFor="let service of services" [value]="service.id">
@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-md-12">
                         <button type="button" class="btn btn-info text-center" (click)="dohome()"
-                        style="width: 48%; margin-right: 50px;">تخطي</button>    
+                        style="width: 48%; margin-right: 50px;">{{'Skip'|translate}}</button>    
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12 text-start">
@@ -53,9 +53,9 @@
             <div class="col-md-12">
                 <table class="table">
                     <tr>
-                        <th class="text-center">مقدم الخدمة</th>
-                        <th class="text-center">اسم الخدمة</th>
-                        <th class="text-center">العمليات</th>
+                        <th class="text-center">{{'Serviceprovider'|translate}}</th>
+                        <th class="text-center">{{'ProviderName'|translate}}</th>
+                        <th class="text-center">{{'Actions'|translate}}</th>
 
 
                     </tr>

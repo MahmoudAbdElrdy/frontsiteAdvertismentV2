@@ -6,12 +6,12 @@
     }
 }
 
-::ng-deep .sidebar-col{
-    display: none !important;
-}
-@media (min-width: 768px){
-    ::ng-deep .col-md-9 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
+// ::ng-deep .sidebar-col{
+//     display: none !important;
+// }
+// @media (min-width: 768px){
+//     ::ng-deep .col-md-9 {
+//         flex: 0 0 100%;
+//         max-width: 100%;
+//     }
+// }
