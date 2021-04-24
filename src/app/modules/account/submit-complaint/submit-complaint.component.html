@@ -8,7 +8,7 @@
         <form  (ngSubmit)="doSubmitComplaintForm()" [formGroup]="submitComplaintForm">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h5 class="text-dark mb-3">{{ 'requestNo' | translate }} :  {{ad.intervalId}}</h5>
+                    <h5 class="text-dark mb-3">{{ 'requestNo' | translate }} :  {{ComplainType==1 ?ad.intervalId:ad.id}}</h5>
                     <h5 class="text-success">{{ 'seller' | translate }} : {{ad.vendorName}} </h5>
                 </div>
             </div>

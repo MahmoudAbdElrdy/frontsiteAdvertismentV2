@@ -677,7 +677,7 @@ export class AdvertisementServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    getMyService(body: GetMyServiceCommand | undefined): Observable<PaidServicesDto[]> {
+    getMyService(body: GetMyServiceCommand | undefined): Observable<GetPaidServicesDto[]> {
         let url_ = this.baseUrl + "/api/Advertisement/get-my-service";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -700,14 +700,14 @@ export class AdvertisementServiceProxy {
                 try {
                     return this.processGetMyService(<any>response_);
                 } catch (e) {
-                    return <Observable<PaidServicesDto[]>><any>_observableThrow(e);
+                    return <Observable<GetPaidServicesDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PaidServicesDto[]>><any>_observableThrow(response_);
+                return <Observable<GetPaidServicesDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetMyService(response: HttpResponseBase): Observable<PaidServicesDto[]> {
+    protected processGetMyService(response: HttpResponseBase): Observable<GetPaidServicesDto[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -721,7 +721,7 @@ export class AdvertisementServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(PaidServicesDto.fromJS(item));
+                    result200!.push(GetPaidServicesDto.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -730,7 +730,7 @@ export class AdvertisementServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PaidServicesDto[]>(<any>null);
+        return _observableOf<GetPaidServicesDto[]>(<any>null);
     }
 
     /**
@@ -1021,6 +1021,82 @@ export class AdvertisementServiceProxy {
     }
 
     protected processGetAllAdvertisement(response: HttpResponseBase): Observable<AdvertisementDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdvertisementDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdvertisementDtoPageList>(<any>null);
+    }
+
+    /**
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @param sortBy (optional) 
+     * @param sortOrder (optional) 
+     * @param filter (optional) 
+     * @return Success
+     */
+    getAllAdvertisementDashboard(page: number | undefined, pageSize: number | undefined, sortBy: string | undefined, sortOrder: string | undefined, filter: string | undefined): Observable<AdvertisementDtoPageList> {
+        let url_ = this.baseUrl + "/api/Advertisement/get-all-advertisement-dashboard?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&"; 
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&"; 
+        if (sortBy === null)
+            throw new Error("The parameter 'sortBy' cannot be null.");
+        else if (sortBy !== undefined)
+            url_ += "SortBy=" + encodeURIComponent("" + sortBy) + "&"; 
+        if (sortOrder === null)
+            throw new Error("The parameter 'sortOrder' cannot be null.");
+        else if (sortOrder !== undefined)
+            url_ += "SortOrder=" + encodeURIComponent("" + sortOrder) + "&"; 
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllAdvertisementDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllAdvertisementDashboard(<any>response_);
+                } catch (e) {
+                    return <Observable<AdvertisementDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdvertisementDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllAdvertisementDashboard(response: HttpResponseBase): Observable<AdvertisementDtoPageList> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -5270,23 +5346,13 @@ export class AddCommercialRecordCommand {
 }
 
 export class PaidServicesDto {
-    id?: string | undefined;
     serviceTypeId?: string | undefined;
-    price?: number;
-    serviceName?: { [key: string]: string; } | undefined;
+    price?: string | undefined;
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
             this.serviceTypeId = _data["serviceTypeId"];
             this.price = _data["price"];
-            if (_data["serviceName"]) {
-                this.serviceName = {} as any;
-                for (let key in _data["serviceName"]) {
-                    if (_data["serviceName"].hasOwnProperty(key))
-                        this.serviceName![key] = _data["serviceName"][key];
-                }
-            }
         }
     }
 
@@ -5299,16 +5365,8 @@ export class PaidServicesDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
         data["serviceTypeId"] = this.serviceTypeId;
         data["price"] = this.price;
-        if (this.serviceName) {
-            data["serviceName"] = {};
-            for (let key in this.serviceName) {
-                if (this.serviceName.hasOwnProperty(key))
-                    data["serviceName"][key] = this.serviceName[key];
-            }
-        }
         return data; 
     }
 }
@@ -5384,6 +5442,50 @@ export class GetMyServiceCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export class GetPaidServicesDto {
+    id?: string | undefined;
+    serviceTypeId?: string | undefined;
+    price?: number;
+    serviceName?: { [key: string]: string; } | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.serviceTypeId = _data["serviceTypeId"];
+            this.price = _data["price"];
+            if (_data["serviceName"]) {
+                this.serviceName = {} as any;
+                for (let key in _data["serviceName"]) {
+                    if (_data["serviceName"].hasOwnProperty(key))
+                        this.serviceName![key] = _data["serviceName"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): GetPaidServicesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPaidServicesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["serviceTypeId"] = this.serviceTypeId;
+        data["price"] = this.price;
+        if (this.serviceName) {
+            data["serviceName"] = {};
+            for (let key in this.serviceName) {
+                if (this.serviceName.hasOwnProperty(key))
+                    data["serviceName"][key] = this.serviceName[key];
+            }
+        }
         return data; 
     }
 }
@@ -6812,16 +6914,23 @@ export class OrderComplaintDto {
     }
 }
 
+export enum ComplainType {
+    _1 = 1,
+    _2 = 2,
+}
+
 export class CreateOrderComplaintCommand {
     complaintReason?: string | undefined;
     orderId?: string | undefined;
     clientId?: string | undefined;
+    complainType?: ComplainType;
 
     init(_data?: any) {
         if (_data) {
             this.complaintReason = _data["complaintReason"];
             this.orderId = _data["orderId"];
             this.clientId = _data["clientId"];
+            this.complainType = _data["complainType"];
         }
     }
 
@@ -6837,6 +6946,7 @@ export class CreateOrderComplaintCommand {
         data["complaintReason"] = this.complaintReason;
         data["orderId"] = this.orderId;
         data["clientId"] = this.clientId;
+        data["complainType"] = this.complainType;
         return data; 
     }
 }

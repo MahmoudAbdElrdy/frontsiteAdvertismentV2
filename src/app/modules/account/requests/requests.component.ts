@@ -89,10 +89,10 @@ LoadData() {
     //   '/ads/ads-details?id=' + id
     // );
   }
-  openSubmitComplaintDialog(ad) {
+  openSubmitComplaintDialog(ad,ComplainType) {
     const dialogRef = this.dialog.open(SubmitComplaintComponent, {
       width: '50%',
-      data: { ad: ad }
+      data: { ad: ad,ComplainType:ComplainType }
     });
 
     dialogRef.afterClosed().subscribe(result => {

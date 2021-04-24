@@ -19,8 +19,7 @@ export class InterceptService implements HttpInterceptor {
 				Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 				Lang:JSON.parse(localStorage.getItem("ipmats-currentLanguage")).languageAliase,
 				WebToken:localStorage.getItem("fcm_web_token")
-			},
-			responseType:'json'
+			}
 		});
 		
 		return next.handle(request)

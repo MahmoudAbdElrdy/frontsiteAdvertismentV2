@@ -16,6 +16,7 @@ export class SubmitComplaintComponent extends BaseComponent implements OnInit {
   orderId: any;
   orderDtails: any;
   ad: any;
+  ComplainType: any;
 
   constructor(private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
@@ -25,7 +26,9 @@ export class SubmitComplaintComponent extends BaseComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super();
+    debugger
     this.ad=data.ad;
+    this.ComplainType=data.ComplainType;
   }
 
   ngOnInit() {
@@ -40,14 +43,14 @@ export class SubmitComplaintComponent extends BaseComponent implements OnInit {
       complaintDetails: ['', Validators.required]
     });
   }
-
-
   //submit
   doSubmitComplaintForm() {
+    debugger
     var add: CreateOrderComplaintCommand = new CreateOrderComplaintCommand();
     add.complaintReason = this.submitComplaintForm.controls['complaintDetails'].value;
-    add.orderId = this.ad.intervalId;
-    
+    add.orderId =this.ComplainType==1? this.ad.intervalId:this.ad.id;
+    add.complainType=this.ComplainType;
+
     this.Service.addOrderComplaint(add).subscribe(res => {
       if (res !== null) {
         this.showMessageWithType(0, "تم الابلاغ بنجاح");
