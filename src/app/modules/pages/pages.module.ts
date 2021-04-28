@@ -30,7 +30,7 @@ import localeAr from "@angular/common/locales/ar-EG";
 import { UsingInstructionsComponent } from './usinginstructions/usinginstructions.component';
 import { PrivacyPolicyComponent } from './privacypolicy/privacypolicy.component';
 import { RegisterComponent } from '../auth/register/register.component';
-import { AdvertisementServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AdvertisementServiceProxy, ContactUsServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 registerLocaleData(localeAr);
 
@@ -85,7 +85,7 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     MatRadioModule
   ],
   providers: [
-    MatDatepickerModule,AdvertisementServiceProxy,
+    MatDatepickerModule,AdvertisementServiceProxy,ContactUsServiceProxy,
     {provide: LOCALE_ID, useValue: 'ar-EG'},
     {provide: MAT_DATE_LOCALE, useValue: 'ar-EG'},
 ]

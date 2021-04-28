@@ -2341,6 +2341,519 @@ export class AuthServiceProxy {
 }
 
 @Injectable()
+export class ContactUsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @param sortBy (optional) 
+     * @param sortOrder (optional) 
+     * @param filter (optional) 
+     * @return Success
+     */
+    contactUs(page: number | undefined, pageSize: number | undefined, sortBy: string | undefined, sortOrder: string | undefined, filter: string | undefined): Observable<ContactUsDtoPageList> {
+        let url_ = this.baseUrl + "/api/ContactUs/ContactUs?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&"; 
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&"; 
+        if (sortBy === null)
+            throw new Error("The parameter 'sortBy' cannot be null.");
+        else if (sortBy !== undefined)
+            url_ += "SortBy=" + encodeURIComponent("" + sortBy) + "&"; 
+        if (sortOrder === null)
+            throw new Error("The parameter 'sortOrder' cannot be null.");
+        else if (sortOrder !== undefined)
+            url_ += "SortOrder=" + encodeURIComponent("" + sortOrder) + "&"; 
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processContactUs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processContactUs(<any>response_);
+                } catch (e) {
+                    return <Observable<ContactUsDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ContactUsDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processContactUs(response: HttpResponseBase): Observable<ContactUsDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ContactUsDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ContactUsDtoPageList>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addContactUs(body: AddContactUsCommand | undefined): Observable<ContactUsDtoPageListPageList> {
+        let url_ = this.baseUrl + "/api/ContactUs/ContactUs/add-ContactUs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddContactUs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddContactUs(<any>response_);
+                } catch (e) {
+                    return <Observable<ContactUsDtoPageListPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ContactUsDtoPageListPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddContactUs(response: HttpResponseBase): Observable<ContactUsDtoPageListPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ContactUsDtoPageListPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ContactUsDtoPageListPageList>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editContactUs(id: string, body: EditContactUsCommand | undefined): Observable<ContactUsDtoPageList> {
+        let url_ = this.baseUrl + "/api/ContactUs/ContactUs/edit-ContactUs/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditContactUs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditContactUs(<any>response_);
+                } catch (e) {
+                    return <Observable<ContactUsDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ContactUsDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditContactUs(response: HttpResponseBase): Observable<ContactUsDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ContactUsDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ContactUsDtoPageList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deleteContactUs(id: string): Observable<ContactUsDtoPageList> {
+        let url_ = this.baseUrl + "/api/ContactUs/ContactUs/delete-ContactUs/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteContactUs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteContactUs(<any>response_);
+                } catch (e) {
+                    return <Observable<ContactUsDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ContactUsDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteContactUs(response: HttpResponseBase): Observable<ContactUsDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ContactUsDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ContactUsDtoPageList>(<any>null);
+    }
+}
+
+@Injectable()
+export class GeneralConfigurationServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editGeneralConfiguration(body: EditGeneralConfigurationCommand | undefined): Observable<GeneralConfigurationDto> {
+        let url_ = this.baseUrl + "/api/GeneralConfiguration/edit-GeneralConfiguration";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditGeneralConfiguration(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditGeneralConfiguration(<any>response_);
+                } catch (e) {
+                    return <Observable<GeneralConfigurationDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GeneralConfigurationDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditGeneralConfiguration(response: HttpResponseBase): Observable<GeneralConfigurationDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GeneralConfigurationDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GeneralConfigurationDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addGeneralConfiguration(body: CreateGeneralConfigurationCommand | undefined): Observable<GeneralConfigurationDto> {
+        let url_ = this.baseUrl + "/api/GeneralConfiguration/add-GeneralConfiguration";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddGeneralConfiguration(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddGeneralConfiguration(<any>response_);
+                } catch (e) {
+                    return <Observable<GeneralConfigurationDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GeneralConfigurationDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddGeneralConfiguration(response: HttpResponseBase): Observable<GeneralConfigurationDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GeneralConfigurationDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GeneralConfigurationDto>(<any>null);
+    }
+
+    /**
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @param sortBy (optional) 
+     * @param sortOrder (optional) 
+     * @param filter (optional) 
+     * @return Success
+     */
+    getAllGeneralConfiguration(page: number | undefined, pageSize: number | undefined, sortBy: string | undefined, sortOrder: string | undefined, filter: string | undefined): Observable<GeneralConfigurationDtoPageList> {
+        let url_ = this.baseUrl + "/api/GeneralConfiguration/get-all-GeneralConfiguration?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&"; 
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&"; 
+        if (sortBy === null)
+            throw new Error("The parameter 'sortBy' cannot be null.");
+        else if (sortBy !== undefined)
+            url_ += "SortBy=" + encodeURIComponent("" + sortBy) + "&"; 
+        if (sortOrder === null)
+            throw new Error("The parameter 'sortOrder' cannot be null.");
+        else if (sortOrder !== undefined)
+            url_ += "SortOrder=" + encodeURIComponent("" + sortOrder) + "&"; 
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllGeneralConfiguration(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllGeneralConfiguration(<any>response_);
+                } catch (e) {
+                    return <Observable<GeneralConfigurationDtoPageList>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GeneralConfigurationDtoPageList>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllGeneralConfiguration(response: HttpResponseBase): Observable<GeneralConfigurationDtoPageList> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GeneralConfigurationDtoPageList.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GeneralConfigurationDtoPageList>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getGeneralConfigurationDetail(id: number | undefined): Observable<GeneralConfigurationDto> {
+        let url_ = this.baseUrl + "/api/GeneralConfiguration/get-GeneralConfiguration-detail?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetGeneralConfigurationDetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetGeneralConfigurationDetail(<any>response_);
+                } catch (e) {
+                    return <Observable<GeneralConfigurationDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GeneralConfigurationDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetGeneralConfigurationDetail(response: HttpResponseBase): Observable<GeneralConfigurationDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GeneralConfigurationDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GeneralConfigurationDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class NotificationServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -6744,6 +7257,365 @@ export class IsUserHasCommercialRecordCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export class ContactUsDto {
+    id?: string | undefined;
+    name?: string | undefined;
+    phone?: string | undefined;
+    email?: string | undefined;
+    title?: string | undefined;
+    content?: string | undefined;
+    responesAdmin?: string | undefined;
+    notes?: string | undefined;
+    isContact?: boolean | undefined;
+    clientId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.phone = _data["phone"];
+            this.email = _data["email"];
+            this.title = _data["title"];
+            this.content = _data["content"];
+            this.responesAdmin = _data["responesAdmin"];
+            this.notes = _data["notes"];
+            this.isContact = _data["isContact"];
+            this.clientId = _data["clientId"];
+        }
+    }
+
+    static fromJS(data: any): ContactUsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContactUsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["phone"] = this.phone;
+        data["email"] = this.email;
+        data["title"] = this.title;
+        data["content"] = this.content;
+        data["responesAdmin"] = this.responesAdmin;
+        data["notes"] = this.notes;
+        data["isContact"] = this.isContact;
+        data["clientId"] = this.clientId;
+        return data; 
+    }
+}
+
+export class ContactUsDtoPageList {
+    items?: ContactUsDto[] | undefined;
+    metadata?: PagedListMetaData | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ContactUsDto.fromJS(item));
+            }
+            this.metadata = _data["metadata"] ? PagedListMetaData.fromJS(_data["metadata"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ContactUsDtoPageList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContactUsDtoPageList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["metadata"] = this.metadata ? this.metadata.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export class AddContactUsCommand {
+    name?: string | undefined;
+    phone?: string | undefined;
+    email?: string | undefined;
+    title?: string | undefined;
+    content?: string | undefined;
+    responesAdmin?: string | undefined;
+    notes?: string | undefined;
+    isContact?: boolean | undefined;
+    clientId?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.phone = _data["phone"];
+            this.email = _data["email"];
+            this.title = _data["title"];
+            this.content = _data["content"];
+            this.responesAdmin = _data["responesAdmin"];
+            this.notes = _data["notes"];
+            this.isContact = _data["isContact"];
+            this.clientId = _data["clientId"];
+        }
+    }
+
+    static fromJS(data: any): AddContactUsCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddContactUsCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["phone"] = this.phone;
+        data["email"] = this.email;
+        data["title"] = this.title;
+        data["content"] = this.content;
+        data["responesAdmin"] = this.responesAdmin;
+        data["notes"] = this.notes;
+        data["isContact"] = this.isContact;
+        data["clientId"] = this.clientId;
+        return data; 
+    }
+}
+
+export class ContactUsDtoPageListPageList {
+    items?: ContactUsDtoPageList[] | undefined;
+    metadata?: PagedListMetaData | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ContactUsDtoPageList.fromJS(item));
+            }
+            this.metadata = _data["metadata"] ? PagedListMetaData.fromJS(_data["metadata"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ContactUsDtoPageListPageList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContactUsDtoPageListPageList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["metadata"] = this.metadata ? this.metadata.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export class EditContactUsCommand {
+    name?: string | undefined;
+    phone?: string | undefined;
+    email?: string | undefined;
+    title?: string | undefined;
+    content?: string | undefined;
+    responesAdmin?: string | undefined;
+    notes?: string | undefined;
+    isContact?: boolean | undefined;
+    clientId?: string | undefined;
+    id?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.phone = _data["phone"];
+            this.email = _data["email"];
+            this.title = _data["title"];
+            this.content = _data["content"];
+            this.responesAdmin = _data["responesAdmin"];
+            this.notes = _data["notes"];
+            this.isContact = _data["isContact"];
+            this.clientId = _data["clientId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EditContactUsCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditContactUsCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["phone"] = this.phone;
+        data["email"] = this.email;
+        data["title"] = this.title;
+        data["content"] = this.content;
+        data["responesAdmin"] = this.responesAdmin;
+        data["notes"] = this.notes;
+        data["isContact"] = this.isContact;
+        data["clientId"] = this.clientId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export enum ValueTypeEnum {
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+}
+
+export class EditGeneralConfigurationCommand {
+    id?: number;
+    valueType?: ValueTypeEnum;
+    value?: string | undefined;
+    name?: string | undefined;
+    code?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.valueType = _data["valueType"];
+            this.value = _data["value"];
+            this.name = _data["name"];
+            this.code = _data["code"];
+        }
+    }
+
+    static fromJS(data: any): EditGeneralConfigurationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditGeneralConfigurationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["valueType"] = this.valueType;
+        data["value"] = this.value;
+        data["name"] = this.name;
+        data["code"] = this.code;
+        return data; 
+    }
+}
+
+export class GeneralConfigurationDto {
+    id?: number;
+    valueType?: ValueTypeEnum;
+    value?: string | undefined;
+    name?: string | undefined;
+    code?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.valueType = _data["valueType"];
+            this.value = _data["value"];
+            this.name = _data["name"];
+            this.code = _data["code"];
+        }
+    }
+
+    static fromJS(data: any): GeneralConfigurationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GeneralConfigurationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["valueType"] = this.valueType;
+        data["value"] = this.value;
+        data["name"] = this.name;
+        data["code"] = this.code;
+        return data; 
+    }
+}
+
+export class CreateGeneralConfigurationCommand {
+    valueType?: ValueTypeEnum;
+    value?: string | undefined;
+    name?: string | undefined;
+    code?: string | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            this.valueType = _data["valueType"];
+            this.value = _data["value"];
+            this.name = _data["name"];
+            this.code = _data["code"];
+        }
+    }
+
+    static fromJS(data: any): CreateGeneralConfigurationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateGeneralConfigurationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["valueType"] = this.valueType;
+        data["value"] = this.value;
+        data["name"] = this.name;
+        data["code"] = this.code;
+        return data; 
+    }
+}
+
+export class GeneralConfigurationDtoPageList {
+    items?: GeneralConfigurationDto[] | undefined;
+    metadata?: PagedListMetaData | undefined;
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GeneralConfigurationDto.fromJS(item));
+            }
+            this.metadata = _data["metadata"] ? PagedListMetaData.fromJS(_data["metadata"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GeneralConfigurationDtoPageList {
+        data = typeof data === 'object' ? data : {};
+        let result = new GeneralConfigurationDtoPageList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["metadata"] = this.metadata ? this.metadata.toJSON() : <any>undefined;
         return data; 
     }
 }
