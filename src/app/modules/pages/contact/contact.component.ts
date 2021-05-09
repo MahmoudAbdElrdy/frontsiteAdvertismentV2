@@ -4,6 +4,8 @@ import { AddEditcontactUsDto } from 'src/app/@AppService/models/contactUs.model'
 import { contactUsService } from 'src/app/@AppService/services/contactUs-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
+import { AddContactUsCommand, ContactUsServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-contact',
@@ -15,8 +17,8 @@ export class ContactComponent extends BaseComponent implements OnInit {
   id: number = 0;
   isShown: boolean = false;
   constructor(private formBuilder: FormBuilder,
-    private contactUsService: contactUsService,
-    private route: Router,
+    private contactUsService: ContactUsServiceProxy,
+    private route: Router,private _snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute
   ) {
     super();
@@ -33,7 +35,7 @@ export class ContactComponent extends BaseComponent implements OnInit {
     this.ContactForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      address: ['', Validators.required],
+      title: ['', Validators.required],
       content: ['', Validators.required],
     }
     );
@@ -42,30 +44,43 @@ export class ContactComponent extends BaseComponent implements OnInit {
 
   saveContact() {
     this.submitted = true;
-    let contactUsModel: AddEditcontactUsDto = this.ContactForm.value;
+    let contactUsModel: AddContactUsCommand = this.ContactForm.value;
     console.log(contactUsModel);
 
 
-    contactUsModel.Id = this.id;
+   // contactUsModel.i = this.id;
 
-
-    this.contactUsService
-      .AddEditNew(contactUsModel)
-      .subscribe(
-        (result) => {
-          this.showMessage(result);
-
-          if (result.result['value'] == "Success") {
-
-            this.isShown = true;
-            this.ContactForm.reset();
-            // this.goToList();
-          }
-        },
-        (err) => {
-          this.errorOccured(err);
-        }
-      );
+if(this.ContactForm.valid){
+  this.contactUsService
+  .addContactUs(contactUsModel)
+  .subscribe( 
+        
+      
+    res=>{
+     
+     
+    if(res!==null)
+    {
+      this._snackBar.open("تم الاضافة بنجاح","اضافة" ,{
+        duration: 2220,
+        
+      });
+     this.router.navigateByUrl('/');
+   
+      
+    
+    }
+    else
+    {
+      this._snackBar.open("حدث خطأ عند الاضافة","الاضافة" ,{
+        duration: 2220,
+        
+      });
+    }
+ 
+  })
+}
+   
 
   }
 

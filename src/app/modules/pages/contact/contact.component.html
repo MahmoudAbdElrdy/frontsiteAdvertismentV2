@@ -85,8 +85,8 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
-                        <input matInput placeholder="{{ 'Subject' | translate }}" formControlName="address" />
-                        <mat-error *ngIf=" ContactForm.controls.address.errors?.required" class="mat-error">
+                        <input matInput placeholder="{{ 'Subject' | translate }}" formControlName="title" />
+                        <mat-error *ngIf=" ContactForm.controls.title.errors?.required" class="mat-error">
                             {{ 'Subject' | translate }} {{ 'isrequired' | translate }}
                         </mat-error> 
                     </mat-form-field>
