@@ -58,7 +58,6 @@ export class ReplyComplaintComponent extends BaseComponent implements OnInit {
           this.showMessageWithType(MessageType.Error,"حدث خطأ عند الرد");                  
         }
         this.dialogRef.close();
-
       });  
     console.log('in progress');
   }  

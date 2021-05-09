@@ -17,8 +17,8 @@ export class InterceptService implements HttpInterceptor {
 		request = request.clone({
 			setHeaders: {
 				Authorization: `Bearer ${localStorage.getItem('userToken')}`,
-				Lang:JSON.parse(localStorage.getItem("ipmats-currentLanguage")).languageAliase,
-				WebToken:localStorage.getItem("fcm_web_token")
+				Lang:localStorage.getItem("ipmats-currentLanguage")!=null?JSON.parse(localStorage.getItem("ipmats-currentLanguage")).languageAliase:"ar",
+				WebToken:localStorage.getItem("fcm_web_token")==undefined?"":localStorage.getItem("fcm_web_token")
 			}
 		});
 		
@@ -35,8 +35,6 @@ export class InterceptService implements HttpInterceptor {
 						}
 					},
 				),
-
 			);
 	}
-
 }

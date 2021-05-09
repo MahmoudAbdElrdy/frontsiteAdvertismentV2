@@ -22,12 +22,13 @@ export class MessagingService {
           localStorage.setItem('fcm_web_token', token);
         } else {
           if (fcm_web_token != token && localStorage.getItem("isLoggedin") == "true") {
-            var command: SetTokenCommand = new SetTokenCommand();
+            
+          }
+          var command: SetTokenCommand = new SetTokenCommand();
             command.webToken = token;
             this.userService.setToken(command).subscribe(t=>{
               debugger
             });
-          }
         }
         console.log(token);
       },

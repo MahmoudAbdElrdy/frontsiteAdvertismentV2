@@ -100,7 +100,6 @@ export function getBaseUrl(): string {
       },
     }),
 
-    //ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [UsersServiceProxy,AuthServiceProxy,NotificationServiceProxy,ModelServiceService,SearchService,MessagingService,
     TranslateService,
