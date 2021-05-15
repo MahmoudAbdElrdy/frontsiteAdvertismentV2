@@ -7,7 +7,7 @@
 <div mat-dialog-content>
     <mat-form-field class="w-100 m-b-20 " appearance="outline">
         <mat-label>Search</mat-label>
-        <input class="w-100 search-input" [(ngModel)]="search" (keydown)="keyDown ()" (input)="searchAutoComplete()"
+        <input class="w-100 search-input" [(ngModel)]="search" (keydown)="keyDown()" (input)="searchAutoComplete()"
             matInput name="search" [matAutocomplete]="auto" />
         <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let item of searchList" (click)="setAddress(item.lat , item.lon,item.address)"

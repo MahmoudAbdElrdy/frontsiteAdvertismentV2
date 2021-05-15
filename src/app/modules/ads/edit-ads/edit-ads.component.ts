@@ -318,10 +318,10 @@ export class EditAdsComponent implements OnInit {
             this.router.navigateByUrl(
               '/ads/UserServices'
             );
-            let adsData = {
-              secondFormGroup: this.secondFormGroup.value
-            }
-            this.next.emit(adsData);
+            // let adsData = {
+            //   secondFormGroup: this.secondFormGroup.value
+            // }
+            // this.next.emit(adsData);
 
           }
           else {

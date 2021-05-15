@@ -100,7 +100,7 @@ Model=new CreateAdvertisementCommand;
       lat: [null],
       lng: [null],    
       images:[[], Validators.required],
-      address:[""],
+      address:["", Validators.required],
       // fromDate:new FormControl(new Date()),
       // toDate:new FormControl(new Date()),
       FreeServiceIds:this._formBuilder.array([]),
@@ -241,6 +241,7 @@ Model=new CreateAdvertisementCommand;
     return this.secondFormGroup.controls;
   }
   nextstep() {
+    debugger
     let formArray = this.secondFormGroup.controls['images'] as FormArray;
       formArray.patchValue(this.imageInfo2.map(x=>x.imageUrl));
     if (this.secondFormGroup.valid) {
@@ -275,10 +276,12 @@ Model=new CreateAdvertisementCommand;
          this.router.navigateByUrl(
           '/ads/UserServices'
         );
-          let adsData = {
-            secondFormGroup: this.secondFormGroup.value
-          }
-          this.next.emit(adsData);
+        this.secondFormGroup.reset(this.secondFormGroup.value);
+        debugger
+          // let adsData = {
+          //  // secondFormGroup: this.secondFormGroup.value
+          // }
+          // this.next.emit(adsData);
         
         }
         else

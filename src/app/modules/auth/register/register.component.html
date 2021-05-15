@@ -67,7 +67,7 @@
                                             placeholder="{{'enter' | translate }} {{'password' | translate }}"
                                             formControlName="password">
                                         <mat-error *ngIf="fc.password?.errors?.required" class="mat-error">
-                                            {{ 'password' | translate }} {{ 'isrequired' | translate }}
+                                            {{ 'passwordvalidationMessage' | translate }} {{ 'isrequired' | translate }}
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -107,6 +107,9 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <mat-error *ngIf="fc.avatar?.errors?.required"  class="mat-error">
+                                        {{ 'images' | translate }} {{ 'isrequired' | translate }}
+                                    </mat-error>
                                 </div>
                                 <div class="col-md-6 group-gap">
                                     <section class="checkbox-group text-start">

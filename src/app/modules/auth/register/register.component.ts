@@ -44,7 +44,10 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       //  fullName: ['', [Validators.required]],
       phoneNumber: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.required],
+      password: ['', [
+        Validators.required, 
+        Validators.pattern('(?=\\D*\\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}')
+ ]],
       confirmPass: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -101,15 +104,21 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       .clientRegister(registerDto)
       .subscribe(
         (result) => {
-          this.showMessageWithType(0, "You have been registered successfully");
-          ;
-
-          this.goToList();
-          this.dialogRef.close();
+          debugger
+          
+if(result.error!=null){
+  this.showMessageWithType(1,result.error);
+}
+else{
+  this.showMessageWithType(0, "You have been registered successfully");
+  this.goToList();
+  this.dialogRef.close();
+}
+         
         },
-        (err) => {
+        (err) => {debugger
           console.log(err)
-          this.showMessageWithType(1, "An error has occurred please try again later" + err);
+         // this.showMessageWithType(1, "An error has occurred please try again later" + err);
         }
       );
   }

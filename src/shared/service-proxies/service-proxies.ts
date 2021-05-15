@@ -7163,12 +7163,14 @@ export class ClientDto {
     userName?: string | undefined;
     email?: string | undefined;
     phoneNumber?: string | undefined;
+    error?: string | undefined;
 
     init(_data?: any) {
         if (_data) {
             this.userName = _data["userName"];
             this.email = _data["email"];
             this.phoneNumber = _data["phoneNumber"];
+            this.error = _data["error"];
         }
     }
 
@@ -7184,6 +7186,7 @@ export class ClientDto {
         data["userName"] = this.userName;
         data["email"] = this.email;
         data["phoneNumber"] = this.phoneNumber;
+        data["error"] = this.error;
         return data; 
     }
 }
