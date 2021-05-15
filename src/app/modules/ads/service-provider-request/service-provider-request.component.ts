@@ -59,7 +59,7 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
 
   LoadServiceTypeList() {
 
-    return this.ServiceProxy.getServiceTypesList(this.GetServiceTypeListCommand).subscribe(res => {
+    return this.ServiceProxy.getRequestTypesList(this.GetServiceTypeListCommand).subscribe(res => {
       this.services = res;
       console.log(this.services)
     })
@@ -85,7 +85,7 @@ export class ServiceProviderRequestComponent extends BaseComponent implements On
     this.newAttribute.ProviderName = this.provider;
     this.newAttribute.servicesId = this.providerId;
     if (this.newAttribute.ProviderName !== null && this.newAttribute.ProviderName !== undefined && this.newAttribute.ServiceName !== null && this.newAttribute.ServiceName !== undefined) {
-      const found = this.fieldArray.some(el => el.ProviderName === this.newAttribute.ProviderName&&el.ServiceName==this.newAttribute.ServiceName);
+      const found = this.fieldArray.some(el =>el.ServiceName==this.newAttribute.ServiceName);
       if (!found) 
       { 
         this.fieldArray.push(this.newAttribute)

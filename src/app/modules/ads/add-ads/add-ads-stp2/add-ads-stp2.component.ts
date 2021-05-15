@@ -158,7 +158,7 @@ Model=new CreateAdvertisementCommand;
   }
   LoadServiceTypeList(){
 
-    return this.ServiceProxy.getServiceTypesList(this.GetServiceTypeListCommand).subscribe(res=>{
+    return this.ServiceProxy.getRequestTypesList(this.GetServiceTypeListCommand).subscribe(res=>{
       this.services=res;
     
      console.log(this.services)

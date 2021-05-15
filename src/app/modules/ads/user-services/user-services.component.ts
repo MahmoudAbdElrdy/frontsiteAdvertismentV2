@@ -77,7 +77,7 @@ export class UserServicesComponent extends BaseComponent implements OnInit {
         });
        // this.router.navigateByUrl('/');
        this.url.navigateByUrl(
-        '/account/my-ads'
+        '/account/my-services'
       );
        
       

@@ -116,72 +116,6 @@ export class EditAdsComponent implements OnInit {
       adCategory: ['', Validators.required],
     });
 
-    this.activatedRoute.queryParams.subscribe(parm => {
-      let querySting = parm['id'];
-      if (querySting) {
-        this.id = querySting;
-        this.ApplyForAdvertisementCommand.adId = this.id;
-        this.AdvertisementService.getAdvertisementById(this.id).subscribe(
-          (result) => {
-            console.log(result);
-            this.secondFormGroup = this._formBuilder.group({
-              title: [result.title, Validators.required],
-              price: [result.price, Validators.required],
-              isAuction: [false],
-              auctionDays: [1],
-              description: [result.description, Validators.required],
-              countryId: [result.countryId, Validators.required],
-              cityId: [result.cityId, Validators.required],
-              lat: [result.lat],
-              lng: [result.lng],
-              images: [result.images, []],
-              address: [result.address],
-              // fromDate: new FormControl(result.fromDate),
-              // toDate: new FormControl(result.toDate),
-              FreeServiceIds: new FormArray([]),
-              adCategory: [result.adCategory, Validators.required]
-            });
-            if (result.cityId != null) {
-              this.Loadcities(result.countryId);
-            }
-            this.images = result.images;
-            if (result.images.length > 0) {
-              for (var i = 0; i < result.images.length; i++) {
-                this.imageInfo2.push({
-                  imageName: result.images[i],
-                  imageSize: "",
-                  imageUrl: this.baseUrl + result.images[i] + '?w=100&h=100',
-                  imageExtention: ""
-                })
-              }
-            }
-
-            var list: any = result.freeServices.map(x => x.serviceTypeId);
-
-            const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
-
-            this.services.map((perm, i) => {
-
-              //  this.permissionsArr.at(i).patchValue(true)
-              if (list.find(x => x == perm.id) != null) {
-                let obj: any = { name: perm.name.ar, value: true, serviceTypeId: perm.id };
-                this.service.push(obj)
-                checkArray.push(new FormControl(perm.id));
-                //this.permissionsArr.at(i).patchValue(true)
-              } else {
-                let obj: any = { name: perm.name.ar, value: false, serviceTypeId: perm.id };
-                this.service.push(obj)
-              }
-
-
-            })
-          },
-          (err) => {
-            this.errorOccured(err);
-          }
-        );
-      }
-    });
 
 
 
@@ -228,9 +162,75 @@ export class EditAdsComponent implements OnInit {
   }
   LoadServiceTypeList() {
 
-    return this.ServiceProxy.getServiceTypesList(this.GetServiceTypeListCommand).subscribe(res => {
+    return this.ServiceProxy.getRequestTypesList(this.GetServiceTypeListCommand).subscribe(res => {
       this.services = res;
 
+      this.activatedRoute.queryParams.subscribe(parm => {
+        let querySting = parm['id'];
+        if (querySting) {
+          this.id = querySting;
+          this.ApplyForAdvertisementCommand.adId = this.id;
+          this.AdvertisementService.getAdvertisementById(this.id).subscribe(
+            (result) => {
+              console.log(result);
+              this.secondFormGroup = this._formBuilder.group({
+                title: [result.title, Validators.required],
+                price: [result.price, Validators.required],
+                isAuction: [false],
+                auctionDays: [1],
+                description: [result.description, Validators.required],
+                countryId: [result.countryId, Validators.required],
+                cityId: [result.cityId, Validators.required],
+                lat: [result.lat],
+                lng: [result.lng],
+                images: [result.images, []],
+                address: [result.address],
+                // fromDate: new FormControl(result.fromDate),
+                // toDate: new FormControl(result.toDate),
+                FreeServiceIds: new FormArray([]),
+                adCategory: [result.adCategory, Validators.required]
+              });
+              if (result.cityId != null) {
+                this.Loadcities(result.countryId);
+              }
+              this.images = result.images;
+              if (result.images.length > 0) {
+                for (var i = 0; i < result.images.length; i++) {
+                  this.imageInfo2.push({
+                    imageName: result.images[i],
+                    imageSize: "",
+                    imageUrl: this.baseUrl + result.images[i] + '?w=100&h=100',
+                    imageExtention: ""
+                  })
+                }
+              }
+  
+              var list: any = result.freeServices.map(x => x.serviceTypeId);
+  
+              const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
+              debugger
+              this.services.map((perm, i) => {
+               debugger
+                //  this.permissionsArr.at(i).patchValue(true)
+                if (list.find(x => x == perm.id) != null) {
+                  let obj: any = { name: perm.name.ar, value: true, serviceTypeId: perm.id };
+                  this.service.push(obj)
+                  checkArray.push(new FormControl(perm.id));
+                  //this.permissionsArr.at(i).patchValue(true)
+                } else {
+                  let obj: any = { name: perm.name.ar, value: false, serviceTypeId: perm.id };
+                  this.service.push(obj)
+                }
+  
+  
+              })
+            },
+            (err) => {
+              this.errorOccured(err);
+            }
+          );
+        }
+      });
       console.log(this.services)
     })
   }
