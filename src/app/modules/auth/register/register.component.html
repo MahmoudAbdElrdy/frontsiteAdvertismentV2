@@ -144,6 +144,14 @@
                                         </div>
                                     </div> -->
                                 </div>
+                                <div class="col-6">
+                                    <mat-checkbox formControlName="isAccept" id="rememberMe" name="rememberMe">اوافق على 
+                                      الشروط
+                                    </mat-checkbox>
+                                    <mat-error *ngIf="fc.isAccept?.errors?.required"  class="mat-error">
+                                        {{ 'Condtions' | translate }} 
+                                    </mat-error>
+                                  </div>
                             </div>
                             <div class="clearfix"></div>
                             <button type="submit" class="btn btn-primary btn-block btn-lg mt-2">{{'register' | translate

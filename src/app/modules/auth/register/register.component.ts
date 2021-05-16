@@ -57,7 +57,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       lang: [this.lang],
       webToken: [localStorage.getItem("fcm_web_token")],
       Roles: new FormArray([], Validators.required),
-
+      isAccept: [null, [Validators.required]],
     },
       { validator: this.checkPasswords });
   }
@@ -120,7 +120,7 @@ this.dialogRef.close();
     },
     (err) => {debugger
       console.log(err)
-     // this.showMessageWithType(1, "An error has occurred please try again later" + err);
+      this.showMessageWithType(1, err);
     }
   );
 }
