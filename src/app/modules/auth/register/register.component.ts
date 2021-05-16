@@ -42,12 +42,14 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   buildForm() {
     this.RegisterForm = this.formBuilder.group({
       //  fullName: ['', [Validators.required]],
-      phoneNumber: ['', Validators.required],
+      phoneNumber:['', Validators.compose([Validators.required,Validators.pattern(
+        '(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'
+          )])],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', [
+      password: ['',Validators.compose([
         Validators.required, 
         Validators.pattern('(?=\\D*\\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}')
- ]],
+ ])] ,
       confirmPass: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -99,28 +101,30 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     }
     ;
     let registerDto: ClientRegisterCommand = this.RegisterForm.value;
-
-    this.AuthServiceProxy
-      .clientRegister(registerDto)
-      .subscribe(
-        (result) => {
-          debugger
-          
+if(this.RegisterForm.valid){
+  this.AuthServiceProxy
+  .clientRegister(registerDto)
+  .subscribe(
+    (result) => {
+      debugger
+      
 if(result.error!=null){
-  this.showMessageWithType(1,result.error);
+this.showMessageWithType(1,result.error);
 }
 else{
-  this.showMessageWithType(0, "You have been registered successfully");
-  this.goToList();
-  this.dialogRef.close();
+this.showMessageWithType(0, "You have been registered successfully");
+this.goToList();
+this.dialogRef.close();
 }
-         
-        },
-        (err) => {debugger
-          console.log(err)
-         // this.showMessageWithType(1, "An error has occurred please try again later" + err);
-        }
-      );
+     
+    },
+    (err) => {debugger
+      console.log(err)
+     // this.showMessageWithType(1, "An error has occurred please try again later" + err);
+    }
+  );
+}
+   
   }
   goToList() {
     this.route.navigateByUrl('/');

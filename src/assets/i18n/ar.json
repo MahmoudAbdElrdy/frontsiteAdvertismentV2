@@ -42,7 +42,7 @@
   "emailisRequired": "  البريد الإلكترونى مطلوب  ",
   "password": "كلمة المرور",
   "passwordisRequired": "كلمة المرور مطلوبة  ",
-  "passwordvalidationMessage": "كلمة المرور يجب ان تحتوي على حرف كبير وحرف صغير وستة ارقام علي الاقل",
+  "passwordvalidationMessage": "كلمة المرور يجب حرف كبير وحرف صغير وستة ارقام علي الاقل",
   "invalidemailorpassword": "خطأ في اسم المستخدم أو كلمة المرور",
   "Areyousureyouwanttochangeyourcurrentpassword": "هل أنت متأكد من أنك تريد تغيير كلمة المرور الحالية؟",
   "Submit": "إرسال",
@@ -156,5 +156,7 @@
   "LastName":"الاسم الاخير",
   "AdvertisementOwner":"مالك الاعلان",
   "Client":"مستخدم",
-  "images":"الصور"
+  "images":"الصور",
+  "image":"الصورة",
+  "natureuserbusiness":" طبيعة أعمال المستخدم"
 }

@@ -156,5 +156,7 @@
 "LastName":"LastName",
 "AdvertisementOwner":"AdvertisementOwner",
 "Client":"Client",
-"images":"images"
+"images":"images",
+"image":"image",
+"natureuserbusiness":" The nature of the user's business"
 }
