@@ -55,7 +55,7 @@
                                         <input matInput placeholder="{{'enter' | translate }} {{'Email' | translate }}"
                                             name="email" formControlName="email" required>
                                         <mat-error *ngIf="fc.email?.errors?.required" class="mat-error">
-                                            {{ 'email' | translate }} {{ 'isrequired' | translate }}
+                                            {{ 'emailisRequired' | translate }} 
                                         </mat-error>
                                     </mat-form-field>
 
@@ -66,9 +66,12 @@
                                         <input matInput type="password"
                                             placeholder="{{'enter' | translate }} {{'password' | translate }}"
                                             formControlName="password">
-                                        <mat-error *ngIf="fc.password?.errors?.required" class="mat-error">
+                                            <span *ngIf="fc.password?.errors?.required" class="mat-error">
+                                                {{ 'passwordvalidationMessage' | translate }}
+                                            </span>
+                                        <span *ngIf="fc.password?.errors?.pattern" class="mat-error">
                                             {{ 'passwordvalidationMessage' | translate }}
-                                        </mat-error>
+                                        </span>
                                     </mat-form-field>
                                 </div>
                                 <div class="form-group col-md-12">
