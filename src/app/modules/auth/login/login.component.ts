@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
     this.LoginCommand.webToken = localStorage.getItem("fcm_web_token");
     
     this.AuthServiceProxy.login(this.LoginCommand).subscribe((data: any) => {
+      debugger
       let obj = data.data;
       if (obj.token != null) {
         localStorage.setItem('isLoggedin', 'true');
@@ -73,7 +74,7 @@ export class LoginComponent implements OnInit {
       }
       else {
         //  this.toastr.error( 'Error occured during login!');
-        this._snackBar.open("اضافة", "Error occured during login!", {
+        this._snackBar.open("اضافة", "خطأ اسم المستخدم او كلمة المرور", {
           duration: 2220,
 
         });
@@ -82,7 +83,7 @@ export class LoginComponent implements OnInit {
       err => {
         ;
         console.log(err)
-        this._snackBar.open("   ", err, {
+        this._snackBar.open("   ", "خطأ اسم المستخدم او كلمة المرور", {
           duration: 2220,
 
         });

@@ -43,7 +43,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     this.RegisterForm = this.formBuilder.group({
       //  fullName: ['', [Validators.required]],
       phoneNumber:['', Validators.compose([Validators.required,Validators.pattern(
-        '(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'
+        '([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'
           )])],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['',Validators.compose([

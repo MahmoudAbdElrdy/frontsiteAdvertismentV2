@@ -47,6 +47,9 @@
                                         <mat-error *ngIf="fc.phoneNumber?.errors?.required" class="mat-error">
                                             {{ 'mobile' | translate }} {{ 'isrequired' | translate }}
                                         </mat-error>
+                                        <span *ngIf="fc.phoneNumber?.errors?.pattern" class="mat-error">
+                                            {{ 'mobile' | translate }} {{ 'isrequired' | translate }}
+                                        </span>
                                     </mat-form-field>
                                 </div>
                                 <div class="form-group col-md-12">
