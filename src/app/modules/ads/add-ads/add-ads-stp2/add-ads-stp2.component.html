@@ -119,10 +119,10 @@
                                
                         </div>
                         <input type="file" name="File2" class="d-none" #file2 hidden name="images"
-                            (change)="processDataFile2(file2)" multiple>
-                        <div *ngFor="let item2 of imageInfo2;let j = index" class="mt-3">
+                        (change)="uploadImage($event)" multiple>
+                        <div *ngFor="let item2 of ImageUrl;let j = index" class="mt-3">
                             <div class="box-multi-uploads text-center float-right">
-                                <img [src]="item2?.imageUrl" class="w-100 img-fluid">
+                                <img [src]="BaseFile+item2" class="w-100 img-fluid">
                                 <span class="material-icons remove-attchments" (click)="removeAttachments2(j)">
                                     close
                                 </span>

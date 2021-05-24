@@ -81,9 +81,9 @@ ApplyForAdvertisementCommand:ApplyForAdvertisementCommand=new ApplyForAdvertisem
            
             galleryImage.forEach((item, index) => {
 
-//[src]="this.baseUrlImage+oneAds.image+'?w=100&h=100'"
-              this.galleryImages.push({ small: this.baseUrlImage+item+'?w=100&h=100',
-               medium:this.baseUrlImage+item+'?w=100&h=100',big:this.baseUrlImage+item+'?w=100&h=100' });
+//[src]="this.baseUrlImage+oneAds.image"
+              this.galleryImages.push({ small: this.baseUrlImage+item,
+               medium:this.baseUrlImage+item,big:this.baseUrlImage+item });
             
             });
            

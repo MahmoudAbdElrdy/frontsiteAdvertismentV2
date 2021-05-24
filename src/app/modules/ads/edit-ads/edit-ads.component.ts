@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
@@ -70,7 +71,8 @@ export class EditAdsComponent implements OnInit {
   baseUrl = AppConsts.baseUrlImage;
   ApplyForAdvertisementCommand: ApplyForAdvertisementCommand = new ApplyForAdvertisementCommand;
   EditAdvertisementCommand: EditAdvertisementCommand = new EditAdvertisementCommand;
-
+  BaseFile=AppConsts.baseUrlImage;
+  @ViewChild('userPhoto', { static: false }) userPhoto: ElementRef;
   countries = [];
   cities = [];
   selectedCountry = 1;
@@ -83,7 +85,8 @@ export class EditAdsComponent implements OnInit {
   Model = new CreateAdvertisementCommand;
   ctrls: FormControl[];
   AdvertisementDetailDto: SpaceInfoDto;
-  constructor(
+  imagesOld:any=[];
+  constructor(private http: HttpClient,
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
     private router: Router,
@@ -93,6 +96,7 @@ export class EditAdsComponent implements OnInit {
 
   ) {
     this.service = new Array;
+    this.imagesOld=new Array;
     // super();
   }
   ngOnInit() {
@@ -121,6 +125,35 @@ export class EditAdsComponent implements OnInit {
 
 
   }
+  UploadImage2(formData){
+ 
+    return  this.http.post(AppConsts.baseUrl + '/api/UploadFile/FileUpload', formData);
+     
+  }
+  ImageUrl: any;
+  fileToUpload = null;
+ 
+  uploadImage(event) 
+{
+debugger
+ this.file2 = event.target.files;
+ const formData = new FormData();
+ for (let index = 0; index < this.file2.length; index++) {
+   formData.append('files', this.file2[index]);
+}
+  this.UploadImage2(formData).subscribe(event => {
+debugger
+ const result= event as any;
+console.log(result)
+
+this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
+ this.fileToUpload=null;
+//  this.secondFormGroup.patchValue({
+//   images: result.filePaths
+//  });
+  }
+  );
+} 
   get permissionsArr() {
     return this.secondFormGroup.get('FreeServiceIds') as FormArray;
   }
@@ -193,17 +226,17 @@ export class EditAdsComponent implements OnInit {
               if (result.cityId != null) {
                 this.Loadcities(result.countryId);
               }
-              this.images = result.images;
-              if (result.images.length > 0) {
-                for (var i = 0; i < result.images.length; i++) {
-                  this.imageInfo2.push({
-                    imageName: result.images[i],
-                    imageSize: "",
-                    imageUrl: this.baseUrl + result.images[i] + '?w=100&h=100',
-                    imageExtention: ""
-                  })
-                }
-              }
+              this.ImageUrl = result.images;
+              // if (result.images.length > 0) {
+              //   for (var i = 0; i < result.images.length; i++) {
+              //     this.imageInfo2.push({
+              //       imageName: result.images[i],
+              //       imageSize: "",
+              //       imageUrl: this.baseUrl + result.images[i] ,
+              //       imageExtention: ""
+              //     })
+              //   }
+              // }
   
               var list: any = result.freeServices.map(x => x.serviceTypeId);
   
@@ -235,6 +268,7 @@ export class EditAdsComponent implements OnInit {
     })
   }
   processDataFile2(fileInput: any) {
+    debugger
     this.file2 = []
     this.file2 = fileInput.files;
     if (this.file2 !== null) {
@@ -249,6 +283,7 @@ export class EditAdsComponent implements OnInit {
         };
         if (this.imageInfo2.length < 4) {
           setTimeout(() => {
+            
             this.imageInfo2.push({
               imageName: element.name,
               imageSize: size.toString(),
@@ -261,8 +296,9 @@ export class EditAdsComponent implements OnInit {
     }
   }
   removeAttachments2(e) {
-    ;
-    this.imageInfo2.splice(e, 1)
+  debugger
+  this.ImageUrl.splice(e, 1);
+    //this.imagesOld.push(this.imageInfo2[e].imageName)
   }
   onChange($event) {
     this.isAuctionable = !this.isAuctionable;
@@ -284,29 +320,27 @@ export class EditAdsComponent implements OnInit {
     return this.secondFormGroup.controls;
   }
   nextstep() {
+    this.secondFormGroup.value.images=this.ImageUrl
     if (this.secondFormGroup.valid) {
-      this.secondFormGroup.removeControl('countryId');
-      let formArray = this.secondFormGroup.controls['images'] as FormArray;
-      var res = this.imageInfo2.filter(x => x.imageSize != "").map(x => x.imageUrl);
       debugger
-      this.images.map((perm, i) => {
-        if (res.find(x => x == this.baseUrl + perm + '?w=100&h=100')) {
-          res.splice(i, 1);
-        }
-      })
-      formArray.patchValue(res);
-      // const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
-      // var cc = this.service.filter(x => x.value == true);
-      // cc.forEach(element => {
-      //   checkArray.push(new FormControl(element.serviceTypeId));
-      // });
+      this.secondFormGroup.removeControl('countryId');
+  
+         
       this.EditAdvertisementCommand = this.secondFormGroup.value;
       this.EditAdvertisementCommand.id = this.id;
+
       if (this.secondFormGroup.value.lng === null || this.secondFormGroup.value.lng === "0")
         this.EditAdvertisementCommand.lng = this.longitude;
       if (this.secondFormGroup.value.lat === null || this.secondFormGroup.value.lat === "0")
         this.EditAdvertisementCommand.lat = this.latitude;
-      //  this.EditAdvertisementCommand.images = this.EditAdvertisementCommand.images.filter(x=>x.imageSize!="");
+      
+         if( this.secondFormGroup.value.isAuction==true||this.secondFormGroup.value.isAuction==null){
+          this.secondFormGroup.value.isAuction=true;
+          this.secondFormGroup.value.auctionDays=0;
+         }
+         else{
+          this.secondFormGroup.value.isAuction=false
+         }
       this.AdvertisementService.editAdvertisement(this.EditAdvertisementCommand).subscribe(
         res => {
           if (res !== null) {

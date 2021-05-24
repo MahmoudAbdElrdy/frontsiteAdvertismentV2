@@ -112,25 +112,23 @@
                                     publish
                                 </span>
                                 {{ 'upload' | translate }}</button>
+                               
                         </div>
                         <input type="file" name="File2" class="d-none" #file2 hidden name="images"
-                            (change)="processDataFile2(file2)" multiple>
-                        <div *ngFor="let item2 of imageInfo2;let j = index" class="mt-3">
+                        (change)="uploadImage($event)" multiple>
+                        <div *ngFor="let item2 of ImageUrl;let j = index" class="mt-3">
                             <div class="box-multi-uploads text-center float-right">
-                                <img [src]="item2?.imageUrl" class="w-100 img-fluid">
+                                <img [src]="BaseFile+item2" class="w-100 img-fluid">
                                 <span class="material-icons remove-attchments" (click)="removeAttachments2(j)">
                                     close
                                 </span>
                             </div>
                         </div>
+                        
+                        <mat-error *ngIf="fc.images?.errors?.required"  class="mat-error">
+                            {{ 'images' | translate }} {{ 'isrequired' | translate }}
+                        </mat-error>
                     </div>
-                    <!-- <div class="form-group col-md-12">
-                      
-                            <div class="col-12 list-dropdown-vehicles-data col-padding-8">
-                                <app-map-single-view [lat]="latitude" [lng]="longitude" (latlongChange)="latlongChanges($event)"></app-map-single-view>
-                            </div>
-                       
-                    </div> -->
 
                 </div>
             </div>

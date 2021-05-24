@@ -55,7 +55,7 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
           this.ProfileImage.push({
             imageName: "",
             imageSize: "",
-            imageUrl: this.baseUrl + this.userDto.avatar + '?w=100&h=100',
+            imageUrl: this.baseUrl + this.userDto.avatar ,
             imageExtention: ""
 
           })

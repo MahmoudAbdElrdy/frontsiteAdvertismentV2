@@ -5,7 +5,7 @@ export class AppConsts {
     static appBaseHref: string; // returns angular's base-href parameter value if used during the publish
     static baseUrl = "http://localhost:5000"; 
     static localeMappings: any = [];
-    static baseUrlImage = "http://localhost:5000/"; 
+    static baseUrlImage = "http://localhost:5000/Image/"; 
     static readonly userManagement = {
         defaultAdminUserName: 'admin'
     };

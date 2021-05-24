@@ -7,7 +7,7 @@
                 <!-- <button type="button" class="btn btn-light addtoWishListbtn" [ngClass]="{'filled': oneAds.isFavorite }" #tooltip="matTooltip"
                     matTooltip="{{ 'addTo' | translate }} {{'favorite' | translate}}" (click)="addToFavorite($event, i)"><i
                         class="fa fa-heart" aria-hidden="true"></i></button> -->
-                        <img mat-card-image  [src]="baseUrlImage+oneAds.images[0]+'?w=100&h=100'" [alt]="oneAds.title">
+                        <img mat-card-image  [src]="baseUrlImage+oneAds.images[0]" [alt]="oneAds.title">
                         <mat-card-content class="text-start">
                     <h4>{{ oneAds.title | slice:0:80 }} </h4>
                     <p class="ads-desc">{{ oneAds.description }}</p>

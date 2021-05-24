@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,6 +8,7 @@ import { Observable } from 'rxjs';
 import { BaseComponent } from 'src/app/@core/Component/BaseComponent/BaseComponent';
 import { LoginComponent } from 'src/app/modules/auth/login/login.component';
 import { GeoLocationService } from 'src/app/shared/services/geo-location.service';
+import { AppConsts } from 'src/AppConsts';
 import { AdvertisementServiceProxy,ServiceProxy, CitiesServiceProxy, CountriesServiceProxy, CreateAdvertisementCommand, RegionManagementServiceProxy, GetServiceTypeListCommand } from 'src/shared/service-proxies/service-proxies';
 import { AddLocationComponent } from '../add-location/add-location.component';
 
@@ -27,7 +29,8 @@ export class AddAdsStp2Component  implements OnInit {
   @ViewChild("CommitModel", { static: false }) CommitModel;
   @Output() next = new EventEmitter<any>();
   secondFormGroup: FormGroup; 
-
+  BaseFile: any;
+  @ViewChild('userPhoto', { static: false }) userPhoto: ElementRef;
   file2: File[];
   imageInfo2: ImageInfo[] = [];
   AdCategoryList : any[] = [
@@ -73,7 +76,7 @@ export class AddAdsStp2Component  implements OnInit {
   ];
 Model=new CreateAdvertisementCommand;
   ctrls: FormControl[];
-  constructor(
+  constructor(private http: HttpClient,
     private _formBuilder: FormBuilder, 
     public dialog: MatDialog,
     private router : Router,
@@ -85,15 +88,15 @@ Model=new CreateAdvertisementCommand;
   }
  
   ngOnInit() {
-  
+  this.BaseFile=AppConsts.baseUrlImage;
   this.LoadServiceTypeList();
     this.LoadCountries();
   
     this.secondFormGroup = this._formBuilder.group({
       title: ['', Validators.required],
       price: ['', Validators.required],
-      isAuction:[null],
-      auctionDays: [0],
+      isAuction:[false],
+      auctionDays: [1],
       description: ['', Validators.required],
       countryId: ['', Validators.required],
       cityId: ['', Validators.required],
@@ -164,48 +167,48 @@ Model=new CreateAdvertisementCommand;
      console.log(this.services)
     }) 
   }
-  processDataFile2(fileInput: any) {
-    ;
-    this.file2 = []
-    this.file2 = fileInput.files;
-    if (this.file2 !== null) {
-      for (let index = 0; index < this.file2.length; index++) {
-        const element = this.file2[index];
-        const size = element.size / Math.log(1024);
-        const reader = new FileReader();
-        let url
-        reader.readAsDataURL(element);
-        reader.onload = () => {
+  // processDataFile2(fileInput: any) {
+  //   ;
+  //   this.file2 = []
+  //   this.file2 = fileInput.files;
+  //   if (this.file2 !== null) {
+  //     for (let index = 0; index < this.file2.length; index++) {
+  //       const element = this.file2[index];
+  //       const size = element.size / Math.log(1024);
+  //       const reader = new FileReader();
+  //       let url
+  //       reader.readAsDataURL(element);
+  //       reader.onload = () => {
           
-          url = reader.result.toString();
+  //         url = reader.result.toString();
      
-        };
+  //       };
 
 
 
-        if (this.imageInfo2.length < 4) {
-          setTimeout(() => {
-            ;
-            this.imageInfo2.push({
-              imageName: element.name,
-              imageSize: size.toString(),
-              imageUrl: url,
-              imageExtention: ""
-            })
-          //  this.secondFormGroup.get('images').setValue(url);
-            console.log()
-            console.log(this.imageInfo2)
-          }, 200);
-        }
+  //       if (this.imageInfo2.length < 4) {
+  //         setTimeout(() => {
+  //           ;
+  //           this.imageInfo2.push({
+  //             imageName: element.name,
+  //             imageSize: size.toString(),
+  //             imageUrl: url,
+  //             imageExtention: ""
+  //           })
+  //         //  this.secondFormGroup.get('images').setValue(url);
+  //           console.log()
+  //           console.log(this.imageInfo2)
+  //         }, 200);
+  //       }
 
-      }
-    }
-  }
+  //     }
+  //   }
+  // }
 
   
   removeAttachments2(e) {
     ;
-    this.imageInfo2.splice(e, 1)
+    this.ImageUrl.splice(e, 1)
   }
   
   onChange($event){
@@ -227,8 +230,38 @@ Model=new CreateAdvertisementCommand;
   }
  
 
+  UploadImage2(formData){
+ 
+    return  this.http.post(AppConsts.baseUrl + '/api/UploadFile/FileUpload', formData);
+     
+  }
+  ImageUrl: any;
+  fileToUpload = null;
+ 
+  uploadImage(event) 
+{
 
-  
+ this.file2 = event.target.files;
+ const formData = new FormData();
+ for (let index = 0; index < this.file2.length; index++) {
+   formData.append('files', this.file2[index]);
+}
+  this.UploadImage2(formData).subscribe(event => {
+debugger
+ const result= event as any;
+console.log(result)
+if(this.ImageUrl==undefined||this.ImageUrl==null){
+  this.ImageUrl=result.filePaths;
+}
+else
+{
+  this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
+
+}
+
+  }
+  );
+} 
   // submitForm(){
   //   if(this.secondFormGroup.valid){
   //     console.log('try to submit'); 
@@ -243,22 +276,21 @@ Model=new CreateAdvertisementCommand;
   nextstep() {
     debugger
     let formArray = this.secondFormGroup.controls['images'] as FormArray;
-      formArray.patchValue(this.imageInfo2.map(x=>x.imageUrl));
+      formArray.patchValue(this.ImageUrl);
+ //   this.secondFormGroup.value.images=this.ImageUrl
     if (this.secondFormGroup.valid) {
       ;
     
       this.secondFormGroup.removeControl('countryId');
-     
-      if(this.imageInfo2.length<0){
-        
-      }
-     if( this.secondFormGroup.value.isAuction==true||this.secondFormGroup.value.isAuction==null){
-      this.secondFormGroup.value.isAuction=0;
-      this.secondFormGroup.value.auctionDays=0;
-     }
-     else{
-      this.secondFormGroup.value.isAuction=1
-     }
+   
+    
+      if( this.secondFormGroup.value.isAuction==true||this.secondFormGroup.value.isAuction==null){
+        this.secondFormGroup.value.isAuction=1;
+        this.secondFormGroup.value.auctionDays=0;
+       }
+       else{
+        this.secondFormGroup.value.isAuction=0
+       }
       this.AdvertisementService.addAdvertisement(this.secondFormGroup.value)
       .subscribe( 
         
