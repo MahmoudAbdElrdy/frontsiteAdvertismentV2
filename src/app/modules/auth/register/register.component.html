@@ -106,10 +106,10 @@
                                             </mat-error>
                                     </div>
                                     <input type="file" name="avatar" class="d-none" #avatar  hidden name="avatar"
-                                        (change)="processDataFile2(avatar)" multiple>
-                                    <div *ngFor="let item2 of ProfileImage;let j = index" class="mt-3">
+                                    (change)="uploadImage($event)" multiple>
+                                    <div *ngFor="let item2 of ImageUrl;let j = index" class="mt-3">
                                         <div class="box-multi-uploads text-center float-right">
-                                            <img [src]="item2?.imageUrl" class="w-100 img-fluid">
+                                            <img [src]="BaseFile+item2" class="w-100 img-fluid">
                                             <span class="material-icons remove-attchments"
                                                 (click)="removeAttachments2(j)">
                                                 close
@@ -151,7 +151,7 @@
                                     </div> -->
                                 </div>
                                 <div class="col-6">
-                                    <mat-checkbox formControlName="isAccept" id="rememberMe" name="rememberMe">اوافق على 
+                                    <mat-checkbox formControlName="isAccept" (change)="privacy($event)" id="rememberMe" name="rememberMe">اوافق على 
                                       الشروط
                                     </mat-checkbox>
                                     <mat-error *ngIf="fc.isAccept?.errors?.required"  class="mat-error">

@@ -9,6 +9,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { AuthServiceProxy, ClientRegisterCommand, UserManagementServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AuthenticationService } from 'src/app/@core/auth/authentication.service';
 import { TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { AppConsts } from 'src/AppConsts';
 export interface ImageInfo {
   imageUrl: string;
   imageName: string;
@@ -26,7 +28,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   file2: File[];
   lang: string;
 
-  constructor(public dialogRef: MatDialogRef<RegisterComponent>, private AuthServiceProxy: AuthServiceProxy,
+  constructor(private http: HttpClient,public dialogRef: MatDialogRef<RegisterComponent>, private AuthServiceProxy: AuthServiceProxy,
     private formBuilder: FormBuilder, private route: Router, private translate: TranslateService) {
     super();
     this.lang = this.translate.getDefaultLang();
@@ -96,8 +98,8 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   //submit
   submitRegister() {
 
-    if (this.ProfileImage[0].imageName != "") {
-      this.RegisterForm.controls['avatar'].setValue(this.ProfileImage[0].imageUrl);
+    if (this.ImageUrl[0] != "") {
+      this.RegisterForm.controls['avatar'].setValue(this.BaseFile+this.ImageUrl[0]);
     }
     ;
     let registerDto: ClientRegisterCommand = this.RegisterForm.value;
@@ -134,7 +136,7 @@ this.dialogRef.close();
     this.dialogRef.close();
   }
   removeAttachments2(e) {
-    this.ProfileImage.splice(e, 1)
+    this.ImageUrl.splice(e, 1)
   }
   processDataFile2(fileInput: any) {
     this.file2 = []
@@ -172,5 +174,48 @@ this.dialogRef.close();
       }
     }
   }
+  UploadImage2(formData){
+ 
+    return  this.http.post(AppConsts.baseUrl + '/api/UploadFile/FileUpload', formData);
+     
+  }
+  ImageUrl: any;
+  fileToUpload = null;
+  BaseFile=AppConsts.baseUrlImage;
+  uploadImage(event) 
+{
+debugger
+ this.file2 = event.target.files;
+ const formData = new FormData();
+ for (let index = 0; index < this.file2.length; index++) {
+   formData.append('files', this.file2[index]);
+}
+  this.UploadImage2(formData).subscribe(event => {
+debugger
+ const result= event as any;
+console.log(result)
+if(this.ImageUrl==undefined||this.ImageUrl==null){
+  this.ImageUrl=result.filePaths;
+}
+else
+{
+  this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
 
+}
+ this.fileToUpload=null;
+//  this.secondFormGroup.patchValue({
+//   images: result.filePaths
+//  });
+  }
+  );
+} 
+privacy(e){
+debugger
+ if(e.checked) {
+  window.open('/pages/privacy-policy', "_blank");
+ }
+ // this.route.navigateByUrl('/pages/privacy-policy');
+  
+ 
+}
 }
