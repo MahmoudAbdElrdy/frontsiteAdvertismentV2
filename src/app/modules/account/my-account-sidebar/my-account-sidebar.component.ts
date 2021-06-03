@@ -17,7 +17,7 @@ export class MyAccountSidebarComponent extends BaseComponent implements OnInit {
     super();
    }
   ngOnInit() {
-    this.ProfileImage=localStorage.getItem('user_Image');
+    this.ProfileImage=this.baseUrl+localStorage.getItem('user_Image');
     this.userName= localStorage.getItem('user_Name');
   }
 

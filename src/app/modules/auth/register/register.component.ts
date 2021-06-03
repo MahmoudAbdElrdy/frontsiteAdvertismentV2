@@ -99,7 +99,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   submitRegister() {
 
     if (this.ImageUrl[0] != "") {
-      this.RegisterForm.controls['avatar'].setValue(this.BaseFile+this.ImageUrl[0]);
+      this.RegisterForm.controls['avatar'].setValue(this.ImageUrl[0]);
     }
     ;
     let registerDto: ClientRegisterCommand = this.RegisterForm.value;

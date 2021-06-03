@@ -5,6 +5,9 @@ import { UsersServiceProxy, UserDto } from 'src/shared/service-proxies/service-p
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../../auth/change-password/change-password.component';
 import { AppConsts } from 'src/AppConsts';
+import { HttpClient } from '@angular/common/http';
+import { arrayClear } from 'igniteui-angular-core';
+import { Router } from '@angular/router';
 export interface ImageInfo {
   imageUrl: string;
   imageName: string;
@@ -26,9 +29,9 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
   file2: File[];
   ProfileImage: ImageInfo[] = [];
 
-  constructor(
+  constructor(private http: HttpClient,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog,
+    public dialog: MatDialog,private route: Router,
     private Service: UsersServiceProxy) {
     super();
   }
@@ -37,6 +40,7 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
     this.userId = localStorage.getItem("user_Id");
     this.buildForm();
     this.loadData();
+    this.ImageUrl=new Array<any>();
   }
   baseUrl = AppConsts.baseUrlImage;
 
@@ -52,14 +56,15 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
           this.EditProfileForm.controls['firstName'].setValue(this.userDto.firstName);
           this.EditProfileForm.controls['lastName'].setValue(this.userDto.lastName);
           this.EditProfileForm.controls['avatar'].setValue(this.userDto.avatar);
-          this.ProfileImage.push({
-            imageName: "",
-            imageSize: "",
-            imageUrl: this.baseUrl + this.userDto.avatar ,
-            imageExtention: ""
+          // this.ProfileImage.push({
+          //   imageName: "",
+          //   imageSize: "",
+          //   imageUrl: this.baseUrl + this.userDto.avatar ,
+          //   imageExtention: ""
 
-          })
-
+          // })
+          debugger
+          this.ImageUrl.push(result.avatar) ;
         }
       },
       (err) => {
@@ -86,21 +91,31 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
 
   //submit
   submitEditProfile() {
-    if (this.ProfileImage[0].imageName != "") {
-      this.EditProfileForm.controls['avatar'].setValue(this.ProfileImage[0].imageUrl);
+    // if (this.ProfileImage[0].imageName != "") {
+    //   this.EditProfileForm.controls['avatar'].setValue(this.ProfileImage[0].imageUrl);
+    // }
+    debugger
+    if (this.ImageUrl[0] != "") {
+      this.EditProfileForm.controls['avatar'].setValue(this.ImageUrl[0]);
     }
 
-    this.Service.editUser(this.userId, this.EditProfileForm.value).subscribe(
-      (result) => {
-        this.userDto = result;
-        if (result != null || result != undefined) {
-
+    if(this.EditProfileForm.valid){
+     
+      this.Service.editUser(this.userId, this.EditProfileForm.value).subscribe(
+        (result) => {
+          this.userDto = result;
+          if (result != null || result != undefined) {
+            this.showMessageWithType(0, "تم التعديل بنجاح");
+            this.route.navigate(['/account/edit-profile'])
+          }
+        },
+        (err) => {
+          this.showMessageWithType(1,"يوجد خطأ");
+          this.errorOccured(err);
         }
-      },
-      (err) => {
-        this.errorOccured(err);
-      }
-    );
+      );
+    }
+   
   }
   openChangePasswordDialog() {
     const dialogRef = this.dialog.open(ChangePasswordComponent, {
@@ -147,7 +162,42 @@ export class EditProfileComponent extends BaseComponent implements OnInit {
       }
     }
   }
+  UploadImage2(formData){
+ 
+    return  this.http.post(AppConsts.baseUrl + '/api/UploadFile/FileUpload', formData);
+     
+  }
+  ImageUrl: any;
+  fileToUpload = null;
+  BaseFile=AppConsts.baseUrlImage;
+  uploadImage(event) 
+{
+debugger
+ this.file2 = event.target.files;
+ const formData = new FormData();
+ for (let index = 0; index < this.file2.length; index++) {
+   formData.append('files', this.file2[index]);
+}
+  this.UploadImage2(formData).subscribe(event => {
+debugger
+ const result= event as any;
+console.log(result)
+if(this.ImageUrl==undefined||this.ImageUrl==null){
+  this.ImageUrl=result.filePaths;
+}
+else
+{
+  this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
+
+}
+ this.fileToUpload=null;
+//  this.secondFormGroup.patchValue({
+//   images: result.filePaths
+//  });
+  }
+  );
+} 
   removeAttachments2(e) {
-    this.ProfileImage.splice(e, 1)
+    this.ImageUrl.splice(e, 1)
   }
 }
