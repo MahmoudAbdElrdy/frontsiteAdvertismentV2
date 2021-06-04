@@ -8468,6 +8468,7 @@ export class GetServiceTypeListCommand {
 
 export class ServiceTypeDto {
     name?: { [key: string]: string; } | undefined;
+    description?: { [key: string]: string; } | undefined;
     id?: string | undefined;
 
     init(_data?: any) {
@@ -8477,6 +8478,13 @@ export class ServiceTypeDto {
                 for (let key in _data["name"]) {
                     if (_data["name"].hasOwnProperty(key))
                         this.name![key] = _data["name"][key];
+                }
+            }
+            if (_data["description"]) {
+                this.description = {} as any;
+                for (let key in _data["description"]) {
+                    if (_data["description"].hasOwnProperty(key))
+                        this.description![key] = _data["description"][key];
                 }
             }
             this.id = _data["id"];
@@ -8497,6 +8505,13 @@ export class ServiceTypeDto {
             for (let key in this.name) {
                 if (this.name.hasOwnProperty(key))
                     data["name"][key] = this.name[key];
+            }
+        }
+        if (this.description) {
+            data["description"] = {};
+            for (let key in this.description) {
+                if (this.description.hasOwnProperty(key))
+                    data["description"][key] = this.description[key];
             }
         }
         data["id"] = this.id;
@@ -8558,6 +8573,7 @@ export class ServiceTypeDtoPageList {
 
 export class CreateServiceCommand {
     name?: { [key: string]: string; } | undefined;
+    description?: { [key: string]: string; } | undefined;
 
     init(_data?: any) {
         if (_data) {
@@ -8566,6 +8582,13 @@ export class CreateServiceCommand {
                 for (let key in _data["name"]) {
                     if (_data["name"].hasOwnProperty(key))
                         this.name![key] = _data["name"][key];
+                }
+            }
+            if (_data["description"]) {
+                this.description = {} as any;
+                for (let key in _data["description"]) {
+                    if (_data["description"].hasOwnProperty(key))
+                        this.description![key] = _data["description"][key];
                 }
             }
         }
@@ -8585,6 +8608,13 @@ export class CreateServiceCommand {
             for (let key in this.name) {
                 if (this.name.hasOwnProperty(key))
                     data["name"][key] = this.name[key];
+            }
+        }
+        if (this.description) {
+            data["description"] = {};
+            for (let key in this.description) {
+                if (this.description.hasOwnProperty(key))
+                    data["description"][key] = this.description[key];
             }
         }
         return data; 
@@ -8627,6 +8657,7 @@ export class ServiceDtoPageList {
 
 export class EditServiceCommand {
     name?: { [key: string]: string; } | undefined;
+    description?: { [key: string]: string; } | undefined;
     id?: string | undefined;
 
     init(_data?: any) {
@@ -8636,6 +8667,13 @@ export class EditServiceCommand {
                 for (let key in _data["name"]) {
                     if (_data["name"].hasOwnProperty(key))
                         this.name![key] = _data["name"][key];
+                }
+            }
+            if (_data["description"]) {
+                this.description = {} as any;
+                for (let key in _data["description"]) {
+                    if (_data["description"].hasOwnProperty(key))
+                        this.description![key] = _data["description"][key];
                 }
             }
             this.id = _data["id"];
@@ -8656,6 +8694,13 @@ export class EditServiceCommand {
             for (let key in this.name) {
                 if (this.name.hasOwnProperty(key))
                     data["name"][key] = this.name[key];
+            }
+        }
+        if (this.description) {
+            data["description"] = {};
+            for (let key in this.description) {
+                if (this.description.hasOwnProperty(key))
+                    data["description"][key] = this.description[key];
             }
         }
         data["id"] = this.id;
