@@ -25,7 +25,7 @@ export interface ImageInfo {
   styleUrls: ['./add-ads-stp2.component.scss']
 })
 export class AddAdsStp2Component  implements OnInit {
-
+  numberChars = new RegExp('[^0-9]', 'g');
   @ViewChild("CommitModel", { static: false }) CommitModel;
   @Output() next = new EventEmitter<any>();
   secondFormGroup: FormGroup; 

@@ -1,5 +1,5 @@
 import { NgModule, LOCALE_ID,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { registerLocaleData } from "@angular/common";
 import { AdsComponent } from './ads.component';
 import { AdsRouteModule } from './ads-router.module';
@@ -50,6 +50,7 @@ import { GeoLocationService } from 'src/app/shared/services/geo-location.service
 import { from } from 'rxjs';
 import { EditAdsComponent } from './edit-ads/edit-ads.component';
 import { BarRatingModule } from 'ngx-bar-rating';
+import { UsdOnlyDirective } from './usd-only.directive';
 
 
 registerLocaleData(localeAr);
@@ -70,7 +71,7 @@ const MAT_COMPONENTS = [MatSnackBarModule];
     AddLocationComponent,
     UserServicesComponent,
     AddAdsStp1Component,
-    AddAdsStp2Component,OsmSingleViewComponent,MapSingleViewComponent,MapModalComponent, EditAdsComponent
+    AddAdsStp2Component,OsmSingleViewComponent,MapSingleViewComponent,MapModalComponent, EditAdsComponent,UsdOnlyDirective
   ],
   imports: [MatAutocompleteModule,
     CommonModule,
@@ -117,7 +118,7 @@ const MAT_COMPONENTS = [MatSnackBarModule];
   providers: [
     RegionManagementServiceProxy,CountriesServiceProxy,ServiceProxy,AdComplaintServiceProxy,
     CitiesServiceProxy,AdvertisementServiceProxy,UsersServiceProxy,AuthServiceProxy,UserManagementServiceProxy,
-    MatDatepickerModule,GeoLocationService,
+    MatDatepickerModule,GeoLocationService, CurrencyPipe, DecimalPipe,
     { provide: LOCALE_ID, useValue: 'ar-EG' },
     { provide: MAT_DATE_LOCALE, useValue: 'ar-EG' },
     { provide: MatDialogRef, useValue: {} },
