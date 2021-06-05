@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
@@ -39,6 +40,7 @@ export class EditAdsComponent implements OnInit {
     {id : 3, name :  "SocialMedia",nameAR:"التواصل الاجتماعي"},
    
   ];
+  optionValue:any;
   AdCategory: any;
   isAuctionable: boolean = false;
   latitude = 24.7444191;
@@ -68,7 +70,7 @@ export class EditAdsComponent implements OnInit {
   id: any;
   AdDto: AdsDto[];
   images: string[];
-  baseUrl = AppConsts.baseUrlImage;
+  baseUrl = AppConsts.baseUrl;
   ApplyForAdvertisementCommand: ApplyForAdvertisementCommand = new ApplyForAdvertisementCommand;
   EditAdvertisementCommand: EditAdvertisementCommand = new EditAdvertisementCommand;
   BaseFile=AppConsts.baseUrlImage;
@@ -89,7 +91,7 @@ export class EditAdsComponent implements OnInit {
   constructor(private http: HttpClient,
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private router: Router,
+    private router: Router,private _decimalPipe: DecimalPipe,
     private CitiesService: CitiesServiceProxy,
     private Service: RegionManagementServiceProxy, private ServiceProxy: ServiceProxy, private activatedRoute: ActivatedRoute,
     private AdvertisementService: AdvertisementServiceProxy, private _snackBar: MatSnackBar, private Location: GeoLocationService
@@ -208,7 +210,7 @@ this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
               console.log(result);
               this.secondFormGroup = this._formBuilder.group({
                 title: [result.title, Validators.required],
-                price: [result.price, Validators.required],
+                price: [this._decimalPipe.transform(result.price, '1.0', 'en-US'), Validators.required],
                 isAuction: [false],
                 auctionDays: [1],
                 description: [result.description, Validators.required],
@@ -237,7 +239,7 @@ this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
               //     })
               //   }
               // }
-  
+  this.optionValue=result.adCategory;
               var list: any = result.freeServices.map(x => x.serviceTypeId);
   
               const checkArray: FormArray = this.secondFormGroup.get('FreeServiceIds') as FormArray;
@@ -321,11 +323,22 @@ this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
   }
   nextstep() {
     this.secondFormGroup.value.images=this.ImageUrl
-    if (this.secondFormGroup.valid) {
+    if(this.secondFormGroup.value.adCategory==3){
+      this.secondFormGroup.controls["address"].clearValidators();
+      this.secondFormGroup.controls["address"].updateValueAndValidity();
+     }
+     
+        if (this.secondFormGroup.valid) {
+          if(this.secondFormGroup.value.adCategory==3){
+            this.secondFormGroup.value.address="";
+            this.secondFormGroup.value.lat=10.0;
+            this.secondFormGroup.value.lan=10.0;
+          }
       debugger
       this.secondFormGroup.removeControl('countryId');
   
-         
+      this.secondFormGroup.value.price=Number((this.secondFormGroup.value.price)?this.secondFormGroup.value.price.trim().replace(",","."):0) ;
+
       this.EditAdvertisementCommand = this.secondFormGroup.value;
       this.EditAdvertisementCommand.id = this.id;
 

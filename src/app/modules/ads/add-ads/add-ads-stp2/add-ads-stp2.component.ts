@@ -73,7 +73,7 @@ export class AddAdsStp2Component  implements OnInit {
   selectedDuration = 2;
   GetServiceTypeListCommand=new GetServiceTypeListCommand();
   services = [  
-  ];
+];
 Model=new CreateAdvertisementCommand;
   ctrls: FormControl[];
   constructor(private http: HttpClient,
@@ -278,8 +278,17 @@ else
     let formArray = this.secondFormGroup.controls['images'] as FormArray;
       formArray.patchValue(this.ImageUrl);
  //   this.secondFormGroup.value.images=this.ImageUrl
+ if(this.secondFormGroup.value.adCategory==3){
+  this.secondFormGroup.controls["address"].clearValidators();
+  this.secondFormGroup.controls["address"].updateValueAndValidity();
+ }
+ 
     if (this.secondFormGroup.valid) {
-      ;
+      if(this.secondFormGroup.value.adCategory==3){
+        this.secondFormGroup.value.address="";
+        this.secondFormGroup.value.lat=10.0;
+        this.secondFormGroup.value.lan=10.0;
+      }
     
       this.secondFormGroup.removeControl('countryId');
    
@@ -291,6 +300,8 @@ else
        else{
         this.secondFormGroup.value.isAuction=0
        }
+       this.secondFormGroup.value.price=Number((this.secondFormGroup.value.price)?this.secondFormGroup.value.price.trim().replace(",","."):0) ;
+
       this.AdvertisementService.addAdvertisement(this.secondFormGroup.value)
       .subscribe( 
         
