@@ -248,12 +248,12 @@ this.ImageUrl.push.apply(this.ImageUrl,result.filePaths)
                debugger
                 //  this.permissionsArr.at(i).patchValue(true)
                 if (list.find(x => x == perm.id) != null) {
-                  let obj: any = { name: perm.name.ar, value: true, serviceTypeId: perm.id };
+                  let obj: any = { name: perm.name.ar,description:perm.description.ar, value: true, serviceTypeId: perm.id };
                   this.service.push(obj)
                   checkArray.push(new FormControl(perm.id));
                   //this.permissionsArr.at(i).patchValue(true)
                 } else {
-                  let obj: any = { name: perm.name.ar, value: false, serviceTypeId: perm.id };
+                  let obj: any = { name: perm.name.ar,description:perm.description.ar, value: false, serviceTypeId: perm.id };
                   this.service.push(obj)
                 }
   
